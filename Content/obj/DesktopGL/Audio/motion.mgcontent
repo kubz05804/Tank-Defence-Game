@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/motion.mp3</SourceFile>
+  <SourceTime>2021-10-22T16:27:47.0194877+01:00</SourceTime>
+  <DestFile>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/bin/DesktopGL/Audio/motion.xnb</DestFile>
+  <DestTime>2021-11-10T17:24:32.3922612+00:00</DestTime>
+  <Importer>Mp3Importer</Importer>
+  <ImporterTime>2020-08-10T17:17:54+01:00</ImporterTime>
+  <Processor>SongProcessor</Processor>
+  <ProcessorTime>2020-08-10T17:17:54+01:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput>
+    <string>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/bin/DesktopGL/Audio/motion.ogg</string>
+  </BuildOutput>
+</PipelineBuildEvent>
