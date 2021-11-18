@@ -38,7 +38,7 @@ namespace Tank_Defence_Game
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-
+        
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
@@ -48,7 +48,6 @@ namespace Tank_Defence_Game
             graphics.PreferredBackBufferHeight = windowHeight;
             graphics.IsFullScreen = false; // Sets the game to full screen mode.
             graphics.ApplyChanges();
-
             base.Initialize();
         }
 
@@ -80,6 +79,8 @@ namespace Tank_Defence_Game
             player.ReloadSound = Content.Load<SoundEffect>("Audio/reload");
             player.MotionSound = Content.Load<Song>("Audio/motion");
             MediaPlayer.IsRepeating = true;
+
+            enemy.Spawn();
         }
 
         protected override void Update(GameTime gameTime)
@@ -107,11 +108,11 @@ namespace Tank_Defence_Game
             PostUpdate(); // Calls the PostUpdate method which removes any expired missiles.
 
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            int spawnReload = random.Next(3, 10);
+            float spawnReload = 5f;
 
             if (timer > spawnReload)
             {
-                enemy.Spawn();
+                //enemy.Spawn();
                 timer = 0;
             }
 
@@ -143,12 +144,13 @@ namespace Tank_Defence_Game
             spriteBatch.DrawString(gameFont, "Screen Width: " + windowWidth.ToString() + ", Screen Height: " + windowHeight.ToString(), new Vector2(10, 10), Color.White);
             spriteBatch.DrawString(gameFont, "Tank Position: " + player.Position.ToString(), new Vector2(10, 30), Color.White);
             spriteBatch.DrawString(gameFont, "Cursor Position: " + Mouse.GetState().Y + " " + Mouse.GetState().X, new Vector2(10, 50), Color.White);
-            spriteBatch.DrawString(gameFont, "Turret Rotation: " + MathHelper.ToDegrees(player.CurrentTurretAngle), new Vector2(10, 70), Color.White);
-            spriteBatch.DrawString(gameFont, "Turret Rotation Angle: " + MathHelper.ToDegrees(player.TargetAngle), new Vector2(10, 90), Color.White);
+            spriteBatch.DrawString(gameFont, "Turret Rotation: " + Math.Round(MathHelper.ToDegrees(player.CurrentTurretAngle),1) + " " + player.CurrentTurretAngle, new Vector2(10, 70), Color.White);
+            spriteBatch.DrawString(gameFont, "Turret Target Angle: " + Math.Round(MathHelper.ToDegrees(player.TargetAngle),1) + " " + player.TargetAngle, new Vector2(10, 90), Color.White);
             spriteBatch.DrawString(gameFont, "Use WASD keys to move tank", new Vector2(10, 400), Color.White);
             spriteBatch.DrawString(gameFont, "Press Esc to exit  " + Math.Abs(-180 - 90), new Vector2(10, 420), Color.White);
             spriteBatch.DrawString(gameFont, "Reloaded: " + player._reloaded, new Vector2(10, 440), Color.White);
             spriteBatch.DrawString(gameFont, "Distance to player: " + enemy.distanceToPlayer, new Vector2(10, 460), Color.White);
+            spriteBatch.DrawString(gameFont, "Enemy count: " + enemies.Count, new Vector2(10, 480), Color.White);
 
             spriteBatch.End();
 

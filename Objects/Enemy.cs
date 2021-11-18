@@ -37,7 +37,7 @@ namespace Tank_Defence_Game.Objects
             playerPosition = Game1.player.Position;
             previouslyFacingPlayer = currentlyFacingPlayer;
 
-            CurrentTurretAngle = (float)Math.Atan2(Game1.player.Position.Y - _currentPosition.Y, Game1.player.Position.X - _currentPosition.X) + MathHelper.ToRadians(90); // Turret rotation angle
+            CurrentTurretAngle = (float)(Math.Atan2(Game1.player.Position.Y - _currentPosition.Y, Game1.player.Position.X - _currentPosition.X) + MathHelper.ToRadians(90)); // Turret rotation angle
             _turretDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - CurrentTurretAngle), -(float)Math.Sin(MathHelper.ToRadians(90) - CurrentTurretAngle));
             Gunpoint = _currentPosition + _turretDirection * 100;
 
@@ -86,29 +86,42 @@ namespace Tank_Defence_Game.Objects
 
         public void Rotate(Vector2 playerPosition)
         {
-            //var targetChassisAngle = (float)Math.Atan2(playerPosition.Y - _currentPosition.Y, playerPosition.X - _currentPosition.X) + MathHelper.ToRadians(90);
-            //if (targetChassisAngle == _chassisRotation)
-            //{
-            //    currentlyFacingPlayer = true;
-            //    return;
-            //}
-            //else
-            //    currentlyFacingPlayer = false;
+            var targetChassisAngle = (float)Math.Atan2(playerPosition.Y - _currentPosition.Y, playerPosition.X - _currentPosition.X) + MathHelper.ToRadians(90);
 
-            //if (_chassisRotation < targetChassisAngle)
-            //{
-            //    if (Math.Abs(targetChassisAngle - _chassisRotation) < 180)
-            //        _chassisRotation += 0.1f;
-            //    else
-            //        _chassisRotation -= 0.1f;
-            //}
-            //else
-            //{
-            //    if (Math.Abs(targetChassisAngle - _chassisRotation) < 180)
-            //        _chassisRotation -= 0.1f;
-            //    else
-            //        _chassisRotation += 0.1f;
-            //}
+            if ((targetChassisAngle > _chassisRotation - 0.055f && targetChassisAngle < _chassisRotation + 0.055f))
+            {
+                _chassisRotation = targetChassisAngle;
+            }
+
+            if (targetChassisAngle == _chassisRotation)
+            {
+                currentlyFacingPlayer = true;
+                return;
+            }
+            else
+                currentlyFacingPlayer = false;
+
+            if (_chassisRotation < targetChassisAngle)
+            {
+                if (Math.Abs(targetChassisAngle - _chassisRotation) < MathF.PI)
+                    moveDirection = 1;
+                else
+                    moveDirection = -1;
+            }
+            else
+            {
+                if (Math.Abs(targetChassisAngle - _chassisRotation) < MathF.PI)
+                    moveDirection = -1;
+                else
+                    moveDirection = 1;
+            }
+
+            _chassisRotation += 0.03f * moveDirection;
+
+            if (_chassisRotation >= 1.5 * MathF.PI)
+                _chassisRotation = MathHelper.ToRadians(-90);
+            if (_chassisRotation < -MathF.PI / 2)
+                _chassisRotation = MathHelper.ToRadians(270);
         }
 
         public void Motion(Vector2 playerPosition)

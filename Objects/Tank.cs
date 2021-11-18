@@ -23,7 +23,7 @@ namespace Tank_Defence_Game.Objects
         public Vector2 Gunpoint;
 
         protected float _chassisRotation;
-        public float CurrentTurretAngle;
+        public float CurrentTurretAngle = 0;
         protected float _rotationVelocity = 0.03f;
         protected float _reloadTimeLeft;
         protected float _timer;
@@ -32,6 +32,8 @@ namespace Tank_Defence_Game.Objects
         protected bool _isMoving;
         protected bool _wasMoving;
         protected bool _enemy;
+
+        protected int moveDirection;
 
         public Tank(Texture2D chassis, Texture2D turret)
         {

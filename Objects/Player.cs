@@ -26,8 +26,6 @@ namespace Tank_Defence_Game.Objects
         private float velocity = 3f; public float Velocity { get; set; }
         private float time = 0;
 
-        private int moveDirection;
-
         public Player(Texture2D chassis, Texture2D turret)
             : base(chassis, turret)
         {
@@ -83,10 +81,10 @@ namespace Tank_Defence_Game.Objects
                 _chassisRotation -= _rotationVelocity;
 
             _currentChassisDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - _chassisRotation), -(float)Math.Sin(MathHelper.ToRadians(90) - _chassisRotation)); // Chassis rotation direction
-            TargetAngle = (float)((float)Math.Atan2(Mouse.GetState().Y - _currentPosition.Y, Mouse.GetState().X - _currentPosition.X) + (MathF.PI / 2)); // Turret rotation angle
+            TargetAngle = (float)(Math.Atan2(Mouse.GetState().Y - _currentPosition.Y, Mouse.GetState().X - _currentPosition.X) + (MathF.PI / 2)); // Turret rotation angle
             _turretDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - CurrentTurretAngle), -(float)Math.Sin(MathHelper.ToRadians(90) - CurrentTurretAngle));
 
-            if (CurrentTurretAngle != TargetAngle)
+            if (TargetAngle != CurrentTurretAngle)
             {
                 if (CurrentTurretAngle < TargetAngle)
                 {
@@ -104,15 +102,17 @@ namespace Tank_Defence_Game.Objects
                 }
             }
 
-            CurrentTurretAngle += _rotationVelocity * moveDirection;
+            CurrentTurretAngle += 0.05f * moveDirection;
+
+            if ((TargetAngle > CurrentTurretAngle - 0.055f && TargetAngle < CurrentTurretAngle + 0.055f))
+            {
+                CurrentTurretAngle = TargetAngle;
+            }
+
             if (CurrentTurretAngle >= 1.5 * MathF.PI)
-            {
                 CurrentTurretAngle = MathHelper.ToRadians(-90);
-            }
             if (CurrentTurretAngle < -MathF.PI / 2)
-            {
                 CurrentTurretAngle = MathHelper.ToRadians(270);
-            }
 
             Gunpoint = _currentPosition + _turretDirection * 100;
 
