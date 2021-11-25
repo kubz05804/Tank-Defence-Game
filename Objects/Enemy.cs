@@ -48,6 +48,16 @@ namespace Tank_Defence_Game.Objects
                 if (currentlyFacingPlayer)
                     Motion(playerPosition);
             }
+
+            if (VehicleBounds.Intersects(Game1.player.VehicleBounds))
+            {
+                Game1.collision = true;
+            }
+            else
+            {
+                Game1.collision = false;
+            }
+
         }
 
         public void Spawn()
@@ -130,8 +140,12 @@ namespace Tank_Defence_Game.Objects
         public override void Draw(SpriteBatch spriteBatch)
         {
             Origin = new Vector2(Chassis.Width / 2, Chassis.Height - 80);
+            spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), Color.Red);
+            //spriteBatch.Draw(Game1.rectangle, _currentPosition, new Rectangle((int)_currentPosition.X, (int)_currentPosition.Y, Chassis.Width, Chassis.Height), Color.Black, 0, Origin, SpriteEffects.None, 0f) ;
             spriteBatch.Draw(Chassis, _currentPosition, null, Color.White, _chassisRotation, Origin, 1, SpriteEffects.None, 0f);
             spriteBatch.Draw(Turret, _currentPosition, null, Color.White, CurrentTurretAngle, Origin, 1, SpriteEffects.None, 0f);
+            
+
         }
 
         public object Clone()

@@ -33,6 +33,7 @@ namespace Tank_Defence_Game
         public static Enemy enemy;
 
         public static bool collision;
+        public static Texture2D rectangle;
 
         public Game1()
         {
@@ -85,6 +86,9 @@ namespace Tank_Defence_Game
             player.MotionSound = Content.Load<Song>("Audio/motion");
             MediaPlayer.IsRepeating = true;
             enemy.Spawn();
+
+            rectangle = new Texture2D(GraphicsDevice, 1, 1);
+            rectangle.SetData(new Color[] { Color.DarkSlateGray });
         }
 
         protected override void Update(GameTime gameTime)
@@ -159,6 +163,7 @@ namespace Tank_Defence_Game
             {
                 spriteBatch.DrawString(gameFont, "Collision!", new Vector2(10, 500), Color.Red);
             }
+
 
             spriteBatch.End();
 

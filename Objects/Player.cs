@@ -64,6 +64,8 @@ namespace Tank_Defence_Game.Objects
             }
 
             Motion();
+
+            
         }
 
         private void Motion()

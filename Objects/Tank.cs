@@ -41,7 +41,7 @@ namespace Tank_Defence_Game.Objects
             {
                 return new Rectangle((int)_currentPosition.X, (int)_currentPosition.Y, Chassis.Width, Chassis.Height);
             }
-        }
+        } //https://community.monogame.net/t/why-rotate-a-sprite-is-simple-and-rotate-a-rectangle-is-damn-complex/7694/13
 
         public Tank(Texture2D chassis, Texture2D turret)
         {
@@ -51,27 +51,17 @@ namespace Tank_Defence_Game.Objects
 
         public virtual void Update(GameTime gameTime, Texture2D missile)
         {
-            if (VehicleBounds.Intersects(Game1.player.VehicleBounds))
-            {
-                Game1.collision = true;
-            }
-            else
-            {
-                Game1.collision = false;
-            }
+            
 
         }
-
-
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             Origin = new Vector2(Chassis.Width / 2, Chassis.Height - 80);
+            //spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), Color.Green);
+            spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), null, Color.Green, _chassisRotation, Origin,  SpriteEffects.None, 0f);
             spriteBatch.Draw(Chassis, _currentPosition, null, Color.White, _chassisRotation, Origin, 1, SpriteEffects.None, 0f);
-            spriteBatch.Draw(Turret, _currentPosition, null, Color.White, CurrentTurretAngle, Origin, 1, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Turret, _currentPosition + new Vector2(4,0), null, Color.White, CurrentTurretAngle, Origin, 1, SpriteEffects.None, 0f);
         }
-
-
-
     }
 }
