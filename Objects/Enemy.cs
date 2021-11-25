@@ -41,12 +41,6 @@ namespace Tank_Defence_Game.Objects
             _turretDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - CurrentTurretAngle), -(float)Math.Sin(MathHelper.ToRadians(90) - CurrentTurretAngle));
             Gunpoint = _currentPosition + _turretDirection * 100;
 
-            if (Math.Abs(CurrentTurretAngle - _chassisRotation) > 30)
-            {
-
-            }
-
-            //distanceToPlayer = Math.Abs((float)Math.Sqrt(Math.Pow(Position.X - playerPosition.X, 2) + Math.Pow(Position.X - playerPosition.X, 2)));
             var distanceToPlayer = Vector2.Distance(Position, playerPosition);
             if (distanceToPlayer > followDistance)
             {

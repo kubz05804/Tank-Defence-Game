@@ -35,6 +35,14 @@ namespace Tank_Defence_Game.Objects
 
         protected int moveDirection;
 
+        public Rectangle VehicleBounds
+        {
+            get
+            {
+                return new Rectangle((int)_currentPosition.X, (int)_currentPosition.Y, Chassis.Width, Chassis.Height);
+            }
+        }
+
         public Tank(Texture2D chassis, Texture2D turret)
         {
             Chassis = chassis;
@@ -43,7 +51,14 @@ namespace Tank_Defence_Game.Objects
 
         public virtual void Update(GameTime gameTime, Texture2D missile)
         {
-
+            if (VehicleBounds.Intersects(Game1.player.VehicleBounds))
+            {
+                Game1.collision = true;
+            }
+            else
+            {
+                Game1.collision = false;
+            }
 
         }
 

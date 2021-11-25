@@ -32,6 +32,8 @@ namespace Tank_Defence_Game
         public static Missile missile; // Declares an instance of a missile.
         public static Enemy enemy;
 
+        public static bool collision;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,6 +50,9 @@ namespace Tank_Defence_Game
             graphics.PreferredBackBufferHeight = windowHeight;
             graphics.IsFullScreen = false; // Sets the game to full screen mode.
             graphics.ApplyChanges();
+
+            collision = false;
+
             base.Initialize();
         }
 
@@ -79,7 +84,6 @@ namespace Tank_Defence_Game
             player.ReloadSound = Content.Load<SoundEffect>("Audio/reload");
             player.MotionSound = Content.Load<Song>("Audio/motion");
             MediaPlayer.IsRepeating = true;
-
             enemy.Spawn();
         }
 
@@ -108,7 +112,7 @@ namespace Tank_Defence_Game
             PostUpdate(); // Calls the PostUpdate method which removes any expired missiles.
 
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            float spawnReload = 5f;
+            float spawnReload = 3f;
 
             if (timer > spawnReload)
             {
@@ -121,7 +125,7 @@ namespace Tank_Defence_Game
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Gray);
 
             spriteBatch.Begin();
 
@@ -151,6 +155,10 @@ namespace Tank_Defence_Game
             spriteBatch.DrawString(gameFont, "Reloaded: " + player._reloaded, new Vector2(10, 440), Color.White);
             spriteBatch.DrawString(gameFont, "Distance to player: " + enemy.distanceToPlayer, new Vector2(10, 460), Color.White);
             spriteBatch.DrawString(gameFont, "Enemy count: " + enemies.Count, new Vector2(10, 480), Color.White);
+            if (collision)
+            {
+                spriteBatch.DrawString(gameFont, "Collision!", new Vector2(10, 500), Color.Red);
+            }
 
             spriteBatch.End();
 
