@@ -4,23 +4,16 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/chassis.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/click.wav</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/motion.mp3</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/reload.wav</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/shotSound.wav</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/gameFont.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/chassis.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/missile.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/turret.png</File>
   </SourceFiles>
   <DestFiles>
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
     <File xsi:nil="true" />
   </DestFiles>
 </SourceFileCollection>

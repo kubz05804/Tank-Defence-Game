@@ -33,7 +33,7 @@ namespace Tank_Defence_Game
         public static Enemy enemy;
 
         public static bool collision;
-        public static Texture2D rectangle;
+        //public static Texture2D rectangle;
 
         public Game1()
         {
@@ -67,6 +67,7 @@ namespace Tank_Defence_Game
             {
                 Position = new Vector2(windowWidth / 2, windowHeight / 2),
                 Origin = new Vector2(chassisTexture.Width / 2, chassisTexture.Height - 80),
+                TurretOrigin = new Vector2(turretTexture.Width / 2, turretTexture.Height - 44),
                 ReloadTime = 3f,
                 Velocity = 3f
             };
@@ -87,9 +88,10 @@ namespace Tank_Defence_Game
             MediaPlayer.IsRepeating = true;
             enemy.Spawn();
 
-            rectangle = new Texture2D(GraphicsDevice, 1, 1);
-            rectangle.SetData(new Color[] { Color.DarkSlateGray });
+            //rectangle = new Texture2D(GraphicsDevice, 1, 1);
+            //rectangle.SetData(new Color[] { Color.DarkSlateGray });
         }
+
 
         protected override void Update(GameTime gameTime)
         {
@@ -112,6 +114,10 @@ namespace Tank_Defence_Game
             foreach (var enemy in enemies)
             {
                 enemy.Update(gameTime, Content.Load<Texture2D>("Textures/missile"));
+            }
+            foreach (var missile in missiles)
+            {
+                missile.MissileCollision(enemies);
             }
             PostUpdate(); // Calls the PostUpdate method which removes any expired missiles.
 

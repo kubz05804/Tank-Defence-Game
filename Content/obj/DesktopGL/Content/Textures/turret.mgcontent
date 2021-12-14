@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <SourceFile>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/turret.png</SourceFile>
-  <SourceTime>2021-10-04T21:31:34.6257926+01:00</SourceTime>
+  <SourceTime>2021-12-04T20:44:33.5892172+00:00</SourceTime>
   <DestFile>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/bin/DesktopGL/Content/Textures/turret.xnb</DestFile>
-  <DestTime>2021-11-25T21:21:54.1273438+00:00</DestTime>
+  <DestTime>2021-12-04T20:44:50.4879155+00:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T17:17:54+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

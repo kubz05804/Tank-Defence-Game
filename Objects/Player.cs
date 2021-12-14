@@ -21,10 +21,10 @@ namespace Tank_Defence_Game.Objects
         public SoundEffect ReloadSound;
         public Song MotionSound;
         public float TargetAngle;
-
         private float reloadTime = 3f; public float ReloadTime { get; set; }
-        private float velocity = 3f; public float Velocity { get; set; }
         private float time = 0;
+
+        private int moveDirection;
 
         public Player(Texture2D chassis, Texture2D turret)
             : base(chassis, turret)
@@ -52,7 +52,7 @@ namespace Tank_Defence_Game.Objects
 
             if (currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && _reloaded)
             {
-                Game1.missile.AddBullet(Game1.missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle);
+                Game1.missile.AddBullet(Game1.missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle, false);
                 ShotSound.Play(volume: 0.4f, pitch: 0, pan: 0);
                 Game1.reloadingTime = 0;
 
@@ -81,6 +81,8 @@ namespace Tank_Defence_Game.Objects
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
                 _chassisRotation -= _rotationVelocity;
+
+
 
             _currentChassisDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - _chassisRotation), -(float)Math.Sin(MathHelper.ToRadians(90) - _chassisRotation)); // Chassis rotation direction
             TargetAngle = (float)(Math.Atan2(Mouse.GetState().Y - _currentPosition.Y, Mouse.GetState().X - _currentPosition.X) + (MathF.PI / 2)); // Turret rotation angle
@@ -118,11 +120,12 @@ namespace Tank_Defence_Game.Objects
 
             Gunpoint = _currentPosition + _turretDirection * 100;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.W) && WithinWindow(1, _currentPosition, _currentChassisDirection * velocity))
+            if (Keyboard.GetState().IsKeyDown(Keys.W) && WithinWindow(1, _currentPosition, _currentChassisDirection * velocity) && !Collision(1))
                 _currentPosition += _currentChassisDirection * velocity;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.S) && WithinWindow(-1, _currentPosition, _currentChassisDirection * velocity))
+            if (Keyboard.GetState().IsKeyDown(Keys.S) && WithinWindow(-1, _currentPosition, _currentChassisDirection * velocity) && !Collision(-1))
                 _currentPosition -= _currentChassisDirection * velocity;
+
 
             if (_currentPosition != _previousPosition | _currentChassisDirection != _previousChassisDirection)
                 _isMoving = true;

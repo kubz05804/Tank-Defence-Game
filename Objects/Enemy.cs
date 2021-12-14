@@ -12,7 +12,6 @@ namespace Tank_Defence_Game.Objects
     public class Enemy : Tank, ICloneable
     {
         private float reloadTime = 3f; public float ReloadTime { get; set; }
-        private float velocity = 3f; public float Velocity { get; set; }
         private float timer;
         private float spawnRate;
         public float distanceToPlayer;
@@ -30,6 +29,7 @@ namespace Tank_Defence_Game.Objects
             : base(chassis, turret)
         {
             Origin = new Vector2(chassis.Width / 2, chassis.Height - 80);
+            TurretOrigin = new Vector2(turret.Width / 2, turret.Height - 44);
         }
 
         public override void Update(GameTime gameTime, Texture2D missileTexture)
@@ -49,7 +49,7 @@ namespace Tank_Defence_Game.Objects
                     Motion(playerPosition);
             }
 
-            if (VehicleBounds.Intersects(Game1.player.VehicleBounds))
+            if (distanceToPlayer <= Game1.player.Chassis.Height - 30)
             {
                 Game1.collision = true;
             }
@@ -57,7 +57,6 @@ namespace Tank_Defence_Game.Objects
             {
                 Game1.collision = false;
             }
-
         }
 
         public void Spawn()
@@ -140,12 +139,10 @@ namespace Tank_Defence_Game.Objects
         public override void Draw(SpriteBatch spriteBatch)
         {
             Origin = new Vector2(Chassis.Width / 2, Chassis.Height - 80);
-            spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), Color.Red);
+            //spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), Color.Red);
             //spriteBatch.Draw(Game1.rectangle, _currentPosition, new Rectangle((int)_currentPosition.X, (int)_currentPosition.Y, Chassis.Width, Chassis.Height), Color.Black, 0, Origin, SpriteEffects.None, 0f) ;
             spriteBatch.Draw(Chassis, _currentPosition, null, Color.White, _chassisRotation, Origin, 1, SpriteEffects.None, 0f);
             spriteBatch.Draw(Turret, _currentPosition, null, Color.White, CurrentTurretAngle, Origin, 1, SpriteEffects.None, 0f);
-            
-
         }
 
         public object Clone()

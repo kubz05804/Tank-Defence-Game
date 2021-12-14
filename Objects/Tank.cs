@@ -20,6 +20,7 @@ namespace Tank_Defence_Game.Objects
         protected Vector2 _previousChassisDirection;
         protected Vector2 _turretDirection;
         public Vector2 Origin;
+        public Vector2 TurretOrigin;
         public Vector2 Gunpoint;
 
         protected float _chassisRotation;
@@ -34,14 +35,7 @@ namespace Tank_Defence_Game.Objects
         protected bool _enemy;
 
         protected int moveDirection;
-
-        public Rectangle VehicleBounds
-        {
-            get
-            {
-                return new Rectangle((int)_currentPosition.X, (int)_currentPosition.Y, Chassis.Width, Chassis.Height);
-            }
-        } //https://community.monogame.net/t/why-rotate-a-sprite-is-simple-and-rotate-a-rectangle-is-damn-complex/7694/13
+        protected float velocity = 3f; public float Velocity { get; set; }
 
         public Tank(Texture2D chassis, Texture2D turret)
         {
@@ -55,13 +49,38 @@ namespace Tank_Defence_Game.Objects
 
         }
 
+        protected bool Collision(int direction)
+        {
+            var position = _currentPosition;
+            var chassisDirection = _currentChassisDirection;
+
+            position += (_currentChassisDirection * direction) * velocity;
+
+            if (_enemy)
+            {
+                if (Vector2.Distance(position, Game1.player.Position) <= Game1.player.Chassis.Height - 30)
+                {
+                    return true;
+                }
+            }
+
+            foreach (var enemy in Game1.enemies)
+            {
+                if (Vector2.Distance(position, enemy.Position) <= enemy.Chassis.Height - 30)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            Origin = new Vector2(Chassis.Width / 2, Chassis.Height - 80);
             //spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), Color.Green);
-            spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), null, Color.Green, _chassisRotation, Origin,  SpriteEffects.None, 0f);
+            //spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), null, Color.Green, _chassisRotation, Origin,  SpriteEffects.None, 0f);
             spriteBatch.Draw(Chassis, _currentPosition, null, Color.White, _chassisRotation, Origin, 1, SpriteEffects.None, 0f);
-            spriteBatch.Draw(Turret, _currentPosition + new Vector2(4,0), null, Color.White, CurrentTurretAngle, Origin, 1, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Turret, _currentPosition, null, Color.White, CurrentTurretAngle, TurretOrigin, 1, SpriteEffects.None, 0f);
         }
     }
 }

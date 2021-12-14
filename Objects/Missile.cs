@@ -17,6 +17,7 @@ namespace Tank_Defence_Game.Objects
         private float lifespan; // Dictates how long a missile should be active for before being removed.
         private float rotation; // The angle of rotation of the missile sprite - or in other words, in which direction it should be facing.
         private float timer; // Creates a timer to keep track of missile lifespans.
+        private bool parentIsEnemy;
         private bool isRemoved; public bool IsRemoved { get; } // Creates a boolean value that states whether the missile should be removed.
 
         public Missile(Texture2D missileTexture)
@@ -35,7 +36,7 @@ namespace Tank_Defence_Game.Objects
             position += direction * missileVelocity;
         }
 
-        public void AddBullet(List<Missile> missiles, Vector2 direction, Vector2 origin, float velocity, float rotation)
+        public void AddBullet(List<Missile> missiles, Vector2 direction, Vector2 origin, float velocity, float rotation, bool enemy)
         {
             var missile = Clone() as Missile;
             missile.direction = direction;
@@ -43,8 +44,34 @@ namespace Tank_Defence_Game.Objects
             missile.missileVelocity = velocity;
             missile.lifespan = 6;
             missile.rotation = rotation;
+            missile.parentIsEnemy = enemy;
 
             missiles.Add(missile);
+        }
+
+        public bool MissileCollision(List<Enemy> enemies)
+        {
+            if (parentIsEnemy)
+            {
+                if (Vector2.Distance(position, Game1.player.Position) <= Game1.player.Chassis.Height - 30)
+                {
+                    isRemoved = true;
+                    return true;
+                }
+            }
+            else
+            {
+                foreach (var enemyTank in enemies)
+                {
+                    if (Vector2.Distance(position, enemyTank.Position) <= enemyTank.Chassis.Height - 30)
+                    {
+                        isRemoved = true;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
