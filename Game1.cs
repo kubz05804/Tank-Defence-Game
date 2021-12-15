@@ -157,7 +157,7 @@ namespace Tank_Defence_Game
 
             spriteBatch.DrawString(gameFont, "Screen Width: " + windowWidth.ToString() + ", Screen Height: " + windowHeight.ToString(), new Vector2(10, 10), Color.White);
             spriteBatch.DrawString(gameFont, "Tank Position: " + player.Position.ToString(), new Vector2(10, 30), Color.White);
-            spriteBatch.DrawString(gameFont, "Cursor Position: " + Mouse.GetState().Y + " " + Mouse.GetState().X, new Vector2(10, 50), Color.White);
+            spriteBatch.DrawString(gameFont, "Cursor Position: " + Mouse.GetState().X + " " + Mouse.GetState().Y, new Vector2(10, 50), Color.White);
             spriteBatch.DrawString(gameFont, "Turret Rotation: " + Math.Round(MathHelper.ToDegrees(player.CurrentTurretAngle),1) + " " + player.CurrentTurretAngle, new Vector2(10, 70), Color.White);
             spriteBatch.DrawString(gameFont, "Turret Target Angle: " + Math.Round(MathHelper.ToDegrees(player.TargetAngle),1) + " " + player.TargetAngle, new Vector2(10, 90), Color.White);
             spriteBatch.DrawString(gameFont, "Use WASD keys to move tank", new Vector2(10, 400), Color.White);
@@ -165,10 +165,14 @@ namespace Tank_Defence_Game
             spriteBatch.DrawString(gameFont, "Reloaded: " + player._reloaded, new Vector2(10, 440), Color.White);
             spriteBatch.DrawString(gameFont, "Distance to player: " + enemy.distanceToPlayer, new Vector2(10, 460), Color.White);
             spriteBatch.DrawString(gameFont, "Enemy count: " + enemies.Count, new Vector2(10, 480), Color.White);
-            if (collision)
-            {
-                spriteBatch.DrawString(gameFont, "Collision!", new Vector2(10, 500), Color.Red);
-            }
+            //if (player.Bounds(player.Rotation, new Vector2(Mouse.GetState().X, Mouse.GetState().Y)))
+            //{
+            //    spriteBatch.DrawString(gameFont, "Collision!", new Vector2(10, 500), Color.Red);
+            //}
+            spriteBatch.DrawString(gameFont, "Point 1: " + player.pointTopLeft, new Vector2(10, 540), Color.White);
+            spriteBatch.DrawString(gameFont, "Point 2: " + player.pointTopRight, new Vector2(10, 560), Color.White);
+            spriteBatch.DrawString(gameFont, "Point 3: " + player.pointBottomRight, new Vector2(10, 580), Color.White);
+            spriteBatch.DrawString(gameFont, "Point 4: " + player.pointBottomLeft, new Vector2(10, 600), Color.White);
 
 
             spriteBatch.End();

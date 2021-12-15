@@ -23,7 +23,7 @@ namespace Tank_Defence_Game.Objects
         public Vector2 TurretOrigin;
         public Vector2 Gunpoint;
 
-        protected float _chassisRotation;
+        protected float _chassisRotation; public float Rotation {  get { return _chassisRotation; } }
         public float CurrentTurretAngle = 0;
         protected float _rotationVelocity = 0.03f;
         protected float _reloadTimeLeft;
@@ -37,15 +37,20 @@ namespace Tank_Defence_Game.Objects
         protected int moveDirection;
         protected float velocity = 3f; public float Velocity { get; set; }
 
+        public Vector2 pointTopLeft;
+        public Vector2 pointTopRight;
+        public Vector2 pointBottomRight;
+        public Vector2 pointBottomLeft;
+        public Rectangle rectangle;
         public Tank(Texture2D chassis, Texture2D turret)
         {
             Chassis = chassis;
             Turret = turret;
+            
         }
 
         public virtual void Update(GameTime gameTime, Texture2D missile)
         {
-            
 
         }
 
@@ -74,6 +79,31 @@ namespace Tank_Defence_Game.Objects
 
             return false;
         }
+
+        //public bool Bounds(float angle, Vector2 point)
+        //{
+        //    var topleft = new Vector2(Position.X - Chassis.Width / 2,Position.Y - Chassis.Height / 2);
+        //    var topright = topleft + new Vector2(Chassis.Width, 0);
+        //    var bottomleft = topleft + new Vector2(0, Chassis.Height);
+        //    var bottomright = topleft + new Vector2(Chassis.Width, Chassis.Height);
+
+        //    pointTopLeft = new Vector2((float)(topleft.X * Math.Cos(angle) - topleft.Y * Math.Sin(angle)),(float)(topleft.X*Math.Sin(angle)+ topleft.Y*Math.Cos(angle)));
+        //    pointTopRight = new Vector2((float)(topright.X * Math.Cos(angle) - topright.Y * Math.Sin(angle)), (float)(topright.X * Math.Sin(angle) + topright.Y * Math.Cos(angle)));
+        //    pointBottomRight = new Vector2((float)(bottomright.X * Math.Cos(angle) - bottomright.Y * Math.Sin(angle)), (float)(bottomright.X * Math.Sin(angle) + bottomright.Y * Math.Cos(angle)));
+        //    pointBottomLeft = new Vector2((float)(bottomleft.X * Math.Cos(angle) - bottomleft.Y * Math.Sin(angle)), (float)(bottomleft.X * Math.Sin(angle) + bottomleft.Y * Math.Cos(angle)));
+
+        //    if ((pointTopRight.X - pointTopLeft.X) * (point.Y - pointTopLeft.Y) - (pointTopRight.Y - pointTopLeft.Y) * (point.X - pointTopLeft.X) > 0 &&
+        //        (pointBottomRight.X - pointBottomLeft.X) * (point.Y - pointBottomLeft.Y) - (pointBottomRight.Y - pointBottomLeft.Y) * (point.X - pointBottomLeft.X) < 0 &&
+        //        (pointBottomLeft.X - pointTopLeft.X) * (point.Y - pointTopLeft.Y) - (pointBottomLeft.Y - pointTopLeft.Y) * (point.X - pointTopLeft.X) < 0 &&
+        //        (pointBottomRight.X - pointTopRight.X) * (point.Y - pointTopRight.Y) - (pointBottomRight.Y - pointTopRight.Y) * (point.X - pointTopRight.X) > 0)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        return false;
+        //    }
+        //}
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {

@@ -18,7 +18,7 @@ namespace Tank_Defence_Game.Objects
         private float rotation; // The angle of rotation of the missile sprite - or in other words, in which direction it should be facing.
         private float timer; // Creates a timer to keep track of missile lifespans.
         private bool parentIsEnemy;
-        private bool isRemoved; public bool IsRemoved { get; } // Creates a boolean value that states whether the missile should be removed.
+        private bool isRemoved; public bool IsRemoved { get; set; } // Creates a boolean value that states whether the missile should be removed.
 
         public Missile(Texture2D missileTexture)
         {
@@ -49,29 +49,25 @@ namespace Tank_Defence_Game.Objects
             missiles.Add(missile);
         }
 
-        public bool MissileCollision(List<Enemy> enemies)
+        public void MissileCollision(List<Enemy> enemies)
         {
             if (parentIsEnemy)
             {
                 if (Vector2.Distance(position, Game1.player.Position) <= Game1.player.Chassis.Height - 30)
                 {
                     isRemoved = true;
-                    return true;
                 }
             }
             else
             {
                 foreach (var enemyTank in enemies)
                 {
-                    if (Vector2.Distance(position, enemyTank.Position) <= enemyTank.Chassis.Height - 30)
+                    if (Vector2.Distance(position, enemyTank.Position) <= enemyTank.Chassis.Height - 110)
                     {
-                        isRemoved = true;
-                        return true;
+                        IsRemoved = true;
                     }
                 }
             }
-
-            return false;
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
