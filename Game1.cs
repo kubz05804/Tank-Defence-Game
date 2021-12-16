@@ -23,7 +23,7 @@ namespace Tank_Defence_Game
 
         private string zero; // Attribute used to display the remaining reloading time with a zero in front of the fullstop, as values under 1 are displayed without the zero by default.
 
-        public SpriteFont gameFont; // The font used in the game.
+        public static SpriteFont gameFont; // The font used in the game.
 
         public static List<Missile> missiles; // A list used to store the missiles currently active.
         public static List<Enemy> enemies;
@@ -84,9 +84,11 @@ namespace Tank_Defence_Game
             player.ShotSound = Content.Load<SoundEffect>("Audio/shotSound");
             player.ClickSound = Content.Load<SoundEffect>("Audio/click");
             player.ReloadSound = Content.Load<SoundEffect>("Audio/reload");
+            Missile.HitSound = Content.Load<SoundEffect>("Audio/hit");
+            Tank.destroy = Content.Load<SoundEffect>("Audio/destroy");
             player.MotionSound = Content.Load<Song>("Audio/motion");
             MediaPlayer.IsRepeating = true;
-            enemy.Spawn();
+            //enemy.Spawn();
 
             //rectangle = new Texture2D(GraphicsDevice, 1, 1);
             //rectangle.SetData(new Color[] { Color.DarkSlateGray });
@@ -100,33 +102,28 @@ namespace Tank_Defence_Game
 
             if (!player._reloaded) // Checks if player's gun is reloaded. If not, the reloading time will increase.
             {
-                reloadingTime += gameTime.ElapsedGameTime.Milliseconds;
-                if (player.ReloadTime * 1000 - reloadingTime < 1000) // Checks if the reloading time is less than 1 second, so that a zero can be placed in front of remaining reloading time if it is less than 1 second.
+                //reloadingTime += gameTime.ElapsedGameTime.Milliseconds;
+                if (player.ReloadTime * 1000 - player.Timer < 1000) // Checks if the reloading time is less than 1 second, so that a zero can be placed in front of remaining reloading time if it is less than 1 second.
                     zero = "0";
                 else
                     zero = "";
             }
 
             foreach (var sprite in missiles.ToArray()) // Calls the Update method in the Missiles class for each missile in the missile list to check if they have exceeded their lifespan.
-                sprite.Update(gameTime, missiles);
+                sprite.Update(gameTime, missiles, player, enemies);
+            foreach (var enemy in enemies)
+                enemy.Update(gameTime, Content.Load<Texture2D>("Textures/missile"));
 
             player.Update(gameTime, Content.Load<Texture2D>("Textures/missile")); // Calls the Update method in the Player class.
-            foreach (var enemy in enemies)
-            {
-                enemy.Update(gameTime, Content.Load<Texture2D>("Textures/missile"));
-            }
-            foreach (var missile in missiles)
-            {
-                missile.MissileCollision(enemies);
-            }
+
             PostUpdate(); // Calls the PostUpdate method which removes any expired missiles.
 
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            float spawnReload = 3f;
+            float spawnReload = 10f;
 
             if (timer > spawnReload)
             {
-                //enemy.Spawn();
+                enemy.Spawn();
                 timer = 0;
             }
 
@@ -152,7 +149,7 @@ namespace Tank_Defence_Game
             if (!player._reloaded) // Checks if the player's gun is being reloaded. If so, a reloading message is displayed.
             {
                 spriteBatch.DrawString(gameFont, "Reloading!", new Vector2(player.Position.X + 100, player.Position.Y - 50), Color.Red);
-                spriteBatch.DrawString(gameFont, zero + (((player.ReloadTime * 1000) - reloadingTime) / 1000).ToString("#.#") + "s left", new Vector2(player.Position.X + 100, player.Position.Y - 30), Color.Red);
+                spriteBatch.DrawString(gameFont, zero + (((player.ReloadTime * 1000) - player.Timer) / 1000).ToString("#.#") + "s left", new Vector2(player.Position.X + 100, player.Position.Y - 30), Color.Red);
             }
 
             spriteBatch.DrawString(gameFont, "Screen Width: " + windowWidth.ToString() + ", Screen Height: " + windowHeight.ToString(), new Vector2(10, 10), Color.White);
@@ -190,6 +187,16 @@ namespace Tank_Defence_Game
                 {
                     missiles.RemoveAt(i);
                     i++;
+                }
+            }
+
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                if (enemies[i].Health < 0)
+                {
+                    enemies.RemoveAt(i);
+                    i++;
+                    Tank.destroy.Play(volume: 0.4f, pitch: 0, pan: 0);
                 }
             }
         }

@@ -19,6 +19,18 @@
 /processorParam:Quality=Best
 /build:Audio/click.wav
 
+#begin Audio/destroy.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/destroy.wav
+
+#begin Audio/hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/hit.wav
+
 #begin Audio/motion.mp3
 /importer:Mp3Importer
 /processor:SongProcessor

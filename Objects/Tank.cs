@@ -23,11 +23,13 @@ namespace Tank_Defence_Game.Objects
         public Vector2 TurretOrigin;
         public Vector2 Gunpoint;
 
+        public static SoundEffect destroy;
         protected float _chassisRotation; public float Rotation {  get { return _chassisRotation; } }
         public float CurrentTurretAngle = 0;
         protected float _rotationVelocity = 0.03f;
         protected float _reloadTimeLeft;
-        protected float _timer;
+        protected float _reloadTime; public float ReloadTime { get; set; }
+        public float Timer;
 
         public bool _reloaded;
         protected bool _isMoving;
@@ -35,6 +37,8 @@ namespace Tank_Defence_Game.Objects
         protected bool _enemy;
 
         protected int moveDirection;
+        public int Health;
+        public int InitialHealth;
         protected float velocity = 3f; public float Velocity { get; set; }
 
         public Vector2 pointTopLeft;
@@ -111,6 +115,7 @@ namespace Tank_Defence_Game.Objects
             //spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), null, Color.Green, _chassisRotation, Origin,  SpriteEffects.None, 0f);
             spriteBatch.Draw(Chassis, _currentPosition, null, Color.White, _chassisRotation, Origin, 1, SpriteEffects.None, 0f);
             spriteBatch.Draw(Turret, _currentPosition, null, Color.White, CurrentTurretAngle, TurretOrigin, 1, SpriteEffects.None, 0f);
+            spriteBatch.DrawString(Game1.gameFont, Health + "/" + InitialHealth, new Vector2(Position.X - 100, Position.Y - 100), Color.Red);
         }
     }
 }

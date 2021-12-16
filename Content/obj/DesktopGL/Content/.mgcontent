@@ -5,6 +5,8 @@
   <Config />
   <SourceFiles>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/click.wav</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/destroy.wav</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/hit.wav</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/motion.mp3</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/reload.wav</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/shotSound.wav</File>
@@ -14,6 +16,8 @@
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/turret.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

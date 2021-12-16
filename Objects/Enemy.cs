@@ -10,9 +10,7 @@ using Microsoft.Xna.Framework.Media;
 namespace Tank_Defence_Game.Objects
 {
     public class Enemy : Tank, ICloneable
-    {
-        private float reloadTime = 3f; public float ReloadTime { get; set; }
-        private float timer;
+    { 
         private float spawnRate;
         public float distanceToPlayer;
         public float followDistance = 300f;
@@ -30,6 +28,8 @@ namespace Tank_Defence_Game.Objects
         {
             Origin = new Vector2(chassis.Width / 2, chassis.Height - 80);
             TurretOrigin = new Vector2(turret.Width / 2, turret.Height - 44);
+            _reloadTime = 4f;
+            InitialHealth = 50; Health = InitialHealth;
         }
 
         public override void Update(GameTime gameTime, Texture2D missileTexture)
@@ -50,12 +50,24 @@ namespace Tank_Defence_Game.Objects
             }
 
             if (distanceToPlayer <= Game1.player.Chassis.Height - 30)
-            {
                 Game1.collision = true;
+            else
+                Game1.collision = false;
+        
+            if (_reloaded)
+            {
+                Game1.missile.AddBullet(Game1.missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle, true);
+                _reloaded = false;
             }
             else
             {
-                Game1.collision = false;
+                Timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                if (Timer > _reloadTime * 1000)
+                {
+                    _reloaded = true;
+                    Timer = 0;
+                }
             }
         }
 
@@ -136,14 +148,14 @@ namespace Tank_Defence_Game.Objects
             Position += _currentChassisDirection * MathHelper.Min((float)Math.Abs(currentDistance - followDistance), velocity);
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            Origin = new Vector2(Chassis.Width / 2, Chassis.Height - 80);
-            //spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), Color.Red);
-            //spriteBatch.Draw(Game1.rectangle, _currentPosition, new Rectangle((int)_currentPosition.X, (int)_currentPosition.Y, Chassis.Width, Chassis.Height), Color.Black, 0, Origin, SpriteEffects.None, 0f) ;
-            spriteBatch.Draw(Chassis, _currentPosition, null, Color.White, _chassisRotation, Origin, 1, SpriteEffects.None, 0f);
-            spriteBatch.Draw(Turret, _currentPosition, null, Color.White, CurrentTurretAngle, Origin, 1, SpriteEffects.None, 0f);
-        }
+        //public override void Draw(SpriteBatch spriteBatch)
+        //{
+        //    Origin = new Vector2(Chassis.Width / 2, Chassis.Height - 80);
+        //    //spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), Color.Red);
+        //    //spriteBatch.Draw(Game1.rectangle, _currentPosition, new Rectangle((int)_currentPosition.X, (int)_currentPosition.Y, Chassis.Width, Chassis.Height), Color.Black, 0, Origin, SpriteEffects.None, 0f) ;
+        //    spriteBatch.Draw(Chassis, _currentPosition, null, Color.White, _chassisRotation, Origin, 1, SpriteEffects.None, 0f);
+        //    spriteBatch.Draw(Turret, _currentPosition, null, Color.White, CurrentTurretAngle, Origin, 1, SpriteEffects.None, 0f);
+        //}
 
         public object Clone()
         {

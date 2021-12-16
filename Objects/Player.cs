@@ -21,32 +21,31 @@ namespace Tank_Defence_Game.Objects
         public SoundEffect ReloadSound;
         public Song MotionSound;
         public float TargetAngle;
-        private float reloadTime = 3f; public float ReloadTime { get; set; }
-        private float time = 0;
 
         private int moveDirection;
 
         public Player(Texture2D chassis, Texture2D turret)
             : base(chassis, turret)
         {
-
+            _reloadTime = 3f;
+            InitialHealth = 100; Health = InitialHealth;
         }
 
         public override void Update(GameTime gameTime, Texture2D missileTexture)
         {
-            time += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            //timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             previousMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
             if (!_reloaded)
             {
-                _timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                Timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                if (_timer > reloadTime)
+                if (Timer > _reloadTime * 1000)
                 {
                     _reloaded = true;
                     ReloadSound.Play();
-                    _timer = 0;
+                    Timer = 0;
                 }
             }
 

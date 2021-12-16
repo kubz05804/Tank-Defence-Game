@@ -4,6 +4,8 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
+
 
 namespace Tank_Defence_Game.Objects
 {
@@ -17,6 +19,7 @@ namespace Tank_Defence_Game.Objects
         private float lifespan; // Dictates how long a missile should be active for before being removed.
         private float rotation; // The angle of rotation of the missile sprite - or in other words, in which direction it should be facing.
         private float timer; // Creates a timer to keep track of missile lifespans.
+        public static SoundEffect HitSound;
         private bool parentIsEnemy;
         private bool isRemoved; public bool IsRemoved { get; set; } // Creates a boolean value that states whether the missile should be removed.
 
@@ -26,7 +29,7 @@ namespace Tank_Defence_Game.Objects
             origin = new Vector2(texture.Width / 2, texture.Height / 2); // Sets the origin of the missile sprite.
         }
 
-        public void Update(GameTime gameTime, List<Missile> missiles)
+        public void Update(GameTime gameTime, List<Missile> missiles, Player player, List<Enemy> enemies)
         {
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -34,6 +37,8 @@ namespace Tank_Defence_Game.Objects
                 isRemoved = true;
 
             position += direction * missileVelocity;
+
+            MissileCollision(enemies, player);
         }
 
         public void AddBullet(List<Missile> missiles, Vector2 direction, Vector2 origin, float velocity, float rotation, bool enemy)
@@ -49,13 +54,15 @@ namespace Tank_Defence_Game.Objects
             missiles.Add(missile);
         }
 
-        public void MissileCollision(List<Enemy> enemies)
+        public void MissileCollision(List<Enemy> enemies, Player player)
         {
             if (parentIsEnemy)
             {
-                if (Vector2.Distance(position, Game1.player.Position) <= Game1.player.Chassis.Height - 30)
+                if (Vector2.Distance(position, Game1.player.Position) <= Game1.player.Chassis.Height - 110)
                 {
-                    isRemoved = true;
+                    IsRemoved = true;
+                    HitSound.Play(volume: 0.3f, pitch: 0, pan: 0);
+                    player.Health -= 20;
                 }
             }
             else
@@ -65,6 +72,8 @@ namespace Tank_Defence_Game.Objects
                     if (Vector2.Distance(position, enemyTank.Position) <= enemyTank.Chassis.Height - 110)
                     {
                         IsRemoved = true;
+                        HitSound.Play(volume: 0.3f, pitch: 0, pan: 0);
+                        enemyTank.Health -= 20;
                     }
                 }
             }
