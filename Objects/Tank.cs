@@ -24,6 +24,7 @@ namespace Tank_Defence_Game.Objects
         public Vector2 Gunpoint;
 
         public static SoundEffect destroy;
+        public static SoundEffect EnemyShotSound;
         protected float _chassisRotation; public float Rotation {  get { return _chassisRotation; } }
         public float CurrentTurretAngle = 0;
         protected float _rotationVelocity = 0.03f;
@@ -75,7 +76,7 @@ namespace Tank_Defence_Game.Objects
 
             foreach (var enemy in Game1.enemies)
             {
-                if (Vector2.Distance(position, enemy.Position) <= enemy.Chassis.Height - 30)
+                if (Vector2.Distance(position, enemy.Position) <= enemy.Chassis.Height && Vector2.Distance(position, enemy.Position) > 10)
                 {
                     return true;
                 }
@@ -83,6 +84,7 @@ namespace Tank_Defence_Game.Objects
 
             return false;
         }
+
 
         //public bool Bounds(float angle, Vector2 point)
         //{

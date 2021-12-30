@@ -120,10 +120,14 @@ namespace Tank_Defence_Game.Objects
             Gunpoint = _currentPosition + _turretDirection * 100;
 
             if (Keyboard.GetState().IsKeyDown(Keys.W) && WithinWindow(1, _currentPosition, _currentChassisDirection * velocity) && !Collision(1))
+            {
                 _currentPosition += _currentChassisDirection * velocity;
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S) && WithinWindow(-1, _currentPosition, _currentChassisDirection * velocity) && !Collision(-1))
+            {
                 _currentPosition -= _currentChassisDirection * velocity;
+            }
 
 
             if (_currentPosition != _previousPosition | _currentChassisDirection != _previousChassisDirection)

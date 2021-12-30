@@ -9,13 +9,27 @@
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/hit.wav</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/motion.mp3</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/reload.wav</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/shot2.wav</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/shotSound.wav</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/File.spritefont</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/gameFont.spritefont</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/button.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/chassis.png</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/m4a3e8 chassis.png</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/m4a3e8 turret.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/missile.png</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/pz iv h chassis.png</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/pz iv h turret.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/turret.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
