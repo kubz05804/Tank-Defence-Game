@@ -14,6 +14,8 @@ namespace Tank_Defence_Game.Objects
         private MouseState currentMouseState;
         private MouseState previousMouseState;
 
+        private SpriteBatch spriteBatch;
+
         private float previousRotationAngle;
 
         public SoundEffect ShotSound;
@@ -24,14 +26,16 @@ namespace Tank_Defence_Game.Objects
 
         private int moveDirection;
 
-        public Player(Texture2D chassis, Texture2D turret)
-            : base(chassis, turret)
+        public Player(Texture2D chassis, Texture2D turret, SpriteFont healthFont, SpriteFont reloadingFont, SpriteBatch spriteBatchMainGame)
+            : base(chassis, turret, healthFont)
         {
             _reloadTime = 3f;
             InitialHealth = 100; Health = InitialHealth;
+            spriteBatch = spriteBatchMainGame;
+            ReloadingFont = reloadingFont;
         }
 
-        public override void Update(GameTime gameTime, Texture2D missileTexture)
+        public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
         {
             //timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             previousMouseState = currentMouseState;
@@ -44,30 +48,32 @@ namespace Tank_Defence_Game.Objects
                 if (Timer > _reloadTime * 1000)
                 {
                     _reloaded = true;
-                    ReloadSound.Play();
+                    Sound.Reload.Play();
                     Timer = 0;
                 }
+
+                if (ReloadTime * 1000 - Timer < 1000)
+                    _zero = "0";
+                else
+                    _zero = "";
             }
 
             if (currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && _reloaded)
             {
-                Game1.missile.AddBullet(Game1.missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle, false);
-                ShotSound.Play(volume: 0.4f, pitch: 0, pan: 0);
-                Game1.reloadingTime = 0;
+                missile.AddBullet(missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle, false);
+                Sound.PlayerShot.Play(volume: 0.4f, pitch: 0, pan: 0);
 
                 _reloaded = false;
             }
             else if (currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && !_reloaded)
             {
-                ClickSound.Play(volume: 0.7f, pitch: 0, pan: 0);
+                Sound.Click.Play(volume: 0.7f, pitch: 0, pan: 0);
             }
 
-            Motion();
-
-            
+            Motion(player, enemies);
         }
 
-        private void Motion()
+        private void Motion(Player player, List<Enemy> enemies)
         {
             _previousPosition = _currentPosition;
             _previousChassisDirection = _currentChassisDirection;
@@ -119,12 +125,12 @@ namespace Tank_Defence_Game.Objects
 
             Gunpoint = _currentPosition + _turretDirection * 100;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.W) && WithinWindow(1, _currentPosition, _currentChassisDirection * velocity) && !Collision(1))
+            if (Keyboard.GetState().IsKeyDown(Keys.W) && WithinWindow(1, _currentPosition, _currentChassisDirection * velocity) && !Collision(1, player, enemies))
             {
                 _currentPosition += _currentChassisDirection * velocity;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.S) && WithinWindow(-1, _currentPosition, _currentChassisDirection * velocity) && !Collision(-1))
+            if (Keyboard.GetState().IsKeyDown(Keys.S) && WithinWindow(-1, _currentPosition, _currentChassisDirection * velocity) && !Collision(-1, player, enemies))
             {
                 _currentPosition -= _currentChassisDirection * velocity;
             }
@@ -136,9 +142,9 @@ namespace Tank_Defence_Game.Objects
                 _isMoving = false;
 
             if (_isMoving && !_wasMoving)
-                MediaPlayer.Play(MotionSound);
+                Sound.MotionStart();
             if (!_isMoving && _wasMoving)
-                MediaPlayer.Stop();
+                Sound.MotionStop();
         }
 
         private bool WithinWindow(int one, Vector2 origin, Vector2 path)

@@ -58,10 +58,10 @@ namespace Tank_Defence_Game.Objects
         {
             if (parentIsEnemy)
             {
-                if (Vector2.Distance(position, Game1.player.Position) <= Game1.player.Chassis.Height - 100)
+                if (Vector2.Distance(position, player.Position) <= player.Chassis.Height - 100)
                 {
                     IsRemoved = true;
-                    HitSound.Play(volume: 0.3f, pitch: 0, pan: 0);
+                    Sound.Collision.Play(volume: 0.3f, pitch: 0, pan: 0);
                     player.Health -= 20;
                 }
             }
@@ -72,7 +72,7 @@ namespace Tank_Defence_Game.Objects
                     if (Vector2.Distance(position, enemyTank.Position) <= enemyTank.Chassis.Height - 75) //110 - original | 75 - pz iv h
                     {
                         IsRemoved = true;
-                        HitSound.Play(volume: 0.3f, pitch: 0, pan: 0);
+                        Sound.Collision.Play(volume: 0.3f, pitch: 0, pan: 0);
                         enemyTank.Health -= 20;
                     }
                 }

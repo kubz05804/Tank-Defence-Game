@@ -129,7 +129,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/missile.png
 
-#begin Textures/pz iv h chassis.png
+#begin Textures/Pz. IV H chassis.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -139,9 +139,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/pz iv h chassis.png
+/build:Textures/Pz. IV H chassis.png
 
-#begin Textures/pz iv h turret.png
+#begin Textures/Pz. IV H turret.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -151,7 +151,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/pz iv h turret.png
+/build:Textures/Pz. IV H turret.png
 
 #begin Textures/turret.png
 /importer:TextureImporter

@@ -16,6 +16,8 @@ namespace Tank_Defence_Game.Objects
         public float distanceToPlayer;
         public float followDistance = 300f;
 
+        public SpriteFont HealthFont;
+
         private static Vector2 playerPosition;
 
         private bool withinRange;
@@ -27,20 +29,22 @@ namespace Tank_Defence_Game.Objects
 
         Random random = new Random();
 
-        public Enemy(Texture2D chassis, Texture2D turret, float reloadTime, int health)
-            : base(chassis, turret)
+        public Enemy(Texture2D chassis, Texture2D turret, SpriteFont healthFont, float reloadTime, int health)
+            : base(chassis, turret, healthFont)
         {
             _reloadTime = reloadTime;
             Health = health;
             InitialHealth = Health;
+            Origin = new Vector2(chassis.Width / 2, chassis.Height - 80);
+            TurretOrigin = new Vector2(turret.Width / 2, turret.Height - 60);
         }
 
-        public override void Update(GameTime gameTime, Texture2D missileTexture)
+        public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
         {
-            playerPosition = Game1.player.Position;
+            playerPosition = player.Position;
             previouslyFacingPlayer = currentlyFacingPlayer;
 
-            CurrentTurretAngle = (float)(Math.Atan2(Game1.player.Position.Y - _currentPosition.Y, Game1.player.Position.X - _currentPosition.X) + MathHelper.ToRadians(90)); // Turret rotation angle
+            CurrentTurretAngle = (float)(Math.Atan2(player.Position.Y - _currentPosition.Y, player.Position.X - _currentPosition.X) + MathHelper.ToRadians(90)); // Turret rotation angle
             _turretDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - CurrentTurretAngle), -(float)Math.Sin(MathHelper.ToRadians(90) - CurrentTurretAngle));
             Gunpoint = _currentPosition + _turretDirection * 100;
 
@@ -49,15 +53,15 @@ namespace Tank_Defence_Game.Objects
             if (distanceToPlayer > followDistance)
             {
                 Rotate(playerPosition);
-                if (currentlyFacingPlayer && !Collision(1))
+                if (currentlyFacingPlayer && !Collision(1, player, enemies))
                     Motion(playerPosition);
             }
 
 
             if (_reloaded)
             {
-                Game1.missile.AddBullet(Game1.missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle, true);
-                EnemyShotSound.Play();
+                missile.AddBullet(missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle, true);
+                Sound.EnemyShot.Play();
                 _reloaded = false;
             }
             else
@@ -72,7 +76,7 @@ namespace Tank_Defence_Game.Objects
             }
         }
 
-        public void Spawn()
+        public void Spawn(List<Enemy> enemies)
         {
             var enemy = Clone() as Enemy;
 
@@ -97,7 +101,7 @@ namespace Tank_Defence_Game.Objects
             enemy.velocity = 3f;
             enemy._enemy = true;
 
-            Game1.enemies.Add(enemy);
+            enemies.Add(enemy);
         }
 
         public void Rotate(Vector2 playerPosition)

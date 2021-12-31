@@ -14,6 +14,8 @@ namespace Tank_Defence_Game.Objects
         public Texture2D Chassis;
         public Texture2D Turret;
 
+        public SpriteFont HealthFont;
+        public SpriteFont ReloadingFont;
         protected Vector2 _currentPosition; public Vector2 Position { get { return _currentPosition; } set { _currentPosition = value; } }
         protected Vector2 _previousPosition;
         protected Vector2 _currentChassisDirection;
@@ -47,19 +49,22 @@ namespace Tank_Defence_Game.Objects
         public Vector2 pointBottomRight;
         public Vector2 pointBottomLeft;
         public Rectangle rectangle;
-        public Tank(Texture2D chassis, Texture2D turret)
+
+        protected string _zero;
+
+        public Tank(Texture2D chassis, Texture2D turret, SpriteFont healthFont)
         {
             Chassis = chassis;
             Turret = turret;
-            
+            HealthFont = healthFont;
         }
 
-        public virtual void Update(GameTime gameTime, Texture2D missile)
+        public virtual void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
         {
 
         }
 
-        protected bool Collision(int direction)
+        protected bool Collision(int direction, Player player, List<Enemy> enemies)
         {
             var position = _currentPosition;
             var chassisDirection = _currentChassisDirection;
@@ -68,13 +73,13 @@ namespace Tank_Defence_Game.Objects
 
             if (_enemy)
             {
-                if (Vector2.Distance(position, Game1.player.Position) <= Game1.player.Chassis.Height - 30)
+                if (Vector2.Distance(position, player.Position) <= player.Chassis.Height - 30)
                 {
                     return true;
                 }
             }
 
-            foreach (var enemy in Game1.enemies)
+            foreach (var enemy in enemies)
             {
                 if (Vector2.Distance(position, enemy.Position) <= enemy.Chassis.Height && Vector2.Distance(position, enemy.Position) > 10)
                 {
@@ -113,11 +118,19 @@ namespace Tank_Defence_Game.Objects
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            //spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), Color.Green);
-            //spriteBatch.Draw(Game1.rectangle, new Rectangle((int)(_currentPosition.X - Origin.X), (int)(_currentPosition.Y - Origin.Y), Chassis.Width, Chassis.Height), null, Color.Green, _chassisRotation, Origin,  SpriteEffects.None, 0f);
             spriteBatch.Draw(Chassis, _currentPosition, null, Color.White, _chassisRotation, Origin, 1, SpriteEffects.None, 0f);
             spriteBatch.Draw(Turret, _currentPosition, null, Color.White, CurrentTurretAngle, TurretOrigin, 1, SpriteEffects.None, 0f);
-            spriteBatch.DrawString(Game1.gameFont, Health + "/" + InitialHealth, new Vector2(Position.X - 100, Position.Y - 100), Color.Red);
+
+            if (!_reloaded && !_enemy)
+            {
+                spriteBatch.DrawString(ReloadingFont, "Reloading!", new Vector2(Position.X + 100, Position.Y - 50), Color.Red);
+                spriteBatch.DrawString(ReloadingFont, _zero + (((ReloadTime * 1000) - Timer) / 1000).ToString("#.#") + "s left", new Vector2(Position.X + 100, Position.Y - 30), Color.Red);
+            }
+        }
+
+        public void DrawHealth(SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawString(HealthFont, Health + "/" + InitialHealth, new Vector2(Position.X - 100, Position.Y - 100), Color.Red);
         }
     }
 }
