@@ -93,7 +93,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/chassis.png
 
-#begin Textures/m4a3e8 chassis.png
+#begin Textures/Churchill VII/profile.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -103,9 +103,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/m4a3e8 chassis.png
+/build:Textures/Churchill VII/profile.png
 
-#begin Textures/m4a3e8 turret.png
+#begin Textures/Cruiser IV/profile.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -115,7 +115,43 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/m4a3e8 turret.png
+/build:Textures/Cruiser IV/profile.png
+
+#begin Textures/M4A3E8 'Fury'/chassis.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/M4A3E8 'Fury'/chassis.png
+
+#begin Textures/M4A3E8 'Fury'/profile.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/M4A3E8 'Fury'/profile.png
+
+#begin Textures/M4A3E8 'Fury'/turret.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/M4A3E8 'Fury'/turret.png
 
 #begin Textures/missile.png
 /importer:TextureImporter

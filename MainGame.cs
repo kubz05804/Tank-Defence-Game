@@ -27,16 +27,16 @@ namespace Tank_Defence_Game
         public Texture2D enemyChassis;
         public Texture2D enemyTurret;
 
-        private SpriteBatch spriteBatchMainGame;
+        private SpriteBatch spriteBatch;
         
         private float timer;
 
         public MainGame(int windowWidth, int windowHeight, SpriteFont healthFont, SpriteFont reloadingFont, Texture2D playerChassis, Texture2D playerTurret, int turretSpacing, Texture2D missileTexture, object[,] Tanks, Enemy enemyTank, SpriteBatch SpriteBatch)
         {
-            spriteBatchMainGame = SpriteBatch;
+            spriteBatch = SpriteBatch;
             HealthFont = healthFont; ReloadingFont = reloadingFont;
 
-            Player = new Player(playerChassis, playerTurret, HealthFont, ReloadingFont, spriteBatchMainGame)
+            Player = new Player(playerChassis, playerTurret, HealthFont, ReloadingFont, spriteBatch)
             {
                 Position = new Vector2(windowWidth / 2, windowHeight / 2),
                 Origin = new Vector2(playerChassis.Width / 2, playerChassis.Height - 80),
@@ -100,13 +100,13 @@ namespace Tank_Defence_Game
         public void Draw(GameTime gameTime)
         {
             foreach (var missile in Missiles)
-                missile.Draw(spriteBatchMainGame);
+                missile.Draw(spriteBatch);
             foreach (var enemy in Enemies)
-                enemy.Draw(spriteBatchMainGame);
-            Player.Draw(spriteBatchMainGame);
-            Player.DrawHealth(spriteBatchMainGame);
+                enemy.Draw(spriteBatch);
+            Player.Draw(spriteBatch);
+            Player.DrawHealth(spriteBatch);
             foreach (var enemy in Enemies)
-                enemy.DrawHealth(spriteBatchMainGame);
+                enemy.DrawHealth(spriteBatch);
         }
     }
 }

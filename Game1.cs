@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Tank_Defence_Game.Objects;
 using Tank_Defence_Game.Controls;
 using Microsoft.Xna.Framework;
@@ -23,7 +24,7 @@ namespace Tank_Defence_Game
         public static int windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width; // Gets the width of the screen.
         public static int windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height; // Gets the height of the screen.
 
-        public object[,] Tanks = new object[,]
+        public static object[,] Tanks = new object[,]
         {   // Model/Name    | Type   | Country | Year | HP | FP | Speed | Turret
             { "Cruiser IV"   ,"Light" ,"Britain","1941",400  ,40  ,4.5   ,44, null, null},
             { "M4A3E8 'Fury'","Medium","USA"    ,"1940",600  ,50  ,4     ,44, null, null},
@@ -60,28 +61,42 @@ namespace Tank_Defence_Game
 
             GameRunning = false;
 
-            playButton = new Btn(Content.Load<Texture2D>("Textures/button"), Content.Load<SpriteFont>("Fonts/File"))
+            for (int i = 0; i <= 2; i++)
             {
-                Position = new Vector2(windowWidth / 2, windowHeight / 2),
-                ButtonText = "PLAY GAME",
-            };
+                Tanks[i, 8] = Content.Load<Texture2D>("Textures/" + Tanks[i,0] + "/profile");
+            }
 
-            playButton.Click += PlayButton_Click;
+            //playButton = new Btn(Content.Load<Texture2D>("Textures/button"), Content.Load<SpriteFont>("Fonts/File"))
+            //{
+            //    Position = new Vector2(windowWidth / 2, windowHeight * 0.85f),
+            //    ButtonText = "PLAY GAME",
+            //};
 
-            mainMenu = new MainMenu();
+            //playButton.Click += PlayButton_Click;
+
+            mainMenu = new MainMenu(GraphicsDevice, windowWidth, windowHeight, Content.Load<Texture2D>("Textures/button"), Content.Load<SpriteFont>("Fonts/File"));
         }
 
-        private void PlayButton_Click(object sender, EventArgs e)
+        private bool GameActivated()
+        {
+            if (mainMenu.Activated)
+                return true;
+            else
+                return false;
+        }
+
+        private void LaunchGame()
         {
             GameRunning = true;
+
             //EnemyTank = new Enemy(Content.Load<Texture2D>("Textures/" + Tanks[3,0] + " chassis"), Content.Load<Texture2D>("Textures/" + Tanks[3,0] + " turret"), (float)Tanks[3,6], (int)Tanks[3,4]);
-            EnemyTank = new Enemy(Content.Load<Texture2D>("Textures/Pz. IV H chassis"), Content.Load<Texture2D>("Textures/Pz. IV H turret"), Content.Load<SpriteFont>("Fonts/File"), 3.5f,400);
+            EnemyTank = new Enemy(Content.Load<Texture2D>("Textures/Pz. IV H chassis"), Content.Load<Texture2D>("Textures/Pz. IV H turret"), Content.Load<SpriteFont>("Fonts/File"), 3.5f, 400);
 
             mainGame = new MainGame(windowWidth, windowHeight,
                 Content.Load<SpriteFont>("Fonts/File"),
                 Content.Load<SpriteFont>("Fonts/File"),
-                Content.Load<Texture2D>("Textures/m4a3e8 chassis"),
-                Content.Load<Texture2D>("Textures/m4a3e8 turret"),
+                Content.Load<Texture2D>("Textures/" + Tanks[mainMenu.VehicleSelection,0] + "/chassis"),
+                Content.Load<Texture2D>("Textures/" + Tanks[mainMenu.VehicleSelection,0] + "/turret"),
                 44, Content.Load<Texture2D>("Textures/missile"), Tanks, EnemyTank, spriteBatch);
 
 
@@ -92,6 +107,8 @@ namespace Tank_Defence_Game
             Sound.PlayerShot = Content.Load<SoundEffect>("Audio/shotSound");
             Sound.Reload = Content.Load<SoundEffect>("Audio/reload");
             Sound.Motion = Content.Load<Song>("Audio/motion");
+
+            mainMenu.Activated = false;
         }
 
         protected override void Update(GameTime gameTime)
@@ -102,26 +119,25 @@ namespace Tank_Defence_Game
             if (GameRunning)
                 mainGame.Update(gameTime);
             else
-                playButton.Update(gameTime);
+            {
+                mainMenu.Update(gameTime);
+                if (GameActivated())
+                    LaunchGame();
+            }
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Gray);
+            GraphicsDevice.Clear(Color.LightGray);
             spriteBatch.Begin();
 
             if (!GameRunning)
-            {
-                spriteBatch.DrawString(Content.Load<SpriteFont>("Fonts/File"), "Welcome", new Vector2(Game1.windowWidth / 2, 300), Color.White);
-
-                playButton.Draw(gameTime, spriteBatch);
-            }
+                mainMenu.Draw(gameTime, spriteBatch);
             else
-            {
                 mainGame.Draw(gameTime);
-            }
+
 
                 //spriteBatch.DrawString(gameFont, "Screen Width: " + windowWidth.ToString() + ", Screen Height: " + windowHeight.ToString(), new Vector2(10, 10), Color.White);
                 //spriteBatch.DrawString(gameFont, "Tank Position: " + player.Position.ToString(), new Vector2(10, 30), Color.White);

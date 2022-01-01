@@ -18,12 +18,13 @@ namespace Tank_Defence_Game
         public Vector2 Position;
         public event EventHandler Click;
         public bool Clicked;
-
+        public bool Available;
         
 
         public Btn(Texture2D texture, SpriteFont Font)
         {
             buttonTexture = texture; font = Font;
+            Available = false;
         }
 
         public Rectangle ButtonBounds
@@ -56,19 +57,22 @@ namespace Tank_Defence_Game
 
         public void Draw(GameTime gametime, SpriteBatch spriteBatch)
         {
-            var colour = Color.White;
-
-            if (hovering)
-                colour = Color.Gray;
-
-            spriteBatch.Draw(buttonTexture, ButtonBounds, colour);
-
-            if (!string.IsNullOrEmpty(ButtonText))
+            if (Available)
             {
-                var x = (ButtonBounds.X + (ButtonBounds.Width / 2)) - (font.MeasureString(ButtonText).X / 2);
-                var y = (ButtonBounds.Y + (ButtonBounds.Height / 2)) - (font.MeasureString(ButtonText).Y / 2);
+                var colour = Color.White;
 
-                spriteBatch.DrawString(font, ButtonText, new Vector2(x, y), Color.White);
+                if (hovering)
+                    colour = Color.Gray;
+
+                spriteBatch.Draw(buttonTexture, ButtonBounds, colour);
+
+                if (!string.IsNullOrEmpty(ButtonText))
+                {
+                    spriteBatch.DrawString(font, ButtonText, new Vector2(
+                        (ButtonBounds.X + (ButtonBounds.Width / 2)) - (font.MeasureString(ButtonText).X / 2),
+                        (ButtonBounds.Y + (ButtonBounds.Height / 2)) - (font.MeasureString(ButtonText).Y / 2)),
+                        Color.White);
+                }
             }
         }
     }
