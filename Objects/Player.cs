@@ -26,13 +26,15 @@ namespace Tank_Defence_Game.Objects
 
         private int moveDirection;
 
-        public Player(Texture2D chassis, Texture2D turret, SpriteFont healthFont, SpriteFont reloadingFont, SpriteBatch spriteBatchMainGame)
-            : base(chassis, turret, healthFont)
+        public Player(Texture2D chassis, Texture2D turret, SpriteFont healthFont, int tankIndex, SpriteFont reloadingFont, SpriteBatch spriteBatchMainGame)
+            : base(chassis, turret, healthFont, tankIndex)
         {
-            _reloadTime = 3f;
-            InitialHealth = 100; Health = InitialHealth;
+            _reloadTime = (double)Game1.Tanks[tankIndex, 8];
+            InitialHealth = (int)Game1.Tanks[tankIndex, 4]; Health = InitialHealth;
+            _firepower = (int)Game1.Tanks[tankIndex, 5];
             spriteBatch = spriteBatchMainGame;
             ReloadingFont = reloadingFont;
+            velocity = (float)Game1.Tanks[tankIndex, 6];
         }
 
         public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
@@ -60,7 +62,7 @@ namespace Tank_Defence_Game.Objects
 
             if (currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && _reloaded)
             {
-                missile.AddBullet(missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle, false);
+                missile.AddBullet(missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle, false, _firepower);
                 Sound.PlayerShot.Play(volume: 0.4f, pitch: 0, pan: 0);
 
                 _reloaded = false;

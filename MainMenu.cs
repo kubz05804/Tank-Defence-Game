@@ -22,12 +22,14 @@ namespace Tank_Defence_Game
         private bool selected;
         public bool Activated;
 
-        private SpriteFont subtitleFont;
+        public SpriteFont SubtitleFont;
+        public SpriteFont TitleFont;
+        public SpriteFont DefaultFont;
         private string subtitle = "Choose your vehicle from the selection available below.";
 
         private Btn playButton;
 
-        public MainMenu(GraphicsDevice graphicsDevice, int windowWidth, int windowHeight, Texture2D button, SpriteFont buttonFont)
+        public MainMenu(GraphicsDevice graphicsDevice, int windowWidth, int windowHeight, Texture2D button, SpriteFont defaultFont, SpriteFont subtitleFont, SpriteFont titleFont)
         {
             Activated = false;
             selected = false;
@@ -40,9 +42,9 @@ namespace Tank_Defence_Game
             backgroundRectangle = new Rectangle((windowWidth - backgroundWidth) / 2, (windowHeight - backgroundHeight) / 2, backgroundWidth, backgroundHeight);
 
             int boxWidth = (int)(backgroundRectangle.Width * 0.2);
-            int boxHeight = (int)(backgroundRectangle.Height * 0.6);
+            int boxHeight = (int)(backgroundRectangle.Height * 0.7);
             int xSpacing = (int)(backgroundRectangle.Width * 0.1);
-            int ySpacing = (int)(backgroundRectangle.Height * 0.25);
+            int ySpacing = (int)(backgroundRectangle.Height * 0.20);
 
             boxes = new List<Box>();
             box1 = new Box(graphicsDevice, boxWidth, boxHeight, backgroundRectangle, backgroundRectangle.X + xSpacing, xSpacing, ySpacing, 0);
@@ -57,7 +59,7 @@ namespace Tank_Defence_Game
             box2.Click += Box2_Click;
             box3.Click += Box3_Click;
 
-            playButton = new Btn(button, buttonFont)
+            playButton = new Btn(button, subtitleFont)
             {
                 Position = new Vector2(windowWidth / 2, windowHeight * 0.85f),
                 ButtonText = "PLAY GAME",
@@ -65,7 +67,9 @@ namespace Tank_Defence_Game
 
             playButton.Click += PlayButton_Click;
 
-            subtitleFont = buttonFont;
+            SubtitleFont = subtitleFont;
+            TitleFont = titleFont;
+            DefaultFont = defaultFont;
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
@@ -124,21 +128,43 @@ namespace Tank_Defence_Game
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(backgroundTexture, backgroundRectangle, Color.White);
-            spriteBatch.DrawString(subtitleFont, subtitle, new Vector2(
-                backgroundRectangle.X + (backgroundRectangle.Width / 2) - (subtitleFont.MeasureString(subtitle).X / 2),
-                backgroundRectangle.Y + (backgroundRectangle.Height * 0.2f)), Color.White);
+            //spriteBatch.DrawString(TitleFont, subtitle, new Vector2(
+            //    backgroundRectangle.X + (backgroundRectangle.Width / 2) - (SubtitleFont.MeasureString(subtitle).X / 2),
+            //    backgroundRectangle.Y + (backgroundRectangle.Height * 0.2f)), Color.White);
 
             foreach (var box in boxes)
             {
-                if (box.hovering)
-                {
-                    spriteBatch.Draw(box.Texture, box.Rectangle, box.Colour);
-                }
-                else
-                {
-                    spriteBatch.Draw(box.Texture, box.Rectangle, box.Colour);
-                }
-                spriteBatch.Draw((Texture2D)Game1.Tanks[box.TankIndex,8], box.Image, Color.White);
+                spriteBatch.Draw(box.Texture, box.Rectangle, box.Colour);
+
+                spriteBatch.Draw((Texture2D)Game1.Tanks[box.TankIndex,9], box.Image, Color.White);
+
+                var labelCountry = "Origin Country";
+                var labelSpeed = "Speed";
+                var labelFirepower = "Firepower/Damage";
+                var labelHealth = "Health";
+                var labelType = "Type";
+
+                var tank = Convert.ToString(Game1.Tanks[box.TankIndex, 0]);
+                var country = Convert.ToString(Game1.Tanks[box.TankIndex, 2]);
+                var speed = Convert.ToString((int)((float)Game1.Tanks[box.TankIndex, 6] * 10)) + " km/h";
+                var firepower = Convert.ToString(Game1.Tanks[box.TankIndex, 5]);
+                var health = Convert.ToString(Game1.Tanks[box.TankIndex, 4]);
+                var type = Convert.ToString(Game1.Tanks[box.TankIndex, 10]);
+
+                var textStart = (float)(box.Rectangle.Y + (box.Rectangle.Height * 0.1) + box.Image.Height);
+
+                spriteBatch.DrawString(TitleFont, tank, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (TitleFont.MeasureString(tank).X / 2), textStart), Color.White);
+
+                spriteBatch.DrawString(SubtitleFont, labelCountry, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (SubtitleFont.MeasureString(labelCountry).X / 2), textStart + 60), Color.White);
+                spriteBatch.DrawString(DefaultFont, country, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (DefaultFont.MeasureString(country).X / 2), textStart + 80), Color.White);
+                spriteBatch.DrawString(SubtitleFont, labelSpeed, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (SubtitleFont.MeasureString(labelSpeed).X / 2), textStart + 120), Color.White);
+                spriteBatch.DrawString(DefaultFont, speed, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (DefaultFont.MeasureString(speed).X / 2), textStart + 140), Color.White);
+                spriteBatch.DrawString(SubtitleFont, labelFirepower, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (SubtitleFont.MeasureString(labelFirepower).X / 2), textStart + 180), Color.White);
+                spriteBatch.DrawString(DefaultFont, firepower, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (DefaultFont.MeasureString(firepower).X / 2), textStart + 200), Color.White);
+                spriteBatch.DrawString(SubtitleFont, labelHealth, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (SubtitleFont.MeasureString(labelHealth).X / 2), textStart + 240), Color.White);
+                spriteBatch.DrawString(DefaultFont, health, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (DefaultFont.MeasureString(health).X / 2), textStart + 260), Color.White);
+                spriteBatch.DrawString(SubtitleFont, labelType, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (SubtitleFont.MeasureString(labelType).X / 2), textStart + 300), Color.White);
+                spriteBatch.DrawString(DefaultFont, type, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (DefaultFont.MeasureString(type).X / 2), textStart + 320), Color.White);
             }
 
             playButton.Draw(gameTime, spriteBatch);

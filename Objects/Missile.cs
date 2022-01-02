@@ -19,6 +19,7 @@ namespace Tank_Defence_Game.Objects
         private float lifespan; // Dictates how long a missile should be active for before being removed.
         private float rotation; // The angle of rotation of the missile sprite - or in other words, in which direction it should be facing.
         private float timer; // Creates a timer to keep track of missile lifespans.
+        private int damage;
         public static SoundEffect HitSound;
         private bool parentIsEnemy;
         private bool isRemoved; public bool IsRemoved { get; set; } // Creates a boolean value that states whether the missile should be removed.
@@ -41,7 +42,7 @@ namespace Tank_Defence_Game.Objects
             MissileCollision(enemies, player);
         }
 
-        public void AddBullet(List<Missile> missiles, Vector2 direction, Vector2 origin, float velocity, float rotation, bool enemy)
+        public void AddBullet(List<Missile> missiles, Vector2 direction, Vector2 origin, float velocity, float rotation, bool enemy, int damage)
         {
             var missile = Clone() as Missile;
             missile.direction = direction;
@@ -50,6 +51,7 @@ namespace Tank_Defence_Game.Objects
             missile.lifespan = 6;
             missile.rotation = rotation;
             missile.parentIsEnemy = enemy;
+            missile.damage = damage;
 
             missiles.Add(missile);
         }
@@ -58,11 +60,11 @@ namespace Tank_Defence_Game.Objects
         {
             if (parentIsEnemy)
             {
-                if (Vector2.Distance(position, player.Position) <= player.Chassis.Height - 100)
+                if (Vector2.Distance(position, player.Position) <= player.Chassis.Height - 100) // 100 fury
                 {
                     IsRemoved = true;
                     Sound.Collision.Play(volume: 0.3f, pitch: 0, pan: 0);
-                    player.Health -= 20;
+                    player.Health -= damage;
                 }
             }
             else
@@ -73,7 +75,7 @@ namespace Tank_Defence_Game.Objects
                     {
                         IsRemoved = true;
                         Sound.Collision.Play(volume: 0.3f, pitch: 0, pan: 0);
-                        enemyTank.Health -= 20;
+                        enemyTank.Health -= damage;
                     }
                 }
             }

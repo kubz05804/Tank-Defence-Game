@@ -31,18 +31,16 @@ namespace Tank_Defence_Game
         
         private float timer;
 
-        public MainGame(int windowWidth, int windowHeight, SpriteFont healthFont, SpriteFont reloadingFont, Texture2D playerChassis, Texture2D playerTurret, int turretSpacing, Texture2D missileTexture, object[,] Tanks, Enemy enemyTank, SpriteBatch SpriteBatch)
+        public MainGame(int windowWidth, int windowHeight, SpriteFont healthFont, SpriteFont reloadingFont, Texture2D playerChassis, Texture2D playerTurret, Texture2D enemyChassis, Texture2D enemyTurret, int turretSpacing, Texture2D missileTexture, object[,] Tanks, SpriteBatch SpriteBatch, int playerTank)
         {
             spriteBatch = SpriteBatch;
             HealthFont = healthFont; ReloadingFont = reloadingFont;
 
-            Player = new Player(playerChassis, playerTurret, HealthFont, ReloadingFont, spriteBatch)
+            Player = new Player(playerChassis, playerTurret, HealthFont, playerTank, ReloadingFont, spriteBatch)
             {
                 Position = new Vector2(windowWidth / 2, windowHeight / 2),
-                Origin = new Vector2(playerChassis.Width / 2, playerChassis.Height - 80),
+                Origin = new Vector2(playerChassis.Width / 2, playerChassis.Height - 100),
                 TurretOrigin = new Vector2(playerTurret.Width / 2, playerTurret.Height - turretSpacing),
-                ReloadTime = 3f,
-                Velocity = 3f,
             };
 
 
@@ -50,7 +48,7 @@ namespace Tank_Defence_Game
             Missiles = new List<Missile>();
 
             Enemies = new List<Enemy>();
-            EnemyTank = enemyTank;
+            EnemyTank = new Enemy(enemyChassis, enemyTurret, HealthFont, 3);
 
         }
 
@@ -88,7 +86,7 @@ namespace Tank_Defence_Game
 
             for (int i = 0; i < Enemies.Count; i++)
             {
-                if (Enemies[i].Health < 0)
+                if (Enemies[i].Health <= 0)
                 {
                     Enemies.RemoveAt(i);
                     Sound.Destruction.Play(volume: 0.4f, pitch: 0, pan: 0);

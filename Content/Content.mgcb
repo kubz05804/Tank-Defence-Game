@@ -55,6 +55,13 @@
 /processorParam:Quality=Best
 /build:Audio/shotSound.wav
 
+#begin Fonts/default.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/default.spritefont
+
 #begin Fonts/File.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -68,6 +75,20 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/gameFont.spritefont
+
+#begin Fonts/subtitle.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/subtitle.spritefont
+
+#begin Fonts/title.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/title.spritefont
 
 #begin Textures/button.png
 /importer:TextureImporter
@@ -105,6 +126,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Churchill VII/profile.png
 
+#begin Textures/Cruiser IV/chassis.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Cruiser IV/chassis.png
+
 #begin Textures/Cruiser IV/profile.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -116,6 +149,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Cruiser IV/profile.png
+
+#begin Textures/Cruiser IV/turret.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Cruiser IV/turret.png
 
 #begin Textures/M4A3E8 'Fury'/chassis.png
 /importer:TextureImporter
@@ -165,7 +210,7 @@
 /processorParam:TextureFormat=Color
 /build:Textures/missile.png
 
-#begin Textures/Pz. IV H chassis.png
+#begin Textures/Pz. IV H/chassis.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -175,9 +220,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Pz. IV H chassis.png
+/build:Textures/Pz. IV H/chassis.png
 
-#begin Textures/Pz. IV H turret.png
+#begin Textures/Pz. IV H/profile.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -187,7 +232,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Textures/Pz. IV H turret.png
+/build:Textures/Pz. IV H/profile.png
+
+#begin Textures/Pz. IV H/turret.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Pz. IV H/turret.png
 
 #begin Textures/turret.png
 /importer:TextureImporter

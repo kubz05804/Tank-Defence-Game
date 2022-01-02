@@ -29,14 +29,16 @@ namespace Tank_Defence_Game.Objects
 
         Random random = new Random();
 
-        public Enemy(Texture2D chassis, Texture2D turret, SpriteFont healthFont, float reloadTime, int health)
-            : base(chassis, turret, healthFont)
+        public Enemy(Texture2D chassis, Texture2D turret, SpriteFont healthFont, int tankIndex)
+            : base(chassis, turret, healthFont, tankIndex)
         {
-            _reloadTime = reloadTime;
-            Health = health;
-            InitialHealth = Health;
+            _reloadTime = (double)Game1.Tanks[tankIndex, 8];
+            InitialHealth = (int)Game1.Tanks[tankIndex, 4];
+            Health = InitialHealth;
+            _firepower = (int)Game1.Tanks[tankIndex, 5];
             Origin = new Vector2(chassis.Width / 2, chassis.Height - 80);
             TurretOrigin = new Vector2(turret.Width / 2, turret.Height - 60);
+            velocity = (float)Game1.Tanks[tankIndex, 6];
         }
 
         public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
@@ -60,7 +62,7 @@ namespace Tank_Defence_Game.Objects
 
             if (_reloaded)
             {
-                missile.AddBullet(missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle, true);
+                missile.AddBullet(missiles, _turretDirection, Gunpoint, (float)(velocity * 2), CurrentTurretAngle, true, _firepower);
                 Sound.EnemyShot.Play();
                 _reloaded = false;
             }
@@ -150,7 +152,7 @@ namespace Tank_Defence_Game.Objects
             _chassisRotation = (float)Math.Atan2(distance.Y, distance.X) + MathHelper.ToRadians(90);
             _currentChassisDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - _chassisRotation), -(float)Math.Sin(MathHelper.ToRadians(90) - _chassisRotation));
             var currentDistance = Vector2.Distance(Position, playerPosition);
-            Position += _currentChassisDirection * MathHelper.Min((float)Math.Abs(currentDistance - followDistance), velocity);
+            Position += _currentChassisDirection * MathHelper.Min((float)Math.Abs(currentDistance - followDistance), (float)velocity);
         }
 
 

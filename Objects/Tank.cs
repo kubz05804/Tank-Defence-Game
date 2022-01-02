@@ -31,7 +31,7 @@ namespace Tank_Defence_Game.Objects
         public float CurrentTurretAngle = 0;
         protected float _rotationVelocity = 0.03f;
         protected float _reloadTimeLeft;
-        protected float _reloadTime; public float ReloadTime { get; set; }
+        protected double _reloadTime; public double ReloadTime { get; set; }
         public float Timer;
 
         public bool _reloaded;
@@ -42,7 +42,8 @@ namespace Tank_Defence_Game.Objects
         protected int moveDirection;
         public int Health;
         public int InitialHealth;
-        protected float velocity = 3f; public float Velocity { get; set; }
+        protected int _firepower;
+        protected float velocity; public float Velocity { get; set; }
 
         public Vector2 pointTopLeft;
         public Vector2 pointTopRight;
@@ -52,7 +53,7 @@ namespace Tank_Defence_Game.Objects
 
         protected string _zero;
 
-        public Tank(Texture2D chassis, Texture2D turret, SpriteFont healthFont)
+        public Tank(Texture2D chassis, Texture2D turret, SpriteFont healthFont, int tankIndex)
         {
             Chassis = chassis;
             Turret = turret;
