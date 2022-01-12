@@ -19,7 +19,6 @@ namespace Tank_Defence_Game
         public event EventHandler Click;
         public bool Clicked;
         public bool Available;
-        
 
         public Btn(Texture2D texture, SpriteFont Font)
         {

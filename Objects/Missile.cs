@@ -15,8 +15,8 @@ namespace Tank_Defence_Game.Objects
         private Vector2 direction; // The direction the missile should be flying in.
         private Vector2 position; // The position of the missile.
         private Vector2 origin; // Center point of the missile sprite.
-        private float missileVelocity; // Linear velocity of the missile.
-        private float lifespan; // Dictates how long a missile should be active for before being removed.
+        private float missileVelocity = 6f; // Linear velocity of the missile.
+        private float lifespan = 6f; // Dictates how long a missile should be active for before being removed.
         private float rotation; // The angle of rotation of the missile sprite - or in other words, in which direction it should be facing.
         private float timer; // Creates a timer to keep track of missile lifespans.
         private int damage;
@@ -42,13 +42,13 @@ namespace Tank_Defence_Game.Objects
             MissileCollision(enemies, player);
         }
 
-        public void AddBullet(List<Missile> missiles, Vector2 direction, Vector2 origin, float velocity, float rotation, bool enemy, int damage)
+        public void AddBullet(List<Missile> missiles, Vector2 direction, Vector2 origin, float rotation, bool enemy, int damage)
         {
             var missile = Clone() as Missile;
             missile.direction = direction;
             missile.position = origin;
-            missile.missileVelocity = velocity;
-            missile.lifespan = 6;
+            missile.missileVelocity = missileVelocity;
+            missile.lifespan = lifespan;
             missile.rotation = rotation;
             missile.parentIsEnemy = enemy;
             missile.damage = damage;

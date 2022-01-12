@@ -62,7 +62,7 @@ namespace Tank_Defence_Game.Objects
 
             if (currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && _reloaded)
             {
-                missile.AddBullet(missiles, _turretDirection, Gunpoint, velocity * 2, CurrentTurretAngle, false, _firepower);
+                missile.AddBullet(missiles, _turretDirection, Gunpoint, CurrentTurretAngle, false, _firepower);
                 Sound.PlayerShot.Play(volume: 0.4f, pitch: 0, pan: 0);
 
                 _reloaded = false;
