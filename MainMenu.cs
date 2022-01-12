@@ -131,6 +131,25 @@ namespace Tank_Defence_Game
                     playButton.Available = true;
                 }
             }
+
+            foreach (var box in boxes)
+            {
+                box.Update(gameTime);
+                if (TabIndex != -1)
+                {
+                    var selectedBox = boxes[TabIndex];
+                    selectedBox.Colour = Box.ColourSelection;
+                    selected = true;
+                    VehicleSelection = selectedBox.TankIndex;
+
+                    var prevIndex = TabIndex - 1;
+                    if (prevIndex < 0)
+                        prevIndex = 2;
+
+                    boxes[prevIndex].Colour = Box.ColourDefault;
+                    playButton.Available = true;
+                }
+            }
             playButton.Update(gameTime);
         }
 
