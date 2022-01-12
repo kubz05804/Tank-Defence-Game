@@ -26,13 +26,14 @@ namespace Tank_Defence_Game
 
         public static object[,] Tanks = new object[,]
         {   // Model/Name    | Type   | Country | Year | HP | FP | Speed | Turret Spacing | Reload Time |
-            { "Cruiser IV"   ,"Light" ,"Britain","1941",400  ,100 ,4.5f  ,120              ,2.5          , null , "Light"},
+            { "Cruiser IV"   ,"Light" ,"Britain","1941",400  ,100 ,4.5f  ,110              ,2.5          , null , "Light"},
             { "M4A3E8 'Fury'","Medium","USA"    ,"1940",600  ,150 ,4.0f  ,44              ,3.0          , null , "Medium"},
-            { "Churchill VII","Heavy" ,"Britain","1942",1000 ,200 ,2.0f  ,44              ,3.5          , null , "Heavy"},
+            { "Churchill VII","Heavy" ,"Britain","1942",1000 ,200 ,2.0f  ,150              ,3.5          , null , "Heavy"},
             { "Pz. IV H"     ,"Medium","Germany","1939",400  ,120 ,3.5f  ,60              ,3.5          , null , "Medium"}
         };
 
         public bool GameRunning;
+        public bool PlayerDefeated;
         Btn playButton;
 
         public Game1()
@@ -60,6 +61,7 @@ namespace Tank_Defence_Game
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             GameRunning = false;
+            PlayerDefeated = false;
 
             for (int i = 0; i <= 2; i++)
             {
@@ -74,6 +76,11 @@ namespace Tank_Defence_Game
 
             //playButton.Click += PlayButton_Click;
 
+            LoadMenu();
+        }
+
+        private void LoadMenu()
+        {
             mainMenu = new MainMenu(GraphicsDevice, windowWidth, windowHeight, Content.Load<Texture2D>("Textures/button"), Content.Load<SpriteFont>("Fonts/default"), Content.Load<SpriteFont>("Fonts/subtitle"), Content.Load<SpriteFont>("Fonts/title"));
         }
 
@@ -88,6 +95,7 @@ namespace Tank_Defence_Game
         private void LaunchGame()
         {
             GameRunning = true;
+            PlayerDefeated = false;
 
             //EnemyTank = new Enemy(Content.Load<Texture2D>("Textures/" + Tanks[3,0] + " chassis"), Content.Load<Texture2D>("Textures/" + Tanks[3,0] + " turret"), (float)Tanks[3,6], (int)Tanks[3,4]);
             //EnemyTank = new Enemy(Content.Load<Texture2D>("Textures/Pz. IV H chassis"), Content.Load<Texture2D>("Textures/Pz. IV H turret"), Content.Load<SpriteFont>("Fonts/File"), 3.5f, 400);
@@ -95,6 +103,7 @@ namespace Tank_Defence_Game
             mainGame = new MainGame(windowWidth, windowHeight,
                 Content.Load<SpriteFont>("Fonts/File"),
                 Content.Load<SpriteFont>("Fonts/File"),
+                Content.Load<SpriteFont>("Fonts/GameOver"),
                 Content.Load<Texture2D>("Textures/" + Tanks[mainMenu.VehicleSelection,0] + "/chassis"),
                 Content.Load<Texture2D>("Textures/" + Tanks[mainMenu.VehicleSelection,0] + "/turret"),
                 Content.Load<Texture2D>("Textures/" + Tanks[3,0] + "/chassis"),
@@ -119,7 +128,10 @@ namespace Tank_Defence_Game
                 Exit();
 
             if (GameRunning)
-                mainGame.Update(gameTime);
+            {
+                if (!mainGame.PlayerDefeated)
+                    mainGame.Update(gameTime);
+            }
             else
             {
                 mainMenu.Update(gameTime);
@@ -132,7 +144,19 @@ namespace Tank_Defence_Game
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.LightGray);
+            var backgroundColor = Color.LightGray;
+
+            if (mainGame != null && GameRunning)
+            {
+                if (mainGame.PlayerDefeated)
+                    backgroundColor = Color.OrangeRed;
+
+            }
+
+            GraphicsDevice.Clear(backgroundColor);
+
+
+
             spriteBatch.Begin();
 
             if (!GameRunning)

@@ -15,6 +15,7 @@ namespace Tank_Defence_Game
     {
         public static SpriteFont HealthFont;
         public SpriteFont ReloadingFont;
+        public SpriteFont GameOverFont;
         public ContentManager Content;
 
         public Player Player;
@@ -31,10 +32,16 @@ namespace Tank_Defence_Game
         
         private float timer;
 
-        public MainGame(int windowWidth, int windowHeight, SpriteFont healthFont, SpriteFont reloadingFont, Texture2D playerChassis, Texture2D playerTurret, Texture2D enemyChassis, Texture2D enemyTurret, int turretSpacing, Texture2D missileTexture, object[,] Tanks, SpriteBatch SpriteBatch, int playerTank)
+        private Btn restartButton;
+        private Btn exitButton;
+
+        private bool playerDefeated; public bool PlayerDefeated { get; set; }
+
+
+        public MainGame(int windowWidth, int windowHeight, SpriteFont healthFont, SpriteFont reloadingFont, SpriteFont gameOverFont, Texture2D playerChassis, Texture2D playerTurret, Texture2D enemyChassis, Texture2D enemyTurret, int turretSpacing, Texture2D missileTexture, object[,] Tanks, SpriteBatch SpriteBatch, int playerTank)
         {
             spriteBatch = SpriteBatch;
-            HealthFont = healthFont; ReloadingFont = reloadingFont;
+            HealthFont = healthFont; ReloadingFont = reloadingFont; GameOverFont = gameOverFont;
 
             Player = new Player(playerChassis, playerTurret, HealthFont, playerTank, ReloadingFont, spriteBatch)
             {
@@ -50,10 +57,17 @@ namespace Tank_Defence_Game
             Enemies = new List<Enemy>();
             EnemyTank = new Enemy(enemyChassis, enemyTurret, HealthFont, 3);
 
+            playerDefeated = false;
         }
 
         public void Update(GameTime gameTime)
         {
+            if (Player.Health <= 0)
+            {
+                playerDefeated = true;
+                return;
+            }
+
             Player.Update(gameTime, Missile, Missiles, Player, Enemies);
 
             foreach (var missile in Missiles.ToArray())
@@ -105,6 +119,12 @@ namespace Tank_Defence_Game
             Player.DrawHealth(spriteBatch);
             foreach (var enemy in Enemies)
                 enemy.DrawHealth(spriteBatch);
+
+            if (playerDefeated)
+            {
+                var gameOverMessage = "GAME OVER";
+                spriteBatch.DrawString(GameOverFont, gameOverMessage, new Vector2(Game1.windowWidth / 2 - (GameOverFont.MeasureString(gameOverMessage).X / 2), Game1.windowHeight / 2), Color.Red);
+            }
         }
     }
 }

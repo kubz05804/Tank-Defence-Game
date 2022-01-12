@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 namespace Tank_Defence_Game.Objects
 {
     public class Enemy : Tank, ICloneable
-    { 
+    {
         private float spawnRate;
         public float distanceToPlayer;
         public float followDistance = 300f;
@@ -62,7 +62,7 @@ namespace Tank_Defence_Game.Objects
 
             if (_reloaded)
             {
-                missile.AddBullet(missiles, _turretDirection, Gunpoint, (float)(velocity * 2), CurrentTurretAngle, true, _firepower);
+                missile.AddBullet(missiles, _turretDirection, Gunpoint, CurrentTurretAngle, true, _firepower);
                 Sound.EnemyShot.Play();
                 _reloaded = false;
             }

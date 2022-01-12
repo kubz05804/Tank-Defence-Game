@@ -19,6 +19,7 @@ namespace Tank_Defence_Game
         private Box box3;
 
         public int VehicleSelection;
+        public int TabIndex;
         private bool selected;
         public bool Activated;
 
@@ -28,6 +29,9 @@ namespace Tank_Defence_Game
         private string subtitle = "Choose your vehicle from the selection available below.";
 
         private Btn playButton;
+
+        private KeyboardState currentKeyboardState;
+        private KeyboardState previousKeyboardState;
 
         public MainMenu(GraphicsDevice graphicsDevice, int windowWidth, int windowHeight, Texture2D button, SpriteFont defaultFont, SpriteFont subtitleFont, SpriteFont titleFont)
         {
@@ -70,6 +74,8 @@ namespace Tank_Defence_Game
             SubtitleFont = subtitleFont;
             TitleFont = titleFont;
             DefaultFont = defaultFont;
+
+            TabIndex = -1;
         }
 
         private void PlayButton_Click(object sender, EventArgs e)
@@ -81,22 +87,50 @@ namespace Tank_Defence_Game
         private void Box3_Click(object sender, EventArgs e)
         {
             Selection(box3);
+            TabIndex = 2;
         }
 
         private void Box2_Click(object sender, EventArgs e)
         {
             Selection(box2);
+            TabIndex = 1;
         }
 
         private void Box1_Click(object sender, EventArgs e)
         {
             Selection(box1);
+            TabIndex = 0;
         }
 
         public void Update(GameTime gameTime)
         {
+            previousKeyboardState = currentKeyboardState;
+            currentKeyboardState = Keyboard.GetState();
+
+            if (currentKeyboardState.IsKeyDown(Keys.Tab) && previousKeyboardState.IsKeyUp(Keys.Tab))
+                TabIndex++;
+
+            if (TabIndex > 2)
+                TabIndex = 0;
+
             foreach (var box in boxes)
+            {
                 box.Update(gameTime);
+                if (TabIndex != -1)
+                {
+                    var selectedBox = boxes[TabIndex];
+                    selectedBox.Colour = Box.ColourSelection;
+                    selected = true;
+                    VehicleSelection = selectedBox.TankIndex;
+
+                    var prevIndex = TabIndex - 1;
+                    if (prevIndex < 0)
+                        prevIndex = 2;
+
+                    boxes[prevIndex].Colour = Box.ColourDefault;
+                    playButton.Available = true;
+                }
+            }
             playButton.Update(gameTime);
         }
 
@@ -136,7 +170,7 @@ namespace Tank_Defence_Game
             {
                 spriteBatch.Draw(box.Texture, box.Rectangle, box.Colour);
 
-                spriteBatch.Draw((Texture2D)Game1.Tanks[box.TankIndex,9], box.Image, Color.White);
+                spriteBatch.Draw((Texture2D)Game1.Tanks[box.TankIndex, 9], box.Image, Color.White);
 
                 var labelCountry = "Origin Country";
                 var labelSpeed = "Speed";

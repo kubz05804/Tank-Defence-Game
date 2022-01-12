@@ -76,6 +76,13 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/gameFont.spritefont
 
+#begin Fonts/GameOver.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/GameOver.spritefont
+
 #begin Fonts/subtitle.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -114,6 +121,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/chassis.png
 
+#begin Textures/Churchill VII/chassis.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Churchill VII/chassis.png
+
 #begin Textures/Churchill VII/profile.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -125,6 +144,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Churchill VII/profile.png
+
+#begin Textures/Churchill VII/turret.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Churchill VII/turret.png
 
 #begin Textures/Cruiser IV/chassis.png
 /importer:TextureImporter

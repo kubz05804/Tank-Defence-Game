@@ -14,11 +14,14 @@
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/default.spritefont</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/File.spritefont</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/gameFont.spritefont</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/GameOver.spritefont</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/subtitle.spritefont</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/title.spritefont</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/button.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/chassis.png</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Churchill VII/chassis.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Churchill VII/profile.png</File>
+    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Churchill VII/turret.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Cruiser IV/chassis.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Cruiser IV/profile.png</File>
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Cruiser IV/turret.png</File>
@@ -32,6 +35,9 @@
     <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/turret.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
