@@ -125,7 +125,7 @@ namespace Tank_Defence_Game.Objects
             if (!_reloaded && !_enemy)
             {
                 spriteBatch.DrawString(ReloadingFont, "Reloading!", new Vector2(Position.X + 100, Position.Y - 50), Color.Red);
-                spriteBatch.DrawString(ReloadingFont, _zero + (((ReloadTime * 1000) - Timer) / 1000).ToString("#.#") + "s left", new Vector2(Position.X + 100, Position.Y - 30), Color.Red);
+                spriteBatch.DrawString(ReloadingFont, _zero + (((_reloadTime * 1000) - Timer) / 1000).ToString("#.#") + "s left", new Vector2(Position.X + 100, Position.Y - 30), Color.Red);
             }
         }
 

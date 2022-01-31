@@ -25,6 +25,7 @@ namespace Tank_Defence_Game.Objects
         public float TargetAngle;
 
         private int moveDirection;
+        private int score; public int Score { get; set; }
 
         public Player(Texture2D chassis, Texture2D turret, SpriteFont healthFont, int tankIndex, SpriteFont reloadingFont, SpriteBatch spriteBatchMainGame)
             : base(chassis, turret, healthFont, tankIndex)
@@ -54,7 +55,7 @@ namespace Tank_Defence_Game.Objects
                     Timer = 0;
                 }
 
-                if (ReloadTime * 1000 - Timer < 1000)
+                if (_reloadTime * 1000 - Timer < 1000)
                     _zero = "0";
                 else
                     _zero = "";

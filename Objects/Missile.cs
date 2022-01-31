@@ -75,6 +75,7 @@ namespace Tank_Defence_Game.Objects
                     {
                         IsRemoved = true;
                         Sound.Collision.Play(volume: 0.3f, pitch: 0, pan: 0);
+                        player.Score += 50;
                         enemyTank.Health -= damage;
                     }
                 }

@@ -32,9 +32,13 @@ namespace Tank_Defence_Game
 
         public bool Restart;
 
+        private bool firstEnemy;
+
         private SpriteBatch spriteBatch;
         
         private float timer;
+        private const float enemySpawnRate = 12;
+        private float currentSpawnRate;
 
         private Btn restartButton;
         private Btn exitButton;
@@ -86,6 +90,9 @@ namespace Tank_Defence_Game
 
             Game = game;
             Restart = false;
+            firstEnemy = true;
+
+            currentSpawnRate = enemySpawnRate;
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
@@ -119,12 +126,14 @@ namespace Tank_Defence_Game
             SpriteExpirationCheck();
 
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            float spawnReload = 2f;
 
-            if (timer > spawnReload && Enemies.Count < 3)
+            if (timer > currentSpawnRate || timer > 5 && firstEnemy)
             {
+                currentSpawnRate = (float)Math.Pow(currentSpawnRate, 0.99);
                 EnemyTank.Spawn(Enemies);
                 timer = 0;
+                if (firstEnemy)
+                    firstEnemy = false;
             }
         }
 
@@ -145,6 +154,7 @@ namespace Tank_Defence_Game
                 {
                     Enemies.RemoveAt(i);
                     Sound.Destruction.Play(volume: 0.4f, pitch: 0, pan: 0);
+                    Player.Score += 200;
                     i++;
                 }
             }
@@ -164,11 +174,19 @@ namespace Tank_Defence_Game
             if (playerDefeated)
             {
                 var gameOverMessage = "GAME OVER";
-                spriteBatch.DrawString(GameOverFont, gameOverMessage, new Vector2(Game1.windowWidth / 2 - (GameOverFont.MeasureString(gameOverMessage).X / 2), Game1.windowHeight / 2), Color.Red);
+                spriteBatch.DrawString(GameOverFont, gameOverMessage, new Vector2(Game1.windowWidth / 2 - (GameOverFont.MeasureString(gameOverMessage).X / 2), Game1.windowHeight / 2 - 100), Color.Red);
 
                 restartButton.Draw(gameTime, spriteBatch);
                 exitButton.Draw(gameTime, spriteBatch);
             }
+
+            var yourScore = "Your score";
+            spriteBatch.DrawString(GameOverFont, yourScore, new Vector2(Game1.windowWidth / 2 - (GameOverFont.MeasureString(yourScore).X / 2), 20), Color.White);
+            spriteBatch.DrawString(GameOverFont, Convert.ToString(Player.Score), new Vector2(Game1.windowWidth / 2 - (GameOverFont.MeasureString(Convert.ToString(Player.Score)).X / 2), 100), Color.White);
+            spriteBatch.DrawString(HealthFont, "Power Up Available", new Vector2(Game1.windowWidth / 4 - (HealthFont.MeasureString("Power Up Available").X / 2), 20), Color.White);
+            spriteBatch.DrawString(HealthFont, "None", new Vector2(Game1.windowWidth / 4 - (HealthFont.MeasureString("None").X / 2), 50), Color.White);
+            spriteBatch.DrawString(HealthFont, "Power Up Currently in Use", new Vector2(Game1.windowWidth / 2 - (HealthFont.MeasureString("Power Up Currently in Use").X / 2) + Game1.windowWidth / 4, 20), Color.White);
+            spriteBatch.DrawString(HealthFont, "None", new Vector2(Game1.windowWidth / 2 - (HealthFont.MeasureString("None").X / 2) + Game1.windowWidth / 4, 50), Color.White);
         }
     }
 }
