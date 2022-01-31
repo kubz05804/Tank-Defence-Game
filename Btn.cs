@@ -23,7 +23,6 @@ namespace Tank_Defence_Game
         public Btn(Texture2D texture, SpriteFont Font)
         {
             buttonTexture = texture; font = Font;
-            Available = false;
         }
 
         public Rectangle ButtonBounds

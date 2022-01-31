@@ -25,11 +25,11 @@ namespace Tank_Defence_Game
         public static int windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height; // Gets the height of the screen.
 
         public static object[,] Tanks = new object[,]
-        {   // Model/Name    | Type   | Country | Year | HP | FP | Speed | Turret Spacing | Reload Time |
-            { "Cruiser IV"   ,"Light" ,"Britain","1941",400  ,100 ,4.5f  ,110              ,2.5          , null , "Light"},
-            { "M4A3E8 'Fury'","Medium","USA"    ,"1940",600  ,150 ,4.0f  ,44              ,3.0          , null , "Medium"},
-            { "Churchill VII","Heavy" ,"Britain","1942",1000 ,200 ,2.0f  ,150              ,3.5          , null , "Heavy"},
-            { "Pz. IV H"     ,"Medium","Germany","1939",400  ,120 ,3.5f  ,60              ,3.5          , null , "Medium"}
+        {   // Model/Name    | Type   | Country | Year | HP | FP | Speed | Origin | Turret Origin | Reload Time |
+            { "Cruiser IV"   ,"Light" ,"Britain","1941",400  ,100 ,4.5f  ,90      ,105            ,2.5          , null , "Light"},
+            { "M4A3E8 'Fury'","Medium","USA"    ,"1940",600  ,150 ,4.0f  ,70      ,40             ,3.0          , null , "Medium"},
+            { "Churchill VII","Heavy" ,"Britain","1942",1000 ,200 ,2.0f  ,79      ,90             ,3.5          , null , "Heavy"},
+            { "Pz. IV H"     ,"Medium","Germany","1939",400  ,120 ,3.5f  ,60      ,90             ,3.5          , null , "Medium"}
         };
 
         public bool GameRunning;
@@ -65,7 +65,7 @@ namespace Tank_Defence_Game
 
             for (int i = 0; i <= 2; i++)
             {
-                Tanks[i, 9] = Content.Load<Texture2D>("Textures/" + Tanks[i,0] + "/profile");
+                Tanks[i, 10] = Content.Load<Texture2D>("Textures/" + Tanks[i,0] + "/profile");
             }
 
             //playButton = new Btn(Content.Load<Texture2D>("Textures/button"), Content.Load<SpriteFont>("Fonts/File"))
@@ -100,7 +100,12 @@ namespace Tank_Defence_Game
             //EnemyTank = new Enemy(Content.Load<Texture2D>("Textures/" + Tanks[3,0] + " chassis"), Content.Load<Texture2D>("Textures/" + Tanks[3,0] + " turret"), (float)Tanks[3,6], (int)Tanks[3,4]);
             //EnemyTank = new Enemy(Content.Load<Texture2D>("Textures/Pz. IV H chassis"), Content.Load<Texture2D>("Textures/Pz. IV H turret"), Content.Load<SpriteFont>("Fonts/File"), 3.5f, 400);
 
-            mainGame = new MainGame(windowWidth, windowHeight,
+            mainGame = new MainGame(
+                this,
+                windowWidth,
+                windowHeight,
+                (int)Tanks[mainMenu.VehicleSelection, 7],
+                (int)Tanks[mainMenu.VehicleSelection, 8],
                 Content.Load<SpriteFont>("Fonts/File"),
                 Content.Load<SpriteFont>("Fonts/File"),
                 Content.Load<SpriteFont>("Fonts/GameOver"),
@@ -108,7 +113,9 @@ namespace Tank_Defence_Game
                 Content.Load<Texture2D>("Textures/" + Tanks[mainMenu.VehicleSelection,0] + "/turret"),
                 Content.Load<Texture2D>("Textures/" + Tanks[3,0] + "/chassis"),
                 Content.Load<Texture2D>("Textures/" + Tanks[3,0] + "/turret"),
-                (int)Tanks[mainMenu.VehicleSelection,7], Content.Load<Texture2D>("Textures/missile"), Tanks, spriteBatch, mainMenu.VehicleSelection);
+                Content.Load<Texture2D>("Textures/missile"),
+                Content.Load<Texture2D>("Textures/button"),
+                Tanks, spriteBatch, mainMenu.VehicleSelection);
 
 
             Sound.Click = Content.Load<SoundEffect>("Audio/Click");
@@ -130,7 +137,14 @@ namespace Tank_Defence_Game
             if (GameRunning)
             {
                 if (!mainGame.PlayerDefeated)
+                {
                     mainGame.Update(gameTime);
+                    if (mainGame.Restart)
+                    {
+                        mainGame.Restart = false;
+                        LoadContent();
+                    }
+                }
             }
             else
             {
@@ -189,6 +203,11 @@ namespace Tank_Defence_Game
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+
+        public void Quit()
+        {
+            this.Exit();
         }
     }
 }

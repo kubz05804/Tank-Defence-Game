@@ -13,6 +13,8 @@ namespace Tank_Defence_Game
 {
     public class MainGame
     {
+        public Game1 Game;
+
         public static SpriteFont HealthFont;
         public SpriteFont ReloadingFont;
         public SpriteFont GameOverFont;
@@ -28,6 +30,8 @@ namespace Tank_Defence_Game
         public Texture2D enemyChassis;
         public Texture2D enemyTurret;
 
+        public bool Restart;
+
         private SpriteBatch spriteBatch;
         
         private float timer;
@@ -38,7 +42,12 @@ namespace Tank_Defence_Game
         private bool playerDefeated; public bool PlayerDefeated { get; set; }
 
 
-        public MainGame(int windowWidth, int windowHeight, SpriteFont healthFont, SpriteFont reloadingFont, SpriteFont gameOverFont, Texture2D playerChassis, Texture2D playerTurret, Texture2D enemyChassis, Texture2D enemyTurret, int turretSpacing, Texture2D missileTexture, object[,] Tanks, SpriteBatch SpriteBatch, int playerTank)
+        public MainGame(
+            Game1 game,
+            int windowWidth, int windowHeight, int origin, int turretOrigin,
+            SpriteFont healthFont, SpriteFont reloadingFont, SpriteFont gameOverFont,
+            Texture2D playerChassis, Texture2D playerTurret, Texture2D enemyChassis, Texture2D enemyTurret, Texture2D missileTexture, Texture2D buttonTexture,
+            object[,] Tanks, SpriteBatch SpriteBatch, int playerTank)
         {
             spriteBatch = SpriteBatch;
             HealthFont = healthFont; ReloadingFont = reloadingFont; GameOverFont = gameOverFont;
@@ -46,10 +55,9 @@ namespace Tank_Defence_Game
             Player = new Player(playerChassis, playerTurret, HealthFont, playerTank, ReloadingFont, spriteBatch)
             {
                 Position = new Vector2(windowWidth / 2, windowHeight / 2),
-                Origin = new Vector2(playerChassis.Width / 2, playerChassis.Height - 100),
-                TurretOrigin = new Vector2(playerTurret.Width / 2, playerTurret.Height - turretSpacing),
+                Origin = new Vector2(playerChassis.Width / 2, playerChassis.Height - origin),
+                TurretOrigin = new Vector2(playerTurret.Width / 2, playerTurret.Height - turretOrigin),
             };
-
 
             Missile = new Missile(missileTexture);
             Missiles = new List<Missile>();
@@ -58,22 +66,55 @@ namespace Tank_Defence_Game
             EnemyTank = new Enemy(enemyChassis, enemyTurret, HealthFont, 3);
 
             playerDefeated = false;
+
+            restartButton = new Btn(buttonTexture, healthFont)
+            {
+                Position = new Vector2(windowWidth / 2, windowHeight * 0.65f),
+                ButtonText = "RESTART",
+                Available = true,
+            };
+
+            exitButton = new Btn(buttonTexture, healthFont)
+            {
+                Position = new Vector2(windowWidth / 2, windowHeight * 0.70f),
+                ButtonText = "EXIT",
+                Available = true,
+            };
+
+            restartButton.Click += RestartButton_Click;
+            exitButton.Click += ExitButton_Click;
+
+            Game = game;
+            Restart = false;
+        }
+
+        private void ExitButton_Click(object sender, EventArgs e)
+        {
+            Game.Exit();
+        }
+
+        private void RestartButton_Click(object sender, EventArgs e)
+        {
+            Restart = true;
         }
 
         public void Update(GameTime gameTime)
         {
             if (Player.Health <= 0)
             {
+                restartButton.Update(gameTime);
+                exitButton.Update(gameTime);
                 playerDefeated = true;
+                Sound.MotionStop();
                 return;
             }
 
             Player.Update(gameTime, Missile, Missiles, Player, Enemies);
 
-            foreach (var missile in Missiles.ToArray())
-                missile.Update(gameTime, Missiles, Player, Enemies);
             foreach (var enemy in Enemies)
                 enemy.Update(gameTime, Missile, Missiles, Player, Enemies);
+            foreach (var missile in Missiles.ToArray())
+                missile.Update(gameTime, Missiles, Player, Enemies);
 
             SpriteExpirationCheck();
 
@@ -124,6 +165,9 @@ namespace Tank_Defence_Game
             {
                 var gameOverMessage = "GAME OVER";
                 spriteBatch.DrawString(GameOverFont, gameOverMessage, new Vector2(Game1.windowWidth / 2 - (GameOverFont.MeasureString(gameOverMessage).X / 2), Game1.windowHeight / 2), Color.Red);
+
+                restartButton.Draw(gameTime, spriteBatch);
+                exitButton.Draw(gameTime, spriteBatch);
             }
         }
     }

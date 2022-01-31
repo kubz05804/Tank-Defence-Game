@@ -32,7 +32,7 @@ namespace Tank_Defence_Game.Objects
         public Enemy(Texture2D chassis, Texture2D turret, SpriteFont healthFont, int tankIndex)
             : base(chassis, turret, healthFont, tankIndex)
         {
-            _reloadTime = (double)Game1.Tanks[tankIndex, 8];
+            _reloadTime = (double)Game1.Tanks[tankIndex, 9];
             InitialHealth = (int)Game1.Tanks[tankIndex, 4];
             Health = InitialHealth;
             _firepower = (int)Game1.Tanks[tankIndex, 5];

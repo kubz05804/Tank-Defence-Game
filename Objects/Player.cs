@@ -29,7 +29,7 @@ namespace Tank_Defence_Game.Objects
         public Player(Texture2D chassis, Texture2D turret, SpriteFont healthFont, int tankIndex, SpriteFont reloadingFont, SpriteBatch spriteBatchMainGame)
             : base(chassis, turret, healthFont, tankIndex)
         {
-            _reloadTime = (double)Game1.Tanks[tankIndex, 8];
+            _reloadTime = (double)Game1.Tanks[tankIndex, 9];
             InitialHealth = (int)Game1.Tanks[tankIndex, 4]; Health = InitialHealth;
             _firepower = (int)Game1.Tanks[tankIndex, 5];
             spriteBatch = spriteBatchMainGame;

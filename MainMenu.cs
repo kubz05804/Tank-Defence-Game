@@ -40,15 +40,15 @@ namespace Tank_Defence_Game
 
             backgroundTexture = new Texture2D(graphicsDevice, 1, 1); backgroundTexture.SetData(new Color[] { Color.Gray });
 
-            var backgroundWidth = (int)(windowWidth * 0.8);
-            var backgroundHeight = (int)(windowHeight * 0.8);
+            var backgroundWidth = (int)(windowWidth * 0.95);
+            var backgroundHeight = (int)(windowHeight * 0.9);
 
             backgroundRectangle = new Rectangle((windowWidth - backgroundWidth) / 2, (windowHeight - backgroundHeight) / 2, backgroundWidth, backgroundHeight);
 
             int boxWidth = (int)(backgroundRectangle.Width * 0.2);
             int boxHeight = (int)(backgroundRectangle.Height * 0.7);
             int xSpacing = (int)(backgroundRectangle.Width * 0.1);
-            int ySpacing = (int)(backgroundRectangle.Height * 0.20);
+            int ySpacing = (int)(backgroundRectangle.Height * 0.15);
 
             boxes = new List<Box>();
             box1 = new Box(graphicsDevice, boxWidth, boxHeight, backgroundRectangle, backgroundRectangle.X + xSpacing, xSpacing, ySpacing, 0);
@@ -67,6 +67,7 @@ namespace Tank_Defence_Game
             {
                 Position = new Vector2(windowWidth / 2, windowHeight * 0.85f),
                 ButtonText = "PLAY GAME",
+                Available = false,
             };
 
             playButton.Click += PlayButton_Click;
@@ -80,8 +81,7 @@ namespace Tank_Defence_Game
 
         private void PlayButton_Click(object sender, EventArgs e)
         {
-            if (playButton.Available)
-                Activated = true;
+            Activate();
         }
 
         private void Box3_Click(object sender, EventArgs e)
@@ -150,7 +150,11 @@ namespace Tank_Defence_Game
                     playButton.Available = true;
                 }
             }
+
             playButton.Update(gameTime);
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Enter))
+                Activate();
         }
 
         public void Selection(Box selectedBox)
@@ -175,7 +179,12 @@ namespace Tank_Defence_Game
 
                 playButton.Available = true;
             }
+        }
 
+        public void Activate()
+        {
+            if (playButton.Available)
+                Activated = true;
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -189,7 +198,7 @@ namespace Tank_Defence_Game
             {
                 spriteBatch.Draw(box.Texture, box.Rectangle, box.Colour);
 
-                spriteBatch.Draw((Texture2D)Game1.Tanks[box.TankIndex, 9], box.Image, Color.White);
+                spriteBatch.Draw((Texture2D)Game1.Tanks[box.TankIndex, 10], box.Image, Color.White);
 
                 var labelCountry = "Origin Country";
                 var labelSpeed = "Speed";
@@ -202,9 +211,9 @@ namespace Tank_Defence_Game
                 var speed = Convert.ToString((int)((float)Game1.Tanks[box.TankIndex, 6] * 10)) + " km/h";
                 var firepower = Convert.ToString(Game1.Tanks[box.TankIndex, 5]);
                 var health = Convert.ToString(Game1.Tanks[box.TankIndex, 4]);
-                var type = Convert.ToString(Game1.Tanks[box.TankIndex, 10]);
+                var type = Convert.ToString(Game1.Tanks[box.TankIndex, 11]);
 
-                var textStart = (float)(box.Rectangle.Y + (box.Rectangle.Height * 0.1) + box.Image.Height);
+                var textStart = (float)(box.Rectangle.Y + (box.Rectangle.Height * 0.02) + box.Image.Height);
 
                 spriteBatch.DrawString(TitleFont, tank, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (TitleFont.MeasureString(tank).X / 2), textStart), Color.White);
 
