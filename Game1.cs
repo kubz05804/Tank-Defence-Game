@@ -101,7 +101,7 @@ namespace Tank_Defence_Game
             //EnemyTank = new Enemy(Content.Load<Texture2D>("Textures/Pz. IV H chassis"), Content.Load<Texture2D>("Textures/Pz. IV H turret"), Content.Load<SpriteFont>("Fonts/File"), 3.5f, 400);
 
             mainGame = new MainGame(
-                this,
+                this, GraphicsDevice,
                 windowWidth,
                 windowHeight,
                 (int)Tanks[mainMenu.VehicleSelection, 7],

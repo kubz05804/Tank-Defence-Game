@@ -47,7 +47,7 @@ namespace Tank_Defence_Game
 
 
         public MainGame(
-            Game1 game,
+            Game1 game, GraphicsDevice graphicsDevice,
             int windowWidth, int windowHeight, int origin, int turretOrigin,
             SpriteFont healthFont, SpriteFont reloadingFont, SpriteFont gameOverFont,
             Texture2D playerChassis, Texture2D playerTurret, Texture2D enemyChassis, Texture2D enemyTurret, Texture2D missileTexture, Texture2D buttonTexture,
@@ -135,6 +135,7 @@ namespace Tank_Defence_Game
                 if (firstEnemy)
                     firstEnemy = false;
             }
+
         }
 
         public void SpriteExpirationCheck()
