@@ -14,7 +14,7 @@ namespace Tank_Defence_Game.Objects
     {
         private float spawnRate;
         public float distanceToPlayer;
-        public float followDistance = 300f;
+        public float followDistance = 400f;
 
         public SpriteFont HealthFont;
 

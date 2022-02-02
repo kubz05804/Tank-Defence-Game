@@ -13,6 +13,8 @@ namespace Tank_Defence_Game
 {
     public class MainGame
     {
+        public Random Random = new Random();
+
         public Game1 Game;
 
         public static SpriteFont HealthFont;
@@ -32,6 +34,8 @@ namespace Tank_Defence_Game
 
         public bool Restart;
 
+        public PowerUpStack PowerUpsInStore;
+
         private bool firstEnemy;
 
         private SpriteBatch spriteBatch;
@@ -43,8 +47,9 @@ namespace Tank_Defence_Game
         private Btn restartButton;
         private Btn exitButton;
 
-        private bool playerDefeated; public bool PlayerDefeated { get; set; }
+        private int killCount;
 
+        private bool playerDefeated; public bool PlayerDefeated { get; set; }
 
         public MainGame(
             Game1 game, GraphicsDevice graphicsDevice,
@@ -93,6 +98,8 @@ namespace Tank_Defence_Game
             firstEnemy = true;
 
             currentSpawnRate = enemySpawnRate;
+
+            killCount = 0;
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
@@ -156,8 +163,38 @@ namespace Tank_Defence_Game
                     Enemies.RemoveAt(i);
                     Sound.Destruction.Play(volume: 0.4f, pitch: 0, pan: 0);
                     Player.Score += 200;
+                    killCount++;
                     i++;
                 }
+            }
+        }
+
+        public void PowerUpGeneration()
+        {
+            var r = Random.Next(1, 5);
+
+            if (PowerUpsInStore.Full())
+            {
+                return;
+            }
+
+            switch (r)
+            {
+                case 1: // Speed Boost
+                    PowerUpsInStore.Push("Speed Boost");
+                    break;
+                case 2: // Firepower Boost
+                    PowerUpsInStore.Push("Firepower Boost");
+                    break;
+                case 3: // Health Restore
+                    PowerUpsInStore.Push("Health Boost");
+                    break;
+                case 4: // Armour Boost
+                    PowerUpsInStore.Push("Armour Boost");
+                    break;
+                case 5: // Camouflage Net
+                    PowerUpsInStore.Push("Camouflage Net");
+                    break;
             }
         }
 

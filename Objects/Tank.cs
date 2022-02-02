@@ -74,7 +74,7 @@ namespace Tank_Defence_Game.Objects
 
             if (_enemy)
             {
-                if (Vector2.Distance(position, player.Position) <= player.Chassis.Height - 30)
+                if (Vector2.Distance(position, player.Position) <= player.Chassis.Height / 2)
                 {
                     return true;
                 }
