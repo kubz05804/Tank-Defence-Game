@@ -20,9 +20,8 @@ namespace Tank_Defence_Game.Objects
         private float rotation; // The angle of rotation of the missile sprite - or in other words, in which direction it should be facing.
         private float timer; // Creates a timer to keep track of missile lifespans.
         private int damage;
-        public static SoundEffect HitSound;
         private bool parentIsEnemy;
-        private bool isRemoved; public bool IsRemoved { get; set; } // Creates a boolean value that states whether the missile should be removed.
+        private bool isRemoved; public bool IsRemoved { get { return isRemoved; } set { isRemoved = value; } } // Creates a boolean value that states whether the missile should be removed.
 
         public Missile(Texture2D missileTexture)
         {
@@ -64,7 +63,10 @@ namespace Tank_Defence_Game.Objects
                 {
                     IsRemoved = true;
                     Sound.Collision.Play(volume: 0.3f, pitch: 0, pan: 0);
-                    player.Health -= damage;
+                    if (!player.ArmourBoostEquipped)
+                        player.Health -= damage;
+                    if (player.Health <= 0)
+                        player.Health = 0;
                 }
             }
             else
@@ -77,6 +79,9 @@ namespace Tank_Defence_Game.Objects
                         Sound.Collision.Play(volume: 0.3f, pitch: 0, pan: 0);
                         player.Score += 50;
                         enemyTank.Health -= damage;
+
+                        if (enemyTank.Health <= 0)
+                            enemyTank.Health = 0;
                     }
                 }
             }

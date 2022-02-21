@@ -12,33 +12,26 @@ namespace Tank_Defence_Game.Objects
 {
     public class Enemy : Tank, ICloneable
     {
-        private float spawnRate;
-        public float distanceToPlayer;
-        public float followDistance = 400f;
-
-        public SpriteFont HealthFont;
+        private float followDistance = 450f;
 
         private static Vector2 playerPosition;
 
-        private bool withinRange;
         private bool currentlyFacingPlayer = true;
         private bool previouslyFacingPlayer;
+        private bool playerInSight;
 
-        Vector2 target;
-        bool atTarget;
-
-        Random random = new Random();
+        private Random random = new Random();
 
         public Enemy(Texture2D chassis, Texture2D turret, SpriteFont healthFont, int tankIndex)
-            : base(chassis, turret, healthFont, tankIndex)
+            : base(chassis, turret, healthFont)
         {
             _reloadTime = (double)Game1.Tanks[tankIndex, 9];
-            InitialHealth = (int)Game1.Tanks[tankIndex, 4];
-            Health = InitialHealth;
+            _initialHealth = (int)Game1.Tanks[tankIndex, 4];
+            _health = _initialHealth;
             _firepower = (int)Game1.Tanks[tankIndex, 5];
             Origin = new Vector2(chassis.Width / 2, chassis.Height - 80);
             TurretOrigin = new Vector2(turret.Width / 2, turret.Height - 60);
-            velocity = (float)Game1.Tanks[tankIndex, 6];
+            _velocity = (float)Game1.Tanks[tankIndex, 6];
         }
 
         public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
@@ -46,34 +39,37 @@ namespace Tank_Defence_Game.Objects
             playerPosition = player.Position;
             previouslyFacingPlayer = currentlyFacingPlayer;
 
-            CurrentTurretAngle = (float)(Math.Atan2(player.Position.Y - _currentPosition.Y, player.Position.X - _currentPosition.X) + MathHelper.ToRadians(90)); // Turret rotation angle
-            _turretDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - CurrentTurretAngle), -(float)Math.Sin(MathHelper.ToRadians(90) - CurrentTurretAngle));
-            Gunpoint = _currentPosition + _turretDirection * 100;
+            if (!player.CamouflageNetEquipped)
+            {
+                TurretRotate(playerPosition);
+            }
+
+            _turretDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - _currentTurretAngle), -(float)Math.Sin(MathHelper.ToRadians(90) - _currentTurretAngle));
+            _gunpoint = _currentPosition + _turretDirection * 100;
 
             var distanceToPlayer = Vector2.Distance(Position, playerPosition);
 
-            if (distanceToPlayer > followDistance)
+            if (distanceToPlayer > followDistance && !player.CamouflageNetEquipped)
             {
                 Rotate(playerPosition);
                 if (currentlyFacingPlayer && !Collision(1, player, enemies))
                     Motion(playerPosition);
             }
 
-
-            if (_reloaded)
+            if (_reloaded && !player.CamouflageNetEquipped && playerInSight)
             {
-                missile.AddBullet(missiles, _turretDirection, Gunpoint, CurrentTurretAngle, true, _firepower);
+                missile.AddBullet(missiles, _turretDirection, _gunpoint, _currentTurretAngle, true, _firepower);
                 Sound.EnemyShot.Play();
                 _reloaded = false;
             }
             else
             {
-                Timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                _timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                if (Timer > _reloadTime * 1000)
+                if (_timer > _reloadTime * 1000)
                 {
                     _reloaded = true;
-                    Timer = 0;
+                    _timer = 0;
                 }
             }
         }
@@ -100,10 +96,50 @@ namespace Tank_Defence_Game.Objects
             }
 
             enemy._currentPosition = new Vector2(x, y);
-            enemy.velocity = 3f;
+            enemy._velocity = 3f;
             enemy._enemy = true;
 
             enemies.Add(enemy);
+        }
+
+        public void TurretRotate(Vector2 playerPosition)
+        {
+            var targetAngle = (float)(Math.Atan2(playerPosition.Y - _currentPosition.Y, playerPosition.X - _currentPosition.X) + MathHelper.ToRadians(90));
+
+            if ((targetAngle > _currentTurretAngle - 0.055f && targetAngle < _currentTurretAngle + 0.055f))
+            {
+                _currentTurretAngle = targetAngle;
+            }
+
+            if (targetAngle == _currentTurretAngle)
+            {
+                playerInSight = true;
+                return;
+            }
+            else
+                playerInSight = false;
+
+            if (_currentTurretAngle < targetAngle)
+            {
+                if (Math.Abs(targetAngle - _currentTurretAngle) < MathF.PI)
+                    _moveDirection = 1;
+                else
+                    _moveDirection = -1;
+            }
+            else
+            {
+                if (Math.Abs(targetAngle - _currentTurretAngle) < MathF.PI)
+                    _moveDirection = -1;
+                else
+                    _moveDirection = 1;
+            }
+
+            _currentTurretAngle += 0.03f * _moveDirection;
+
+            if (_currentTurretAngle >= 1.5 * MathF.PI)
+                _currentTurretAngle = MathHelper.ToRadians(-90);
+            if (_currentTurretAngle < -MathF.PI / 2)
+                _currentTurretAngle = MathHelper.ToRadians(270);
         }
 
         public void Rotate(Vector2 playerPosition)
@@ -126,19 +162,19 @@ namespace Tank_Defence_Game.Objects
             if (_chassisRotation < targetChassisAngle)
             {
                 if (Math.Abs(targetChassisAngle - _chassisRotation) < MathF.PI)
-                    moveDirection = 1;
+                    _moveDirection = 1;
                 else
-                    moveDirection = -1;
+                    _moveDirection = -1;
             }
             else
             {
                 if (Math.Abs(targetChassisAngle - _chassisRotation) < MathF.PI)
-                    moveDirection = -1;
+                    _moveDirection = -1;
                 else
-                    moveDirection = 1;
+                    _moveDirection = 1;
             }
 
-            _chassisRotation += 0.03f * moveDirection;
+            _chassisRotation += 0.03f * _moveDirection;
 
             if (_chassisRotation >= 1.5 * MathF.PI)
                 _chassisRotation = MathHelper.ToRadians(-90);
@@ -152,7 +188,7 @@ namespace Tank_Defence_Game.Objects
             _chassisRotation = (float)Math.Atan2(distance.Y, distance.X) + MathHelper.ToRadians(90);
             _currentChassisDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - _chassisRotation), -(float)Math.Sin(MathHelper.ToRadians(90) - _chassisRotation));
             var currentDistance = Vector2.Distance(Position, playerPosition);
-            Position += _currentChassisDirection * MathHelper.Min((float)Math.Abs(currentDistance - followDistance), (float)velocity);
+            Position += _currentChassisDirection * MathHelper.Min((float)Math.Abs(currentDistance - followDistance), (float)_velocity);
         }
 
 

@@ -17,7 +17,7 @@ namespace Tank_Defence_Game
 
         public Game1 Game;
 
-        public static SpriteFont HealthFont;
+        public SpriteFont HealthFont;
         public SpriteFont ReloadingFont;
         public SpriteFont GameOverFont;
         public ContentManager Content;
@@ -32,15 +32,24 @@ namespace Tank_Defence_Game
         public Texture2D enemyChassis;
         public Texture2D enemyTurret;
 
-        public bool Restart;
+        public bool Restart; // Indicates whether the player has chosen to restart the game.
 
         public PowerUpStack PowerUpsInStore;
+        public PowerUpMessage PowerUp;
+
+        public string Label_PowerUpAvailable;
+        public string PowerUpCurrentlyInUse;
+
+        public int PlayerTank;
+        public object[,] Tanks;
 
         private bool firstEnemy;
 
         private SpriteBatch spriteBatch;
         
         private float timer;
+        private float powerUpTimer;
+
         private const float enemySpawnRate = 12;
         private float currentSpawnRate;
 
@@ -49,14 +58,17 @@ namespace Tank_Defence_Game
 
         private int killCount;
 
-        private bool playerDefeated; public bool PlayerDefeated { get; set; }
+        private KeyboardState previousKeyboardState;
+        private KeyboardState currentKeyboardState;
+
+        private bool playerDefeated; public bool PlayerDefeated { get { return playerDefeated; } set { playerDefeated = value; } }
 
         public MainGame(
             Game1 game, GraphicsDevice graphicsDevice,
             int windowWidth, int windowHeight, int origin, int turretOrigin,
             SpriteFont healthFont, SpriteFont reloadingFont, SpriteFont gameOverFont,
             Texture2D playerChassis, Texture2D playerTurret, Texture2D enemyChassis, Texture2D enemyTurret, Texture2D missileTexture, Texture2D buttonTexture,
-            object[,] Tanks, SpriteBatch SpriteBatch, int playerTank)
+            object[,] tanks, SpriteBatch SpriteBatch, int playerTank)
         {
             spriteBatch = SpriteBatch;
             HealthFont = healthFont; ReloadingFont = reloadingFont; GameOverFont = gameOverFont;
@@ -67,6 +79,9 @@ namespace Tank_Defence_Game
                 Origin = new Vector2(playerChassis.Width / 2, playerChassis.Height - origin),
                 TurretOrigin = new Vector2(playerTurret.Width / 2, playerTurret.Height - turretOrigin),
             };
+
+            PlayerTank = playerTank;
+            Tanks = tanks;
 
             Missile = new Missile(missileTexture);
             Missiles = new List<Missile>();
@@ -100,6 +115,11 @@ namespace Tank_Defence_Game
             currentSpawnRate = enemySpawnRate;
 
             killCount = 0;
+
+            PowerUp = new PowerUpMessage();
+            PowerUpsInStore = new PowerUpStack();
+
+            PowerUpCurrentlyInUse = "None";
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
@@ -114,6 +134,12 @@ namespace Tank_Defence_Game
 
         public void Update(GameTime gameTime)
         {
+            previousKeyboardState = currentKeyboardState;
+            currentKeyboardState = Keyboard.GetState();
+
+            if (currentKeyboardState.IsKeyDown(Keys.Space) && previousKeyboardState.IsKeyUp(Keys.Space))
+                PowerUpEquip();
+
             if (Player.Health <= 0)
             {
                 restartButton.Update(gameTime);
@@ -143,6 +169,23 @@ namespace Tank_Defence_Game
                     firstEnemy = false;
             }
 
+            if (PowerUp.IsAvailable)
+            {
+                if (PowerUp.PickUp(Player.Position))
+                    PowerUpGeneration();
+            }
+
+            if (PowerUpCurrentlyInUse != "None")
+            {
+                powerUpTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (powerUpTimer > 10)
+                {
+                    powerUpTimer = 0;
+                    PowerUpClear();
+                }
+            }
+
         }
 
         public void SpriteExpirationCheck()
@@ -160,54 +203,96 @@ namespace Tank_Defence_Game
             {
                 if (Enemies[i].Health <= 0)
                 {
+                    var position = Enemies[i].Position;
+                    
                     Enemies.RemoveAt(i);
                     Sound.Destruction.Play(volume: 0.4f, pitch: 0, pan: 0);
                     Player.Score += 200;
                     killCount++;
                     i++;
+
+                    if (killCount % 2 == 0)
+                        PowerUp.NewPowerUp(position);
                 }
             }
         }
 
         public void PowerUpGeneration()
         {
-            var r = Random.Next(1, 5);
+            var r = Random.Next(5);
+            var powerup = "";
 
-            if (PowerUpsInStore.Full())
+            switch (r)
+            {
+                case 0: // Speed Boost
+                    powerup = "Speed Boost";
+                    break;
+                case 1: // Firepower Boost
+                    powerup = "Firepower Boost";
+                    break;
+                case 2: // Health Restore
+                    powerup = "Health Boost";
+                    break;
+                case 3: // Armour Boost
+                    powerup = "Armour Boost";
+                    break;
+                case 4: // Camouflage Net
+                    powerup = "Camouflage Net";
+                    break;
+            }
+
+            PowerUpsInStore.Push(powerup);
+        }
+
+        public void PowerUpEquip()
+        {
+            var nextPowerUp = PowerUpsInStore.NextPowerUp();
+
+            if (nextPowerUp == "Speed Boost")
+            {
+                Player.Velocity *= 2;
+            }
+            else if (nextPowerUp == "Firepower Boost")
+            {
+                Player.Firepower *= 2;
+            }
+            else if (nextPowerUp == "Health Boost")
+            {
+                Player.Health = Player.InitialHealth;
+            }
+            else if (nextPowerUp == "Armour Boost")
+            {
+                Player.ArmourBoostEquipped = true;
+            }
+            else if (nextPowerUp == "Camouflage Net")
+            {
+                Player.CamouflageNetEquipped = true;
+            }
+            else
             {
                 return;
             }
 
-            switch (r)
-            {
-                case 1: // Speed Boost
-                    PowerUpsInStore.Push("Speed Boost");
-                    break;
-                case 2: // Firepower Boost
-                    PowerUpsInStore.Push("Firepower Boost");
-                    break;
-                case 3: // Health Restore
-                    PowerUpsInStore.Push("Health Boost");
-                    break;
-                case 4: // Armour Boost
-                    PowerUpsInStore.Push("Armour Boost");
-                    break;
-                case 5: // Camouflage Net
-                    PowerUpsInStore.Push("Camouflage Net");
-                    break;
-            }
+            PowerUpCurrentlyInUse = PowerUpsInStore.Pop();
+        }
+
+        public void PowerUpClear()
+        {
+            Player.Velocity = (float)Tanks[PlayerTank, 6];
+            Player.Firepower = (int)Tanks[PlayerTank, 5];
+            Player.ArmourBoostEquipped = false;
+            Player.CamouflageNetEquipped = false;
+
+            PowerUpCurrentlyInUse = "None";
         }
 
         public void Draw(GameTime gameTime)
-        {
+        {        
             foreach (var missile in Missiles)
                 missile.Draw(spriteBatch);
             foreach (var enemy in Enemies)
                 enemy.Draw(spriteBatch);
             Player.Draw(spriteBatch);
-            Player.DrawHealth(spriteBatch);
-            foreach (var enemy in Enemies)
-                enemy.DrawHealth(spriteBatch);
 
             if (playerDefeated)
             {
@@ -219,12 +304,30 @@ namespace Tank_Defence_Game
             }
 
             var yourScore = "Your score";
+            var powerUp = "None";
+            if (PowerUp.IsAvailable)
+                powerUp = PowerUp.Message;
+
+            if (PowerUp.IsAvailable)
+            {
+                spriteBatch.DrawString(HealthFont, "POWER UP AVAILABLE", PowerUp.Position - new Vector2(HealthFont.MeasureString("POWER UP AVAILABLE").X / 2, 20), Color.Black);
+            }
+
             spriteBatch.DrawString(GameOverFont, yourScore, new Vector2(Game1.windowWidth / 2 - (GameOverFont.MeasureString(yourScore).X / 2), 20), Color.White);
             spriteBatch.DrawString(GameOverFont, Convert.ToString(Player.Score), new Vector2(Game1.windowWidth / 2 - (GameOverFont.MeasureString(Convert.ToString(Player.Score)).X / 2), 100), Color.White);
+
             spriteBatch.DrawString(HealthFont, "Power Up Available", new Vector2(Game1.windowWidth / 4 - (HealthFont.MeasureString("Power Up Available").X / 2), 20), Color.White);
-            spriteBatch.DrawString(HealthFont, "None", new Vector2(Game1.windowWidth / 4 - (HealthFont.MeasureString("None").X / 2), 50), Color.White);
+            spriteBatch.DrawString(HealthFont, PowerUpsInStore.NextPowerUp(), new Vector2(Game1.windowWidth / 4 - (HealthFont.MeasureString(PowerUpsInStore.NextPowerUp()).X / 2), 50), Color.White);
+            if (PowerUpsInStore.Top == 1)
+                spriteBatch.DrawString(HealthFont, PowerUpsInStore.SecondaryPowerUp(), new Vector2(Game1.windowWidth / 4 - (HealthFont.MeasureString(PowerUpsInStore.SecondaryPowerUp()).X / 2), 70), Color.White);
+
             spriteBatch.DrawString(HealthFont, "Power Up Currently in Use", new Vector2(Game1.windowWidth / 2 - (HealthFont.MeasureString("Power Up Currently in Use").X / 2) + Game1.windowWidth / 4, 20), Color.White);
-            spriteBatch.DrawString(HealthFont, "None", new Vector2(Game1.windowWidth / 2 - (HealthFont.MeasureString("None").X / 2) + Game1.windowWidth / 4, 50), Color.White);
+            spriteBatch.DrawString(HealthFont, PowerUpCurrentlyInUse, new Vector2(Game1.windowWidth / 2 - (HealthFont.MeasureString(PowerUpCurrentlyInUse).X / 2) + Game1.windowWidth / 4, 50), Color.White);
+
+            if (PowerUpCurrentlyInUse != "None")
+            {
+                spriteBatch.DrawString(HealthFont, (10 - (powerUpTimer)).ToString("#.#") + "s", new Vector2(Game1.windowWidth / 2 - (HealthFont.MeasureString(PowerUpCurrentlyInUse).X / 2) + Game1.windowWidth / 4, 70), Color.White);
+            }
         }
     }
 }

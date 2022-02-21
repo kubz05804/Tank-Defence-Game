@@ -9,16 +9,22 @@ namespace Tank_Defence_Game
 {
     public class Btn
     {
-        private MouseState currentMouseState;
-        private MouseState previousMouseState;
-        private bool hovering;
-        private Texture2D buttonTexture;
-        private SpriteFont font;
         public string ButtonText;
         public Vector2 Position;
+
         public event EventHandler Click;
+
         public bool Clicked;
         public bool Available;
+
+        private MouseState currentMouseState;
+        private MouseState previousMouseState;
+
+        private Texture2D buttonTexture;
+        private SpriteFont font;
+
+        private bool hovering;
+
 
         public Btn(Texture2D texture, SpriteFont Font)
         {
@@ -42,7 +48,7 @@ namespace Tank_Defence_Game
 
             hovering = false;
 
-            if (mouseRectangle.Intersects(ButtonBounds))
+            if (mouseRectangle.Intersects(ButtonBounds)) // Checks if the mouse cursor is hovering over the button.
             {
                 hovering = true;
 
@@ -64,12 +70,12 @@ namespace Tank_Defence_Game
 
                 spriteBatch.Draw(buttonTexture, ButtonBounds, colour);
 
-                if (!string.IsNullOrEmpty(ButtonText))
+                if (!string.IsNullOrEmpty(ButtonText)) // Checks if button text is empty.
                 {
                     spriteBatch.DrawString(font, ButtonText, new Vector2(
                         (ButtonBounds.X + (ButtonBounds.Width / 2)) - (font.MeasureString(ButtonText).X / 2),
                         (ButtonBounds.Y + (ButtonBounds.Height / 2)) - (font.MeasureString(ButtonText).Y / 2)),
-                        Color.White);
+                        Color.White); // Aligns button text in the middle of the button.
                 }
             }
         }

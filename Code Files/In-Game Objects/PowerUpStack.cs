@@ -18,7 +18,7 @@ namespace Tank_Defence_Game
 
         public bool Full()
         {
-            if (Content.Length == 2)
+            if (Top == 1)
                 return true;
             return false;
         }
@@ -45,12 +45,23 @@ namespace Tank_Defence_Game
                 return PowerUpUsed;
             }
 
-            return null;
+            return "None";
         }
 
         public string NextPowerUp()
         {
-            return Content[Top];
+            if (!Empty())
+                return Content[Top];
+
+            return "None";
+        }
+
+        public string SecondaryPowerUp()
+        {
+            if (!Empty())
+                return Content[Top - 1];
+
+            return null;
         }
     }
 }

@@ -15,15 +15,14 @@ namespace Tank_Defence_Game
         public int TankIndex;
         public event EventHandler Click;
 
-        private MouseState currentMouseState;
-        private MouseState previousMouseState;
-        public bool hovering;
-
         public Color Colour;
 
         public static Color ColourSelection = Color.DarkKhaki;
         public static Color ColourDefault = Color.Gray;
         public static Color ColourHovering = Color.DimGray;
+
+        private MouseState currentMouseState;
+        private MouseState previousMouseState;
 
         public Box(GraphicsDevice graphicsDevice, int width, int height, Rectangle container, int xPosition, int xSpacing, int ySpacing, int tankIndex)
         {
@@ -44,20 +43,17 @@ namespace Tank_Defence_Game
 
             var mouseRectangle = new Rectangle(currentMouseState.X, currentMouseState.Y, 1, 1);
 
-            if (Colour != ColourSelection)
-                Colour = ColourDefault;
-            
-            if (mouseRectangle.Intersects(Rectangle))
+            if (mouseRectangle.Intersects(Rectangle)) // Checks if mouse cursor is hovering over the box.
             {
-                if (Colour == ColourSelection)
-                    Colour = ColourSelection;
-                else
+                if (Colour != ColourSelection) // If a box is already selected, it will not change colour, even if the user hovers over it.
                     Colour = ColourHovering;
 
-                if (currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
-                {
+                if (currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed) // Checks if the user clicks the box.
                     Click?.Invoke(this, new EventArgs());
-                }
+            }
+            else
+            {
+                Colour = ColourDefault;
             }
         }
     }

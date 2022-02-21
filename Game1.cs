@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading;
 using Tank_Defence_Game.Objects;
-using Tank_Defence_Game.Controls;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -19,8 +18,6 @@ namespace Tank_Defence_Game
         public MainGame mainGame;
         public MainMenu mainMenu;
 
-        public Enemy EnemyTank;
-
         public static int windowWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width; // Gets the width of the screen.
         public static int windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height; // Gets the height of the screen.
 
@@ -34,7 +31,6 @@ namespace Tank_Defence_Game
 
         public bool GameRunning;
         public bool PlayerDefeated;
-        Btn playButton;
 
         public Game1()
         {
@@ -45,8 +41,6 @@ namespace Tank_Defence_Game
         
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             MediaPlayer.Volume = 0.07f; // Sets the engine sound volume (MotionSound).
             graphics.PreferredBackBufferWidth = windowWidth;
             graphics.PreferredBackBufferHeight = windowHeight;
@@ -68,14 +62,6 @@ namespace Tank_Defence_Game
                 Tanks[i, 10] = Content.Load<Texture2D>("Textures/" + Tanks[i,0] + "/profile");
             }
 
-            //playButton = new Btn(Content.Load<Texture2D>("Textures/button"), Content.Load<SpriteFont>("Fonts/File"))
-            //{
-            //    Position = new Vector2(windowWidth / 2, windowHeight * 0.85f),
-            //    ButtonText = "PLAY GAME",
-            //};
-
-            //playButton.Click += PlayButton_Click;
-
             LoadMenu();
         }
 
@@ -96,9 +82,6 @@ namespace Tank_Defence_Game
         {
             GameRunning = true;
             PlayerDefeated = false;
-
-            //EnemyTank = new Enemy(Content.Load<Texture2D>("Textures/" + Tanks[3,0] + " chassis"), Content.Load<Texture2D>("Textures/" + Tanks[3,0] + " turret"), (float)Tanks[3,6], (int)Tanks[3,4]);
-            //EnemyTank = new Enemy(Content.Load<Texture2D>("Textures/Pz. IV H chassis"), Content.Load<Texture2D>("Textures/Pz. IV H turret"), Content.Load<SpriteFont>("Fonts/File"), 3.5f, 400);
 
             mainGame = new MainGame(
                 this, GraphicsDevice,
@@ -169,8 +152,6 @@ namespace Tank_Defence_Game
 
             GraphicsDevice.Clear(backgroundColor);
 
-
-
             spriteBatch.Begin();
 
             if (!GameRunning)
@@ -178,29 +159,7 @@ namespace Tank_Defence_Game
             else
                 mainGame.Draw(gameTime);
 
-
-                //spriteBatch.DrawString(gameFont, "Screen Width: " + windowWidth.ToString() + ", Screen Height: " + windowHeight.ToString(), new Vector2(10, 10), Color.White);
-                //spriteBatch.DrawString(gameFont, "Tank Position: " + player.Position.ToString(), new Vector2(10, 30), Color.White);
-                //spriteBatch.DrawString(gameFont, "Cursor Position: " + Mouse.GetState().X + " " + Mouse.GetState().Y, new Vector2(10, 50), Color.White);
-                //spriteBatch.DrawString(gameFont, "Turret Rotation: " + Math.Round(MathHelper.ToDegrees(player.CurrentTurretAngle), 1) + " " + player.CurrentTurretAngle, new Vector2(10, 70), Color.White);
-                //spriteBatch.DrawString(gameFont, "Turret Target Angle: " + Math.Round(MathHelper.ToDegrees(player.TargetAngle), 1) + " " + player.TargetAngle, new Vector2(10, 90), Color.White);
-                //spriteBatch.DrawString(gameFont, "Use WASD keys to move tank", new Vector2(10, 400), Color.White);
-                //spriteBatch.DrawString(gameFont, "Press Esc to exit  " + Math.Abs(-180 - 90), new Vector2(10, 420), Color.White);
-                //spriteBatch.DrawString(gameFont, "Reloaded: " + player._reloaded, new Vector2(10, 440), Color.White);
-                //spriteBatch.DrawString(gameFont, "Distance to player: " + enemy.distanceToPlayer, new Vector2(10, 460), Color.White);
-                //spriteBatch.DrawString(gameFont, "Enemy count: " + enemies.Count, new Vector2(10, 480), Color.White);
-                ////if (player.Bounds(player.Rotation, new Vector2(Mouse.GetState().X, Mouse.GetState().Y)))
-                ////{
-                ////    spriteBatch.DrawString(gameFont, "Collision!", new Vector2(10, 500), Color.Red);
-                ////}
-                //spriteBatch.DrawString(gameFont, "Point 1: " + player.pointTopLeft, new Vector2(10, 540), Color.White);
-                //spriteBatch.DrawString(gameFont, "Point 2: " + player.pointTopRight, new Vector2(10, 560), Color.White);
-                //spriteBatch.DrawString(gameFont, "Point 3: " + player.pointBottomRight, new Vector2(10, 580), Color.White);
-                //spriteBatch.DrawString(gameFont, "Point 4: " + player.pointBottomLeft, new Vector2(10, 600), Color.White);
-
             spriteBatch.End();
-
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }

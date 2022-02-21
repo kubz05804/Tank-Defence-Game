@@ -10,7 +10,13 @@ namespace Tank_Defence_Game
 {
     public class MainMenu
     {
+        public bool Activated; // Activates the game when true. Can be triggered by either pressing ENTER or clicking the Play button.
+
+        public int VehicleSelection;
+        public int TabIndex;
+
         private Texture2D backgroundTexture;
+
         private Rectangle backgroundRectangle;
 
         private List<Box> boxes;
@@ -18,14 +24,11 @@ namespace Tank_Defence_Game
         private Box box2;
         private Box box3;
 
-        public int VehicleSelection;
-        public int TabIndex;
         private bool selected;
-        public bool Activated;
 
-        public SpriteFont SubtitleFont;
-        public SpriteFont TitleFont;
-        public SpriteFont DefaultFont;
+        private SpriteFont subtitleFont;
+        private SpriteFont titleFont;
+        private SpriteFont defaultFont;
         private string subtitle = "Choose your vehicle from the selection available below.";
 
         private Btn playButton;
@@ -33,7 +36,10 @@ namespace Tank_Defence_Game
         private KeyboardState currentKeyboardState;
         private KeyboardState previousKeyboardState;
 
-        public MainMenu(GraphicsDevice graphicsDevice, int windowWidth, int windowHeight, Texture2D button, SpriteFont defaultFont, SpriteFont subtitleFont, SpriteFont titleFont)
+        public MainMenu(GraphicsDevice graphicsDevice,
+            int windowWidth, int windowHeight,
+            Texture2D button,
+            SpriteFont DefaultFont, SpriteFont SubtitleFont, SpriteFont TitleFont)
         {
             Activated = false;
             selected = false;
@@ -63,6 +69,10 @@ namespace Tank_Defence_Game
             box2.Click += Box2_Click;
             box3.Click += Box3_Click;
 
+            subtitleFont = SubtitleFont;
+            titleFont = TitleFont;
+            defaultFont = DefaultFont;
+
             playButton = new Btn(button, subtitleFont)
             {
                 Position = new Vector2(windowWidth / 2, windowHeight * 0.85f),
@@ -71,10 +81,6 @@ namespace Tank_Defence_Game
             };
 
             playButton.Click += PlayButton_Click;
-
-            SubtitleFont = subtitleFont;
-            TitleFont = titleFont;
-            DefaultFont = defaultFont;
 
             TabIndex = -1;
         }
@@ -123,30 +129,6 @@ namespace Tank_Defence_Game
                     selected = true;
                     VehicleSelection = selectedBox.TankIndex;
 
-                    var prevIndex = TabIndex - 1;
-                    if (prevIndex < 0)
-                        prevIndex = 2;
-
-                    boxes[prevIndex].Colour = Box.ColourDefault;
-                    playButton.Available = true;
-                }
-            }
-
-            foreach (var box in boxes)
-            {
-                box.Update(gameTime);
-                if (TabIndex != -1)
-                {
-                    var selectedBox = boxes[TabIndex];
-                    selectedBox.Colour = Box.ColourSelection;
-                    selected = true;
-                    VehicleSelection = selectedBox.TankIndex;
-
-                    var prevIndex = TabIndex - 1;
-                    if (prevIndex < 0)
-                        prevIndex = 2;
-
-                    boxes[prevIndex].Colour = Box.ColourDefault;
                     playButton.Available = true;
                 }
             }
@@ -190,9 +172,6 @@ namespace Tank_Defence_Game
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(backgroundTexture, backgroundRectangle, Color.White);
-            //spriteBatch.DrawString(TitleFont, subtitle, new Vector2(
-            //    backgroundRectangle.X + (backgroundRectangle.Width / 2) - (SubtitleFont.MeasureString(subtitle).X / 2),
-            //    backgroundRectangle.Y + (backgroundRectangle.Height * 0.2f)), Color.White);
 
             foreach (var box in boxes)
             {
@@ -215,18 +194,18 @@ namespace Tank_Defence_Game
 
                 var textStart = (float)(box.Rectangle.Y + (box.Rectangle.Height * 0.02) + box.Image.Height);
 
-                spriteBatch.DrawString(TitleFont, tank, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (TitleFont.MeasureString(tank).X / 2), textStart), Color.White);
+                spriteBatch.DrawString(titleFont, tank, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (titleFont.MeasureString(tank).X / 2), textStart), Color.White);
 
-                spriteBatch.DrawString(SubtitleFont, labelCountry, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (SubtitleFont.MeasureString(labelCountry).X / 2), textStart + 60), Color.White);
-                spriteBatch.DrawString(DefaultFont, country, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (DefaultFont.MeasureString(country).X / 2), textStart + 80), Color.White);
-                spriteBatch.DrawString(SubtitleFont, labelSpeed, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (SubtitleFont.MeasureString(labelSpeed).X / 2), textStart + 120), Color.White);
-                spriteBatch.DrawString(DefaultFont, speed, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (DefaultFont.MeasureString(speed).X / 2), textStart + 140), Color.White);
-                spriteBatch.DrawString(SubtitleFont, labelFirepower, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (SubtitleFont.MeasureString(labelFirepower).X / 2), textStart + 180), Color.White);
-                spriteBatch.DrawString(DefaultFont, firepower, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (DefaultFont.MeasureString(firepower).X / 2), textStart + 200), Color.White);
-                spriteBatch.DrawString(SubtitleFont, labelHealth, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (SubtitleFont.MeasureString(labelHealth).X / 2), textStart + 240), Color.White);
-                spriteBatch.DrawString(DefaultFont, health, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (DefaultFont.MeasureString(health).X / 2), textStart + 260), Color.White);
-                spriteBatch.DrawString(SubtitleFont, labelType, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (SubtitleFont.MeasureString(labelType).X / 2), textStart + 300), Color.White);
-                spriteBatch.DrawString(DefaultFont, type, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (DefaultFont.MeasureString(type).X / 2), textStart + 320), Color.White);
+                spriteBatch.DrawString(subtitleFont, labelCountry, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (subtitleFont.MeasureString(labelCountry).X / 2), textStart + 60), Color.White);
+                spriteBatch.DrawString(defaultFont, country, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (defaultFont.MeasureString(country).X / 2), textStart + 80), Color.White);
+                spriteBatch.DrawString(subtitleFont, labelSpeed, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (subtitleFont.MeasureString(labelSpeed).X / 2), textStart + 120), Color.White);
+                spriteBatch.DrawString(defaultFont, speed, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (defaultFont.MeasureString(speed).X / 2), textStart + 140), Color.White);
+                spriteBatch.DrawString(subtitleFont, labelFirepower, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (subtitleFont.MeasureString(labelFirepower).X / 2), textStart + 180), Color.White);
+                spriteBatch.DrawString(defaultFont, firepower, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (defaultFont.MeasureString(firepower).X / 2), textStart + 200), Color.White);
+                spriteBatch.DrawString(subtitleFont, labelHealth, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (subtitleFont.MeasureString(labelHealth).X / 2), textStart + 240), Color.White);
+                spriteBatch.DrawString(defaultFont, health, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (defaultFont.MeasureString(health).X / 2), textStart + 260), Color.White);
+                spriteBatch.DrawString(subtitleFont, labelType, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (subtitleFont.MeasureString(labelType).X / 2), textStart + 300), Color.White);
+                spriteBatch.DrawString(defaultFont, type, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (defaultFont.MeasureString(type).X / 2), textStart + 320), Color.White);
             }
 
             playButton.Draw(gameTime, spriteBatch);

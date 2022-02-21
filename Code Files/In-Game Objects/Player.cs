@@ -14,56 +14,50 @@ namespace Tank_Defence_Game.Objects
         private MouseState currentMouseState;
         private MouseState previousMouseState;
 
-        private SpriteBatch spriteBatch;
-
         private float previousRotationAngle;
 
-        public SoundEffect ShotSound;
-        public SoundEffect ClickSound;
-        public SoundEffect ReloadSound;
-        public Song MotionSound;
-        public float TargetAngle;
+        private float targetAngle;
 
-        private int moveDirection;
-        private int score; public int Score { get; set; }
+        private bool armourBoostEquipped; public bool ArmourBoostEquipped { get { return armourBoostEquipped;  } set { armourBoostEquipped = value; } }
+        private bool camouflageNetEquipped; public bool CamouflageNetEquipped { get { return camouflageNetEquipped; } set { camouflageNetEquipped = value; } }
+
+        private int score; public int Score { get { return score; } set { score = value; } }
 
         public Player(Texture2D chassis, Texture2D turret, SpriteFont healthFont, int tankIndex, SpriteFont reloadingFont, SpriteBatch spriteBatchMainGame)
-            : base(chassis, turret, healthFont, tankIndex)
+            : base(chassis, turret, healthFont)
         {
             _reloadTime = (double)Game1.Tanks[tankIndex, 9];
-            InitialHealth = (int)Game1.Tanks[tankIndex, 4]; Health = InitialHealth;
+            _initialHealth = (int)Game1.Tanks[tankIndex, 4];
+            _health = _initialHealth;
             _firepower = (int)Game1.Tanks[tankIndex, 5];
-            spriteBatch = spriteBatchMainGame;
+            _velocity = (float)Game1.Tanks[tankIndex, 6];
+
             ReloadingFont = reloadingFont;
-            velocity = (float)Game1.Tanks[tankIndex, 6];
+
+            armourBoostEquipped = false;
+            CamouflageNetEquipped = false;
         }
 
         public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
         {
-            //timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
             previousMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
             if (!_reloaded)
             {
-                Timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+                _timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                if (Timer > _reloadTime * 1000)
+                if (_timer > _reloadTime * 1000)
                 {
                     _reloaded = true;
                     Sound.Reload.Play();
-                    Timer = 0;
+                    _timer = 0;
                 }
-
-                if (_reloadTime * 1000 - Timer < 1000)
-                    _zero = "0";
-                else
-                    _zero = "";
             }
 
             if (currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && _reloaded)
             {
-                missile.AddBullet(missiles, _turretDirection, Gunpoint, CurrentTurretAngle, false, _firepower);
+                missile.AddBullet(missiles, _turretDirection, _gunpoint, _currentTurretAngle, false, _firepower);
                 Sound.PlayerShot.Play(volume: 0.4f, pitch: 0, pan: 0);
 
                 _reloaded = false;
@@ -81,7 +75,7 @@ namespace Tank_Defence_Game.Objects
             _previousPosition = _currentPosition;
             _previousChassisDirection = _currentChassisDirection;
             _wasMoving = _isMoving;
-            previousRotationAngle = TargetAngle;
+            previousRotationAngle = targetAngle;
 
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
@@ -93,49 +87,49 @@ namespace Tank_Defence_Game.Objects
 
 
             _currentChassisDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - _chassisRotation), -(float)Math.Sin(MathHelper.ToRadians(90) - _chassisRotation)); // Chassis rotation direction
-            TargetAngle = (float)(Math.Atan2(Mouse.GetState().Y - _currentPosition.Y, Mouse.GetState().X - _currentPosition.X) + (MathF.PI / 2)); // Turret rotation angle
-            _turretDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - CurrentTurretAngle), -(float)Math.Sin(MathHelper.ToRadians(90) - CurrentTurretAngle));
+            targetAngle = (float)(Math.Atan2(Mouse.GetState().Y - _currentPosition.Y, Mouse.GetState().X - _currentPosition.X) + (MathF.PI / 2)); // Turret rotation angle
+            _turretDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - _currentTurretAngle), -(float)Math.Sin(MathHelper.ToRadians(90) - _currentTurretAngle));
 
-            if (TargetAngle != CurrentTurretAngle)
+            if (targetAngle != _currentTurretAngle)
             {
-                if (CurrentTurretAngle < TargetAngle)
+                if (_currentTurretAngle < targetAngle)
                 {
-                    if (Math.Abs(TargetAngle - CurrentTurretAngle) < MathF.PI)
-                        moveDirection = 1;
+                    if (Math.Abs(targetAngle - _currentTurretAngle) < MathF.PI)
+                        _moveDirection = 1;
                     else
-                        moveDirection = -1;
+                        _moveDirection = -1;
                 }
                 else
                 {
-                    if (Math.Abs(TargetAngle - CurrentTurretAngle) < MathF.PI)
-                        moveDirection = -1;
+                    if (Math.Abs(targetAngle - _currentTurretAngle) < MathF.PI)
+                        _moveDirection = -1;
                     else
-                        moveDirection = 1;
+                        _moveDirection = 1;
                 }
             }
 
-            CurrentTurretAngle += 0.05f * moveDirection;
+            _currentTurretAngle += 0.05f * _moveDirection;
 
-            if ((TargetAngle > CurrentTurretAngle - 0.055f && TargetAngle < CurrentTurretAngle + 0.055f))
+            if ((targetAngle > _currentTurretAngle - 0.055f && targetAngle < _currentTurretAngle + 0.055f))
             {
-                CurrentTurretAngle = TargetAngle;
+                _currentTurretAngle = targetAngle;
             }
 
-            if (CurrentTurretAngle >= 1.5 * MathF.PI)
-                CurrentTurretAngle = MathHelper.ToRadians(-90);
-            if (CurrentTurretAngle < -MathF.PI / 2)
-                CurrentTurretAngle = MathHelper.ToRadians(270);
+            if (_currentTurretAngle >= 1.5 * MathF.PI)
+                _currentTurretAngle = MathHelper.ToRadians(-90);
+            if (_currentTurretAngle < -MathF.PI / 2)
+                _currentTurretAngle = MathHelper.ToRadians(270);
 
-            Gunpoint = _currentPosition + _turretDirection * 100;
+            _gunpoint = _currentPosition + _turretDirection * 100;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.W) && WithinWindow(1, _currentPosition, _currentChassisDirection * velocity) && !Collision(1, player, enemies))
+            if (Keyboard.GetState().IsKeyDown(Keys.W) && WithinWindow(1, _currentPosition, _currentChassisDirection * _velocity) && !Collision(1, player, enemies))
             {
-                _currentPosition += _currentChassisDirection * velocity;
+                _currentPosition += _currentChassisDirection * _velocity;
             }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.S) && WithinWindow(-1, _currentPosition, _currentChassisDirection * velocity) && !Collision(-1, player, enemies))
+            if (Keyboard.GetState().IsKeyDown(Keys.S) && WithinWindow(-1, _currentPosition, _currentChassisDirection * _velocity) && !Collision(-1, player, enemies))
             {
-                _currentPosition -= _currentChassisDirection * velocity;
+                _currentPosition -= _currentChassisDirection * _velocity;
             }
 
 
