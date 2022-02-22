@@ -161,7 +161,7 @@ namespace Tank_Defence_Game
             {
                 powerUpTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-                if (powerUpTimer > 10)
+                if (powerUpTimer > 10 || powerUpTimer > 1 && powerUpCurrentlyInUse == "Health Boost") // Resets timer if it reaches 10 seconds or if the power up is a health boost.
                 {
                     powerUpTimer = 0;
                     PowerUpClear();
