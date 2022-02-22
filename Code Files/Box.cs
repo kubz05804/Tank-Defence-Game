@@ -30,8 +30,8 @@ namespace Tank_Defence_Game
             Texture = new Texture2D(graphicsDevice, 1, 1);
             Texture.SetData(new Color[] { Color.White });
 
-            Rectangle = new Rectangle(xPosition, container.Y + ySpacing, width, height);
-            Image = new Rectangle(Rectangle.X + 10, Rectangle.Y + 10, Rectangle.Width - 20, (int)(Rectangle.Height * 0.3f));
+            Rectangle = new Rectangle(xPosition, container.Y + ySpacing, width, height); // Establishes dimensions of the box.
+            Image = new Rectangle(Rectangle.X + 10, Rectangle.Y + 10, Rectangle.Width - 20, (int)(Rectangle.Height * 0.3f)); // Establishes the dimensions of the profile image of the tank.
 
             TankIndex = tankIndex;
         }

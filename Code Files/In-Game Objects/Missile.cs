@@ -65,7 +65,7 @@ namespace Tank_Defence_Game.Objects
                     Sound.Collision.Play(volume: 0.3f, pitch: 0, pan: 0);
                     if (!player.ArmourBoostEquipped)
                         player.Health -= damage;
-                    if (player.Health <= 0)
+                    if (player.Health < 0)
                         player.Health = 0;
                 }
             }
@@ -80,7 +80,7 @@ namespace Tank_Defence_Game.Objects
                         player.Score += 50;
                         enemyTank.Health -= damage;
 
-                        if (enemyTank.Health <= 0)
+                        if (enemyTank.Health < 0)
                             enemyTank.Health = 0;
                     }
                 }

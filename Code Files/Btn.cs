@@ -4,18 +4,19 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Content;
 
 namespace Tank_Defence_Game
 {
     public class Btn
     {
-        public string ButtonText;
-        public Vector2 Position;
-
         public event EventHandler Click;
 
         public bool Clicked;
         public bool Available;
+
+        private string buttonText;
+        private Vector2 position;
 
         private MouseState currentMouseState;
         private MouseState previousMouseState;
@@ -24,18 +25,22 @@ namespace Tank_Defence_Game
         private SpriteFont font;
 
         private bool hovering;
+        private Rectangle mouseRectangle;
 
-
-        public Btn(Texture2D texture, SpriteFont Font)
+        public Btn(Texture2D texture, SpriteFont buttonFont, string text, bool availability, float x, float y)
         {
-            buttonTexture = texture; font = Font;
+            buttonTexture = texture;
+            font = buttonFont;
+            position = new Vector2(x, y);
+            buttonText = text;
+            Available = availability;
         }
 
         public Rectangle ButtonBounds
         {
             get
             {
-                return new Rectangle((int)Position.X - buttonTexture.Width / 2, (int)Position.Y - buttonTexture.Height / 2, buttonTexture.Width, buttonTexture.Height);
+                return new Rectangle((int)position.X - buttonTexture.Width / 2, (int)position.Y - buttonTexture.Height / 2, buttonTexture.Width, buttonTexture.Height); // Establishes dimensions of the button.
             }
         }
 
@@ -44,7 +49,7 @@ namespace Tank_Defence_Game
             previousMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
-            var mouseRectangle = new Rectangle(currentMouseState.X, currentMouseState.Y, 1, 1);
+            mouseRectangle = new Rectangle(currentMouseState.X, currentMouseState.Y, 1, 1);
 
             hovering = false;
 
@@ -52,7 +57,7 @@ namespace Tank_Defence_Game
             {
                 hovering = true;
 
-                if (currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed)
+                if (currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed) // Checks if the user has clicked the button.
                 {
                     Click?.Invoke(this, new EventArgs());
                 }
@@ -70,11 +75,11 @@ namespace Tank_Defence_Game
 
                 spriteBatch.Draw(buttonTexture, ButtonBounds, colour);
 
-                if (!string.IsNullOrEmpty(ButtonText)) // Checks if button text is empty.
+                if (!string.IsNullOrEmpty(buttonText)) // Checks if button text is empty.
                 {
-                    spriteBatch.DrawString(font, ButtonText, new Vector2(
-                        (ButtonBounds.X + (ButtonBounds.Width / 2)) - (font.MeasureString(ButtonText).X / 2),
-                        (ButtonBounds.Y + (ButtonBounds.Height / 2)) - (font.MeasureString(ButtonText).Y / 2)),
+                    spriteBatch.DrawString(font, buttonText, new Vector2(
+                        (ButtonBounds.X + (ButtonBounds.Width / 2)) - (font.MeasureString(buttonText).X / 2),
+                        (ButtonBounds.Y + (ButtonBounds.Height / 2)) - (font.MeasureString(buttonText).Y / 2)),
                         Color.White); // Aligns button text in the middle of the button.
                 }
             }

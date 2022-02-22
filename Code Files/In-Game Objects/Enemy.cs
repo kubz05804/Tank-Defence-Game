@@ -22,16 +22,10 @@ namespace Tank_Defence_Game.Objects
 
         private Random random = new Random();
 
-        public Enemy(Texture2D chassis, Texture2D turret, SpriteFont healthFont, int tankIndex)
-            : base(chassis, turret, healthFont)
+        public Enemy(int tankIndex)
+            : base(tankIndex)
         {
-            _reloadTime = (double)Game1.Tanks[tankIndex, 9];
-            _initialHealth = (int)Game1.Tanks[tankIndex, 4];
-            _health = _initialHealth;
-            _firepower = (int)Game1.Tanks[tankIndex, 5];
-            Origin = new Vector2(chassis.Width / 2, chassis.Height - 80);
-            TurretOrigin = new Vector2(turret.Width / 2, turret.Height - 60);
-            _velocity = (float)Game1.Tanks[tankIndex, 6];
+            _enemy = true;
         }
 
         public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)

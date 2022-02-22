@@ -55,47 +55,40 @@
 /processorParam:Quality=Best
 /build:Audio/shotSound.wav
 
-#begin Fonts/default.spritefont
+#begin Fonts/font10.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts/default.spritefont
+/build:Fonts/font10.spritefont
 
-#begin Fonts/File.spritefont
+#begin Fonts/font12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts/File.spritefont
+/build:Fonts/font12.spritefont
 
-#begin Fonts/gameFont.spritefont
+#begin Fonts/font14.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts/gameFont.spritefont
+/build:Fonts/font14.spritefont
 
-#begin Fonts/GameOver.spritefont
+#begin Fonts/font20.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts/GameOver.spritefont
+/build:Fonts/font20.spritefont
 
-#begin Fonts/subtitle.spritefont
+#begin Fonts/font50.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts/subtitle.spritefont
-
-#begin Fonts/title.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/title.spritefont
+/build:Fonts/font50.spritefont
 
 #begin Textures/button.png
 /importer:TextureImporter

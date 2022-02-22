@@ -4,38 +4,36 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/click.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/destroy.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/hit.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/motion.mp3</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/reload.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/shot2.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/shotSound.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/default.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/File.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/gameFont.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/GameOver.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/subtitle.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/title.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/button.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Churchill VII/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Churchill VII/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Churchill VII/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Cruiser IV/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Cruiser IV/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Cruiser IV/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/M4A3E8 'Fury'/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/M4A3E8 'Fury'/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/M4A3E8 'Fury'/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/missile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Pz. IV H/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Pz. IV H/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Pz. IV H/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/turret.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Audio/click.wav</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Audio/destroy.wav</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Audio/hit.wav</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Audio/motion.mp3</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Audio/reload.wav</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Audio/shot2.wav</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Audio/shotSound.wav</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Fonts/font10.spritefont</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Fonts/font12.spritefont</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Fonts/font14.spritefont</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Fonts/font20.spritefont</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Fonts/font50.spritefont</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/button.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/chassis.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/Churchill VII/chassis.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/Churchill VII/profile.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/Churchill VII/turret.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/Cruiser IV/chassis.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/Cruiser IV/profile.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/Cruiser IV/turret.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/M4A3E8 'Fury'/chassis.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/M4A3E8 'Fury'/profile.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/M4A3E8 'Fury'/turret.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/missile.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/Pz. IV H/chassis.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/Pz. IV H/profile.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/Pz. IV H/turret.png</File>
+    <File>C:/Users/kuba0/OneDrive - Altus Education Partnership/Documents/A Level Computer Science/Tank Defence Game/Content/Textures/turret.png</File>
   </SourceFiles>
   <DestFiles>
-    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

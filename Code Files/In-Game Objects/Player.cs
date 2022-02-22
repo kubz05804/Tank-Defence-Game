@@ -23,16 +23,12 @@ namespace Tank_Defence_Game.Objects
 
         private int score; public int Score { get { return score; } set { score = value; } }
 
-        public Player(Texture2D chassis, Texture2D turret, SpriteFont healthFont, int tankIndex, SpriteFont reloadingFont, SpriteBatch spriteBatchMainGame)
-            : base(chassis, turret, healthFont)
+        public Player(int tankIndex)
+            : base(tankIndex)
         {
-            _reloadTime = (double)Game1.Tanks[tankIndex, 9];
-            _initialHealth = (int)Game1.Tanks[tankIndex, 4];
-            _health = _initialHealth;
-            _firepower = (int)Game1.Tanks[tankIndex, 5];
-            _velocity = (float)Game1.Tanks[tankIndex, 6];
+            _currentPosition = new Vector2(Game1.windowWidth / 2, Game1.windowHeight / 2);
 
-            ReloadingFont = reloadingFont;
+            _enemy = false;
 
             armourBoostEquipped = false;
             CamouflageNetEquipped = false;

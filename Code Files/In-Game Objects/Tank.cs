@@ -6,16 +6,16 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Content;
 
 namespace Tank_Defence_Game.Objects
 {
     public class Tank
     {
-        public Texture2D Chassis;
-        public Texture2D Turret;
+        protected Texture2D _chassis; public Texture2D Chassis { get { return _chassis; } }
+        protected Texture2D _turret; public Texture2D Turret { get { return _turret; } }
 
-        public SpriteFont HealthFont;
-        public SpriteFont ReloadingFont;
+        protected SpriteFont _font12;
 
         protected Vector2 _origin; public Vector2 Origin { set { _origin = value; } }
         protected Vector2 _turretOrigin; public Vector2 TurretOrigin { set { _turretOrigin = value; } }
@@ -44,16 +44,26 @@ namespace Tank_Defence_Game.Objects
         protected bool _wasMoving;
         protected bool _enemy;
 
-        public Tank(Texture2D chassis, Texture2D turret, SpriteFont healthFont)
+        public Tank(int tankIndex)
         {
-            Chassis = chassis;
-            Turret = turret;
-            HealthFont = healthFont;
+            _chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 0] + "/chassis");
+            _turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 0] + "/turret");
+            _font12 = MainGame.Content.Load<SpriteFont>("Fonts/font12");
+
+            _initialHealth = (int)Game1.Tanks[tankIndex, 4];
+            _firepower = (int)Game1.Tanks[tankIndex, 5];
+            _velocity = (float)Game1.Tanks[tankIndex, 6];
+            _reloadTime = (double)Game1.Tanks[tankIndex, 9];
+
+            _origin = new Vector2(_chassis.Width / 2, _chassis.Height - (int)Game1.Tanks[tankIndex, 7]);
+            _turretOrigin = new Vector2(_turret.Width / 2, _turret.Height - (int)Game1.Tanks[tankIndex, 8]);
+
+            _health = _initialHealth;
         }
 
         public virtual void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
         {
-
+            
         }
 
         protected bool Collision(int direction, Player player, List<Enemy> enemies)
@@ -65,7 +75,7 @@ namespace Tank_Defence_Game.Objects
 
             if (_enemy)
             {
-                if (Vector2.Distance(position, player.Position) <= player.Chassis.Height / 2)
+                if (Vector2.Distance(position, player.Position) <= player._chassis.Height / 2)
                 {
                     return true;
                 }
@@ -73,7 +83,7 @@ namespace Tank_Defence_Game.Objects
 
             foreach (var enemy in enemies)
             {
-                if (Vector2.Distance(position, enemy.Position) <= enemy.Chassis.Height && Vector2.Distance(position, enemy.Position) > 10)
+                if (Vector2.Distance(position, enemy.Position) <= enemy._chassis.Height && Vector2.Distance(position, enemy.Position) > 10)
                 {
                     return true;
                 }
@@ -84,8 +94,8 @@ namespace Tank_Defence_Game.Objects
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Chassis, _currentPosition, null, Color.White, _chassisRotation, _origin, 1, SpriteEffects.None, 0f);
-            spriteBatch.Draw(Turret, _currentPosition, null, Color.White, _currentTurretAngle, _turretOrigin, 1, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_chassis, _currentPosition, null, Color.White, _chassisRotation, _origin, 1, SpriteEffects.None, 0f);
+            spriteBatch.Draw(_turret, _currentPosition, null, Color.White, _currentTurretAngle, _turretOrigin, 1, SpriteEffects.None, 0f);
 
             if (!_reloaded && !_enemy)
             {
@@ -94,11 +104,11 @@ namespace Tank_Defence_Game.Objects
                 if (reloadTimeLeft < 1)
                     zero = "0";
 
-                spriteBatch.DrawString(ReloadingFont, "Reloading!", new Vector2(Position.X + 100, Position.Y - 50), Color.Red);
-                spriteBatch.DrawString(ReloadingFont, zero + reloadTimeLeft.ToString("#.#") + "s left", new Vector2(Position.X + 100, Position.Y - 30), Color.Red);
+                spriteBatch.DrawString(_font12, "Reloading!", new Vector2(Position.X + 100, Position.Y - 50), Color.Red);
+                spriteBatch.DrawString(_font12, zero + reloadTimeLeft.ToString("#.#") + "s left", new Vector2(Position.X + 100, Position.Y - 30), Color.Red);
             }
 
-            spriteBatch.DrawString(HealthFont, Health + "/" + InitialHealth, new Vector2(Position.X - 100, Position.Y - 100), Color.Red);
+            spriteBatch.DrawString(_font12, Health + "/" + InitialHealth, new Vector2(Position.X - 100, Position.Y - 100), Color.Red);
         }
     }
 }
