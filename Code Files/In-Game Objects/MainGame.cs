@@ -26,7 +26,9 @@ namespace Tank_Defence_Game
         private List<Missile> missiles;
         private List<Enemy> enemies;
 
+        public bool Running;
         public bool Restart; // Indicates whether the player has chosen to restart the game.
+        public bool PlayerDefeated;
 
         private PowerUpStack powerUpsInStore; // Creates a stack to store power ups available to the player (max 2).
         private PowerUpMessage powerUp; // Creates an instance of a power up message.
@@ -39,8 +41,6 @@ namespace Tank_Defence_Game
         private SpriteFont font14;
         private SpriteFont font20;
         private SpriteFont font50;
-
-        private bool firstEnemy;
 
         private SpriteBatch spriteBatch;
         
@@ -58,7 +58,6 @@ namespace Tank_Defence_Game
         private KeyboardState previousKeyboardState;
         private KeyboardState currentKeyboardState;
 
-        private bool playerDefeated; public bool PlayerDefeated { get { return playerDefeated; } set { playerDefeated = value; } }
 
         public MainGame(
             Game1 game,
@@ -82,7 +81,6 @@ namespace Tank_Defence_Game
             enemy = new Enemy(3);
 
             playerTank = playerTankSelection;
-            playerDefeated = false;
 
             restartButton = new Btn(Content.Load<Texture2D>("Textures/button"), font12, "RESTART", true, windowWidth / 2, windowHeight * 0.65f);
             exitButton = new Btn(Content.Load<Texture2D>("Textures/button"), font12, "EXIT", true, windowWidth / 2, windowHeight * 0.7f);
@@ -92,7 +90,7 @@ namespace Tank_Defence_Game
 
             Game = game;
             Restart = false;
-            firstEnemy = true;
+            PlayerDefeated = false;
 
             currentSpawnRate = initialSpawnRate;
 
@@ -126,7 +124,7 @@ namespace Tank_Defence_Game
             {
                 restartButton.Update(gameTime);
                 exitButton.Update(gameTime);
-                playerDefeated = true;
+                PlayerDefeated = true;
                 Sound.MotionStop();
                 return;
             }
@@ -142,13 +140,11 @@ namespace Tank_Defence_Game
 
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (timer > currentSpawnRate || timer > 5 && firstEnemy)
+            if (timer > currentSpawnRate || timer > 5 && enemies.Count == 0) 
             {
                 currentSpawnRate = (float)Math.Pow(currentSpawnRate, 0.99);
                 enemy.Spawn(enemies);
                 timer = 0;
-                if (firstEnemy)
-                    firstEnemy = false;
             }
 
             if (powerUp.IsAvailable)
@@ -276,7 +272,7 @@ namespace Tank_Defence_Game
                 enemy.Draw(spriteBatch);
             player.Draw(spriteBatch);
 
-            if (playerDefeated)
+            if (PlayerDefeated)
             {
                 var gameOverMessage = "GAME OVER";
                 spriteBatch.DrawString(font50, gameOverMessage, new Vector2(Game1.windowWidth / 2 - (font50.MeasureString(gameOverMessage).X / 2), Game1.windowHeight / 2 - 100), Color.Red);

@@ -10,7 +10,6 @@ namespace Tank_Defence_Game
     {
         private Vector2 position; public Vector2 Position { get { return position; } }
         private string message = "POWER UP"; public string Message { get { return message; } }
-        private string powerUp; public string PowerUp { get { return powerUp; } }
         private bool isAvailable = false; public bool IsAvailable { get { return isAvailable; } set { isAvailable = value; } }
         
 

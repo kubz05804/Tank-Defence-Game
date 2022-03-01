@@ -25,12 +25,11 @@ namespace Tank_Defence_Game
         {   // Model/Name | Type | Country | Year | HP | FP | Speed | Origin Spacing | Turret Origin Spacing | Reload Time | Profile Image | Type
             { "Cruiser IV"   ,"Light" ,"Britain","1941",400  ,100 ,4.5f  ,90      ,105            ,2.5          , null , "Light"},
             { "M4A3E8 'Fury'","Medium","USA"    ,"1940",600  ,150 ,4.0f  ,70      ,40             ,3.0          , null , "Medium"},
-            { "Churchill VII","Heavy" ,"Britain","1942",1000 ,200 ,2.0f  ,79      ,90             ,3.5          , null , "Heavy"},
+            { "Churchill VII","Heavy" ,"Britain","1942",1000 ,200 ,2.4f  ,79      ,90             ,3.5          , null , "Heavy"},
             { "Pz. IV H"     ,"Medium","Germany","1939",400  ,120 ,3.5f  ,80      ,60             ,3.5          , null , "Medium"} // 60 90
         };
 
-        public bool GameRunning;
-        public bool PlayerDefeated;
+        private bool gameIsRunning;
 
         public Game1()
         {
@@ -54,8 +53,7 @@ namespace Tank_Defence_Game
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            GameRunning = false;
-            PlayerDefeated = false;
+            gameIsRunning = false;
 
             for (int i = 0; i <= 2; i++)
             {
@@ -88,8 +86,7 @@ namespace Tank_Defence_Game
 
         private void LaunchGame()
         {
-            GameRunning = true;
-            PlayerDefeated = false;
+            gameIsRunning = true;
 
             // Creates a new instance of the game.
             mainGame = new MainGame(
@@ -101,7 +98,7 @@ namespace Tank_Defence_Game
                 spriteBatch);
 
             // Loads the sounds.
-            Sound.Click = Content.Load<SoundEffect>("Audio/Click");
+            Sound.Click = Content.Load<SoundEffect>("Audio/click");
             Sound.Collision = Content.Load<SoundEffect>("Audio/hit");
             Sound.Destruction = Content.Load<SoundEffect>("Audio/destroy");
             Sound.EnemyShot = Content.Load<SoundEffect>("Audio/shot2");
@@ -117,7 +114,7 @@ namespace Tank_Defence_Game
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            if (GameRunning) // Checks if game is running
+            if (gameIsRunning) // Checks if game is running
             {
                 mainGame.Update(gameTime);
                 if (mainGame.Restart) // Checks if the Restart option has been chosen.
@@ -140,7 +137,7 @@ namespace Tank_Defence_Game
         {
             var backgroundColor = Color.LightGray;
 
-            if (mainGame != null && GameRunning)
+            if (gameIsRunning)
             {
                 if (mainGame.PlayerDefeated)
                     backgroundColor = Color.Orange;
@@ -151,7 +148,7 @@ namespace Tank_Defence_Game
 
             spriteBatch.Begin();
 
-            if (!GameRunning)
+            if (!gameIsRunning)
                 mainMenu.Draw(gameTime, spriteBatch);
             else
                 mainGame.Draw(gameTime);

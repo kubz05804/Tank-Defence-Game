@@ -14,10 +14,7 @@ namespace Tank_Defence_Game.Objects
     {
         private float followDistance = 450f;
 
-        private static Vector2 playerPosition;
-
         private bool currentlyFacingPlayer = true;
-        private bool previouslyFacingPlayer;
         private bool playerInSight;
 
         private Random random = new Random();
@@ -30,8 +27,7 @@ namespace Tank_Defence_Game.Objects
 
         public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
         {
-            playerPosition = player.Position;
-            previouslyFacingPlayer = currentlyFacingPlayer;
+            var playerPosition = player.Position;
 
             if (!player.CamouflageNetEquipped)
             {
@@ -50,21 +46,20 @@ namespace Tank_Defence_Game.Objects
                     Motion(playerPosition);
             }
 
-            if (_reloaded && !player.CamouflageNetEquipped && playerInSight)
-            {
-                missile.AddBullet(missiles, _turretDirection, _gunpoint, _currentTurretAngle, true, _firepower);
-                Sound.EnemyShot.Play();
-                _reloaded = false;
-            }
-            else
-            {
+            if (!_reloaded)
                 _timer += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
 
-                if (_timer > _reloadTime * 1000)
-                {
-                    _reloaded = true;
-                    _timer = 0;
-                }
+            if (_timer > _reloadTime * 1000)
+            {
+                _reloaded = true;
+                _timer = 0;
+            }
+
+            if (_reloaded && !player.CamouflageNetEquipped && playerInSight)
+            {
+                missile.AddMissile(missiles, _turretDirection, _gunpoint, _currentTurretAngle, true, _firepower);
+                Sound.EnemyShot.Play();
+                _reloaded = false;
             }
         }
 
@@ -90,7 +85,7 @@ namespace Tank_Defence_Game.Objects
             }
 
             enemy._currentPosition = new Vector2(x, y);
-            enemy._velocity = 3f;
+            enemy._velocity = _velocity;
             enemy._enemy = true;
 
             enemies.Add(enemy);
@@ -140,7 +135,7 @@ namespace Tank_Defence_Game.Objects
         {
             var targetChassisAngle = (float)Math.Atan2(playerPosition.Y - _currentPosition.Y, playerPosition.X - _currentPosition.X) + MathHelper.ToRadians(90);
 
-            if ((targetChassisAngle > _chassisRotation - 0.055f && targetChassisAngle < _chassisRotation + 0.055f))
+            if ((targetChassisAngle > _chassisRotation - 0.055f && targetChassisAngle < _chassisRotation + 0.055f)) // If angle is very close to the target angle, the current angle will be set to the target angle to prevent the algorithm from skipping the target angle.
             {
                 _chassisRotation = targetChassisAngle;
             }

@@ -41,7 +41,7 @@ namespace Tank_Defence_Game.Objects
             MissileCollision(enemies, player);
         }
 
-        public void AddBullet(List<Missile> missiles, Vector2 direction, Vector2 origin, float rotation, bool enemy, int damage)
+        public void AddMissile(List<Missile> missiles, Vector2 direction, Vector2 origin, float rotation, bool enemy, int damage)
         {
             var missile = Clone() as Missile;
             missile.direction = direction;
@@ -65,7 +65,7 @@ namespace Tank_Defence_Game.Objects
                     Sound.Collision.Play(volume: 0.3f, pitch: 0, pan: 0);
                     if (!player.ArmourBoostEquipped)
                         player.Health -= damage;
-                    if (player.Health < 0)
+                    if (player.Health < 0) // Prevents player health from going below zero.
                         player.Health = 0;
                 }
             }

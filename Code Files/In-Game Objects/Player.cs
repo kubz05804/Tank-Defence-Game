@@ -14,10 +14,6 @@ namespace Tank_Defence_Game.Objects
         private MouseState currentMouseState;
         private MouseState previousMouseState;
 
-        private float previousRotationAngle;
-
-        private float targetAngle;
-
         private bool armourBoostEquipped; public bool ArmourBoostEquipped { get { return armourBoostEquipped;  } set { armourBoostEquipped = value; } }
         private bool camouflageNetEquipped; public bool CamouflageNetEquipped { get { return camouflageNetEquipped; } set { camouflageNetEquipped = value; } }
 
@@ -53,7 +49,7 @@ namespace Tank_Defence_Game.Objects
 
             if (currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && _reloaded)
             {
-                missile.AddBullet(missiles, _turretDirection, _gunpoint, _currentTurretAngle, false, _firepower);
+                missile.AddMissile(missiles, _turretDirection, _gunpoint, _currentTurretAngle, false, _firepower);
                 Sound.PlayerShot.Play(volume: 0.4f, pitch: 0, pan: 0);
 
                 _reloaded = false;
@@ -71,7 +67,6 @@ namespace Tank_Defence_Game.Objects
             _previousPosition = _currentPosition;
             _previousChassisDirection = _currentChassisDirection;
             _wasMoving = _isMoving;
-            previousRotationAngle = targetAngle;
 
 
             if (Keyboard.GetState().IsKeyDown(Keys.D))
@@ -80,10 +75,8 @@ namespace Tank_Defence_Game.Objects
             if (Keyboard.GetState().IsKeyDown(Keys.A))
                 _chassisRotation -= _rotationVelocity;
 
-
-
             _currentChassisDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - _chassisRotation), -(float)Math.Sin(MathHelper.ToRadians(90) - _chassisRotation)); // Chassis rotation direction
-            targetAngle = (float)(Math.Atan2(Mouse.GetState().Y - _currentPosition.Y, Mouse.GetState().X - _currentPosition.X) + (MathF.PI / 2)); // Turret rotation angle
+            var targetAngle = (float)(Math.Atan2(Mouse.GetState().Y - _currentPosition.Y, Mouse.GetState().X - _currentPosition.X) + (MathF.PI / 2)); // Turret rotation angle
             _turretDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - _currentTurretAngle), -(float)Math.Sin(MathHelper.ToRadians(90) - _currentTurretAngle));
 
             if (targetAngle != _currentTurretAngle)

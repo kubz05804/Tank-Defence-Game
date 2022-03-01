@@ -117,7 +117,7 @@ namespace Tank_Defence_Game
             if (TabIndex > 2)
                 TabIndex = 0;
 
-            foreach (var box in boxes)
+            foreach (var box in boxes) 
             {
                 box.Update(gameTime);
                 if (TabIndex != -1)
