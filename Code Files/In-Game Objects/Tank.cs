@@ -25,6 +25,7 @@ namespace Tank_Defence_Game.Objects
         protected Vector2 _previousChassisDirection;
         protected Vector2 _turretDirection;
         protected Vector2 _gunpoint;
+        protected Vector2 _pointerPosition;
 
         protected int _firepower; public int Firepower { get { return _firepower; } set { _firepower = value; } }
         protected int _health; public int Health { get { return _health; } set { _health = value; } }
@@ -92,23 +93,37 @@ namespace Tank_Defence_Game.Objects
             return false;
         }
 
-        public virtual void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
         {
             spriteBatch.Draw(_chassis, _currentPosition, null, Color.White, _chassisRotation, _origin, 1, SpriteEffects.None, 0f);
             spriteBatch.Draw(_turret, _currentPosition, null, Color.White, _currentTurretAngle, _turretOrigin, 1, SpriteEffects.None, 0f);
 
-            if (!_reloaded && !_enemy)
-            {
-                var zero = "";
-                var reloadTimeLeft = ((_reloadTime * 1000) - _timer) / 1000;
-                if (reloadTimeLeft < 1)
-                    zero = "0";
+            
+            var texture = new Texture2D(graphicsDevice, 1, 1);
+            texture.SetData(new Color[] { Color.White });
 
-                spriteBatch.DrawString(_font12, "Reloading!", new Vector2(Position.X + 100, Position.Y - 50), Color.Red);
-                spriteBatch.DrawString(_font12, zero + reloadTimeLeft.ToString("#.#") + "s left", new Vector2(Position.X + 100, Position.Y - 30), Color.Red);
+            var colour = Color.Red;
+
+            if (!_enemy)
+            {
+                colour = Color.Green;
+
+                spriteBatch.Draw(texture, new Rectangle((int)_pointerPosition.X - 2, (int)_pointerPosition.Y - 2, 5, 5), Color.Black);
+
+                if (!_reloaded)
+                {
+                    var zero = "";
+                    var reloadTimeLeft = ((_reloadTime * 1000) - _timer) / 1000;
+                    if (reloadTimeLeft < 1)
+                        zero = "0";
+
+
+                    spriteBatch.DrawString(_font12, "Reloading!", _pointerPosition + new Vector2(5, -30), Color.Red);
+                    spriteBatch.DrawString(_font12, zero + reloadTimeLeft.ToString("#.#") + "s left", _pointerPosition + new Vector2(20, -10), Color.Red);
+                }
             }
 
-            spriteBatch.DrawString(_font12, Health + "/" + InitialHealth, new Vector2(Position.X - 100, Position.Y - 100), Color.Red);
+            spriteBatch.DrawString(_font12, Health + "/" + InitialHealth, new Vector2(Position.X - 100, Position.Y - 100), colour);
         }
     }
 }

@@ -111,6 +111,12 @@ namespace Tank_Defence_Game
             previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
 
+            if (currentKeyboardState.IsKeyDown(Keys.E) && previousKeyboardState.IsKeyUp(Keys.E))
+            {
+                VehicleSelection = 3;
+                playButton.Available = true;
+            }
+
             if (currentKeyboardState.IsKeyDown(Keys.Tab) && previousKeyboardState.IsKeyUp(Keys.Tab))
                 TabIndex++;
 

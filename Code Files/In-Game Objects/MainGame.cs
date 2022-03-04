@@ -15,6 +15,8 @@ namespace Tank_Defence_Game
     {
         public Random Random = new Random();
 
+        private GraphicsDevice graphicsDevice;
+
         public Game1 Game;
 
         public static ContentManager Content;
@@ -29,6 +31,7 @@ namespace Tank_Defence_Game
         public bool Running;
         public bool Restart; // Indicates whether the player has chosen to restart the game.
         public bool PlayerDefeated;
+        public bool Paused;
 
         private PowerUpStack powerUpsInStore; // Creates a stack to store power ups available to the player (max 2).
         private PowerUpMessage powerUp; // Creates an instance of a power up message.
@@ -53,6 +56,8 @@ namespace Tank_Defence_Game
         private Btn restartButton;
         private Btn exitButton;
 
+        private Texture2D boxTexture;
+
         private int killCount;
 
         private KeyboardState previousKeyboardState;
@@ -61,11 +66,13 @@ namespace Tank_Defence_Game
 
         public MainGame(
             Game1 game,
+            GraphicsDevice GraphicsDevice,
             ContentManager content,
             int windowWidth, int windowHeight, int playerTankSelection,
             SpriteBatch SpriteBatch)
         {
             Content = content;
+            graphicsDevice = GraphicsDevice;
             spriteBatch = SpriteBatch;
             font12 = Content.Load<SpriteFont>("Fonts/font12");
             font14 = Content.Load<SpriteFont>("Fonts/font14");
@@ -91,6 +98,7 @@ namespace Tank_Defence_Game
             Game = game;
             Restart = false;
             PlayerDefeated = false;
+            Paused = false;
 
             currentSpawnRate = initialSpawnRate;
 
@@ -100,6 +108,9 @@ namespace Tank_Defence_Game
             powerUpsInStore = new PowerUpStack();
 
             powerUpCurrentlyInUse = "None";
+
+            boxTexture = new Texture2D(graphicsDevice, 1, 1);
+            boxTexture.SetData(new Color[] { Color.White });
         }
 
         private void ExitButton_Click(object sender, EventArgs e)
@@ -119,6 +130,21 @@ namespace Tank_Defence_Game
 
             if (currentKeyboardState.IsKeyDown(Keys.Space) && previousKeyboardState.IsKeyUp(Keys.Space) && powerUpCurrentlyInUse == "None")
                 PowerUpEquip();
+
+            if (currentKeyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape) && !PlayerDefeated)
+            {
+                if (Paused)
+                    Paused = false;
+                else
+                    Paused = true;
+            }
+
+            if (Paused)
+            {
+                restartButton.Update(gameTime);
+                exitButton.Update(gameTime);
+                return;
+            }
 
             if (player.Health <= 0) // Checks if player is dead.
             {
@@ -265,45 +291,80 @@ namespace Tank_Defence_Game
         }
 
         public void Draw(GameTime gameTime)
-        {        
-            foreach (var missile in missiles)
-                missile.Draw(spriteBatch);
-            foreach (var enemy in enemies)
-                enemy.Draw(spriteBatch);
-            player.Draw(spriteBatch);
-
-            if (PlayerDefeated)
-            {
-                var gameOverMessage = "GAME OVER";
-                spriteBatch.DrawString(font50, gameOverMessage, new Vector2(Game1.windowWidth / 2 - (font50.MeasureString(gameOverMessage).X / 2), Game1.windowHeight / 2 - 100), Color.Red);
-
-                restartButton.Draw(gameTime, spriteBatch);
-                exitButton.Draw(gameTime, spriteBatch);
-            }
-
-            var yourScore = "YOUR SCORE";
-
+        {
             if (powerUp.IsAvailable)
             {
+                spriteBatch.Draw(boxTexture, new Rectangle((int)(powerUp.Position.X - (font12.MeasureString("POWER UP AVAILABLE").X / 2) - 20), (int)powerUp.Position.Y - 30, (int)font12.MeasureString("POWER UP AVAILABLE").X + 40, 40), Color.Orange);
                 spriteBatch.DrawString(font12, "POWER UP AVAILABLE", powerUp.Position - new Vector2(font12.MeasureString("POWER UP AVAILABLE").X / 2, 20), Color.Black);
             }
 
-            spriteBatch.DrawString(font20, yourScore, new Vector2(Game1.windowWidth / 2 - (font20.MeasureString(yourScore).X / 2), 20), Color.Black);
-            spriteBatch.DrawString(font50, Convert.ToString(player.Score), new Vector2(Game1.windowWidth / 2 - (font50.MeasureString(Convert.ToString(player.Score)).X / 2), 50), Color.Black);
+            foreach (var missile in missiles)
+                missile.Draw(spriteBatch);
+            foreach (var enemy in enemies)
+                enemy.Draw(spriteBatch, graphicsDevice);
+            player.Draw(spriteBatch, graphicsDevice);
 
-            spriteBatch.DrawString(font14, "Power Up Available", new Vector2(Game1.windowWidth / 4 - (font14.MeasureString("Power Up Available").X / 2), 20), Color.Black);
-            spriteBatch.DrawString(font20, powerUpsInStore.NextPowerUp(), new Vector2(Game1.windowWidth / 4 - (font20.MeasureString(powerUpsInStore.NextPowerUp()).X / 2), 50), Color.Black);
-            if (powerUpsInStore.Top == 1)
-                spriteBatch.DrawString(font14, powerUpsInStore.SecondaryPowerUp(), new Vector2(Game1.windowWidth / 4 - (font14.MeasureString(powerUpsInStore.SecondaryPowerUp()).X / 2), 80), Color.Black);
+           
+            var yourScore = "YOUR SCORE";
 
-            spriteBatch.DrawString(font14, "Power Up Currently in Use", new Vector2(Game1.windowWidth / 2 - (font12.MeasureString("Power Up Currently in Use").X / 2) + Game1.windowWidth / 4, 20), Color.Black);
-            spriteBatch.DrawString(font20, powerUpCurrentlyInUse, new Vector2(Game1.windowWidth / 2 - (font20.MeasureString(powerUpCurrentlyInUse).X / 2) + Game1.windowWidth / 4, 50), Color.Black);
+            spriteBatch.Draw(boxTexture, new Rectangle((int)(Game1.windowWidth / 2 - (font20.MeasureString(yourScore).X / 2) - 40), 0, (int)font20.MeasureString(yourScore).X + 80, 140), Color.Black);
+            spriteBatch.DrawString(font20, yourScore, new Vector2(Game1.windowWidth / 2 - (font20.MeasureString(yourScore).X / 2), 20), Color.White);
+            spriteBatch.DrawString(font50, Convert.ToString(player.Score), new Vector2(Game1.windowWidth / 2 - (font50.MeasureString(Convert.ToString(player.Score)).X / 2), 50), Color.White);
+
+            if (powerUpsInStore.NextPowerUp() != "None")
+            {
+                spriteBatch.Draw(boxTexture, new Rectangle((int)(Game1.windowWidth / 4 - (font14.MeasureString("Power Up Available").X / 2) - 50), 0, (int)(font14.MeasureString("Power Up Available").X + 100), 120), Color.Black);
+                spriteBatch.DrawString(font14, "Power Up Available", new Vector2(Game1.windowWidth / 4 - (font14.MeasureString("Power Up Available").X / 2), 20), Color.White);
+                spriteBatch.DrawString(font20, powerUpsInStore.NextPowerUp(), new Vector2(Game1.windowWidth / 4 - (font20.MeasureString(powerUpsInStore.NextPowerUp()).X / 2), 50), Color.White);
+                if (powerUpsInStore.Top == 1)
+                    spriteBatch.DrawString(font14, powerUpsInStore.SecondaryPowerUp(), new Vector2(Game1.windowWidth / 4 - (font14.MeasureString(powerUpsInStore.SecondaryPowerUp()).X / 2), 80), Color.White);
+            }
+            
+
+            if (powerUpCurrentlyInUse != "None")
+            {
+                spriteBatch.Draw(boxTexture, new Rectangle((int)(Game1.windowWidth / 2 - (font14.MeasureString("Power Up Currently in Use").X / 2) - 50 + Game1.windowWidth / 4), 0, (int)(font14.MeasureString("Power Up Currently in Use").X + 100), 160), Color.Black);
+                spriteBatch.DrawString(font14, "Power Up Currently in Use", new Vector2(Game1.windowWidth / 2 - (font14.MeasureString("Power Up Currently in Use").X / 2) + Game1.windowWidth / 4, 20), Color.White);
+                spriteBatch.DrawString(font20, powerUpCurrentlyInUse, new Vector2(Game1.windowWidth / 2 - (font20.MeasureString(powerUpCurrentlyInUse).X / 2) + Game1.windowWidth / 4, 50), Color.White);
+            }
 
             if (powerUpCurrentlyInUse != "None" && powerUpCurrentlyInUse != "Health Boost")
             {
                 var timeLeft = (10 - (powerUpTimer)).ToString("#.#") + "s";
                 spriteBatch.DrawString(font50, timeLeft, new Vector2(Game1.windowWidth / 2 - (font50.MeasureString(timeLeft).X / 2) + Game1.windowWidth / 4, 70), Color.Red);
             }
+
+            if (PlayerDefeated || Paused)
+            {
+                var menuMessage = "";
+
+                spriteBatch.Draw(boxTexture, new Rectangle(Game1.windowWidth / 2 - 250, Game1.windowHeight / 2 - 20, 500, 300), Color.Black);
+
+                if (PlayerDefeated)
+                    menuMessage = "GAME OVER!";
+                else
+                {
+                    menuMessage = "PAUSED";
+                    spriteBatch.DrawString(font14, "Press ESC to unpause", new Vector2(Game1.windowWidth / 2 - (font14.MeasureString("Press ESC to unpause").X / 2), Game1.windowHeight / 2 + 90), Color.White);
+                }
+
+
+                spriteBatch.DrawString(font50, menuMessage, new Vector2(Game1.windowWidth / 2 - (font50.MeasureString(menuMessage).X / 2), Game1.windowHeight / 2), Color.White);
+
+                var destroyedTally = "DESTROYED: " + killCount;
+                spriteBatch.Draw(boxTexture, new Rectangle((int)(Game1.windowWidth / 2 - (font20.MeasureString(yourScore).X / 2) - 40), 140, (int)font20.MeasureString(yourScore).X + 80, 50), Color.Black);
+                spriteBatch.DrawString(font14, destroyedTally, new Vector2(Game1.windowWidth / 2 - (font14.MeasureString(destroyedTally).X / 2), 140), Color.White);
+
+                restartButton.Draw(gameTime, spriteBatch);
+                exitButton.Draw(gameTime, spriteBatch);
+            }
+            else
+            {
+                spriteBatch.DrawString(font14, "KILL COUNT: " + killCount, new Vector2(10, 10), Color.Black);
+            }
+
+            spriteBatch.DrawString(font12, "v1.1", new Vector2(Game1.windowWidth * 0.97f, Game1.windowHeight * 0.97f), Color.Black);
+            spriteBatch.DrawString(font12, "Your tank: " + Game1.Tanks[playerTank, 0], new Vector2(10, Game1.windowHeight * 0.97f), Color.Black);
         }
     }
 }

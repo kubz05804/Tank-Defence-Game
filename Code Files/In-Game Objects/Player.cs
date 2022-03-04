@@ -60,6 +60,9 @@ namespace Tank_Defence_Game.Objects
             }
 
             Motion(player, enemies);
+
+            var distance = Vector2.Distance(_gunpoint, new Vector2(Mouse.GetState().X, Mouse.GetState().Y));
+            _pointerPosition = _gunpoint + _turretDirection * distance;
         }
 
         private void Motion(Player player, List<Enemy> enemies)

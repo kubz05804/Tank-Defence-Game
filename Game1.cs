@@ -26,7 +26,7 @@ namespace Tank_Defence_Game
             { "Cruiser IV"   ,"Light" ,"Britain","1941",400  ,100 ,4.5f  ,90      ,105            ,2.5          , null , "Light"},
             { "M4A3E8 'Fury'","Medium","USA"    ,"1940",600  ,150 ,4.0f  ,70      ,40             ,3.0          , null , "Medium"},
             { "Churchill VII","Heavy" ,"Britain","1942",1000 ,200 ,2.4f  ,79      ,90             ,3.5          , null , "Heavy"},
-            { "Pz. IV H"     ,"Medium","Germany","1939",400  ,120 ,3.5f  ,80      ,60             ,3.5          , null , "Medium"} // 60 90
+            { "Pz. IV H"     ,"Medium","Germany","1939",400  ,120 ,3.5f  ,80      ,60             ,3.5          , null , "Medium"}
         };
 
         private bool gameIsRunning;
@@ -43,7 +43,7 @@ namespace Tank_Defence_Game
             MediaPlayer.Volume = 0.07f; // Sets the engine sound volume (MotionSound).
             graphics.PreferredBackBufferWidth = windowWidth;
             graphics.PreferredBackBufferHeight = windowHeight;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
 
             base.Initialize();
@@ -91,6 +91,7 @@ namespace Tank_Defence_Game
             // Creates a new instance of the game.
             mainGame = new MainGame(
                 this,
+                GraphicsDevice,
                 Content,
                 windowWidth,
                 windowHeight,
@@ -111,8 +112,8 @@ namespace Tank_Defence_Game
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Exit();
 
             if (gameIsRunning) // Checks if game is running
             {
