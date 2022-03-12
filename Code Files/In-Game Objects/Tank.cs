@@ -27,39 +27,45 @@ namespace Tank_Defence_Game.Objects
         protected Vector2 _gunpoint;
         protected Vector2 _pointerPosition;
 
+        protected string name;
+
         protected int _firepower; public int Firepower { get { return _firepower; } set { _firepower = value; } }
         protected int _health; public int Health { get { return _health; } set { _health = value; } }
         protected int _initialHealth; public int InitialHealth { get { return _initialHealth; } }
         protected int _moveDirection;
 
         protected float _velocity; public float Velocity { get { return _velocity; } set { _velocity = value; } }
+        protected double _muzzleVelocity; public double MuzzleVelocity { get { return _muzzleVelocity; } set { _muzzleVelocity = value; } }
         protected float _chassisRotation; public float Rotation { get { return _chassisRotation; } }
         protected float _rotationVelocity = 0.03f;
         protected float _currentTurretAngle = 0;
         protected float _timer;
 
-        protected double _reloadTime;
+        protected double _reloadTime; public double ReloadTime { get { return _reloadTime; } set { _reloadTime = value; } }
 
         protected bool _reloaded;
         protected bool _isMoving;
         protected bool _wasMoving;
         protected bool _enemy;
 
-        public Tank(int tankIndex)
+        public Tank()
         {
-            _chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 0] + "/chassis");
-            _turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 0] + "/turret");
+            //_chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 0] + "/chassis");
+            //_turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 0] + "/turret");
             _font12 = MainGame.Content.Load<SpriteFont>("Fonts/font12");
 
-            _initialHealth = (int)Game1.Tanks[tankIndex, 4];
-            _firepower = (int)Game1.Tanks[tankIndex, 5];
-            _velocity = (float)Game1.Tanks[tankIndex, 6];
-            _reloadTime = (double)Game1.Tanks[tankIndex, 9];
+            //_initialHealth = (int)Game1.Tanks[tankIndex, 4];
+            //_firepower = (int)Game1.Tanks[tankIndex, 5];
+            //_velocity = (float)Game1.Tanks[tankIndex, 6];
+            //_reloadTime = (double)Game1.Tanks[tankIndex, 9];
+            //_muzzleVelocity = (double)Game1.Tanks[tankIndex, 11];
 
-            _origin = new Vector2(_chassis.Width / 2, _chassis.Height - (int)Game1.Tanks[tankIndex, 7]);
-            _turretOrigin = new Vector2(_turret.Width / 2, _turret.Height - (int)Game1.Tanks[tankIndex, 8]);
+            //_origin = new Vector2(_chassis.Width / 2, _chassis.Height - (int)Game1.Tanks[tankIndex, 7]);
+            //_turretOrigin = new Vector2(_turret.Width / 2, _turret.Height - (int)Game1.Tanks[tankIndex, 8]);
 
-            _health = _initialHealth;
+            //_health = _initialHealth;
+
+            //name = (string)Game1.Tanks[tankIndex, 0];
         }
 
         public virtual void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
@@ -124,6 +130,7 @@ namespace Tank_Defence_Game.Objects
             }
 
             spriteBatch.DrawString(_font12, Health + "/" + InitialHealth, new Vector2(Position.X - 100, Position.Y - 100), colour);
+            spriteBatch.DrawString(_font12, name, new Vector2(Position.X - 100, Position.Y - 120), colour);
         }
     }
 }

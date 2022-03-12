@@ -12,6 +12,8 @@ namespace Tank_Defence_Game.Objects
 {
     public class Enemy : Tank, ICloneable
     {
+        public bool Boss;
+
         private float followDistance = 450f;
 
         private bool currentlyFacingPlayer = true;
@@ -19,15 +21,27 @@ namespace Tank_Defence_Game.Objects
 
         private Random random = new Random();
 
-        public Enemy(int tankIndex)
-            : base(tankIndex)
+        public Enemy(bool boss)
+            : base()
         {
             _enemy = true;
+            Boss = boss;
+
+            if (Boss)
+            {
+                int t = random.Next(5, 7);
+                _turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 0] + "/turret");
+                _chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 0] + "/chassis");
+                name = (string)Game1.Tanks[t, 0];
+            }
+
         }
 
         public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
         {
             var playerPosition = player.Position;
+
+            _rotationVelocity = _velocity / 100;
 
             if (!player.CamouflageNetEquipped)
             {
@@ -35,7 +49,7 @@ namespace Tank_Defence_Game.Objects
             }
 
             _turretDirection = new Vector2((float)Math.Cos(MathHelper.ToRadians(90) - _currentTurretAngle), -(float)Math.Sin(MathHelper.ToRadians(90) - _currentTurretAngle));
-            _gunpoint = _currentPosition + _turretDirection * 100;
+            _gunpoint = _currentPosition + _turretDirection * _turret.Height / 2;
 
             var distanceToPlayer = Vector2.Distance(Position, playerPosition);
 
@@ -57,18 +71,19 @@ namespace Tank_Defence_Game.Objects
 
             if (_reloaded && !player.CamouflageNetEquipped && playerInSight)
             {
-                missile.AddMissile(missiles, _turretDirection, _gunpoint, _currentTurretAngle, true, _firepower);
+                missile.AddMissile(missiles, _turretDirection, _gunpoint, _currentTurretAngle, true, _firepower, _muzzleVelocity);
                 Sound.EnemyShot.Play();
                 _reloaded = false;
             }
         }
 
-        public void Spawn(List<Enemy> enemies)
+        public void Spawn(List<Enemy> enemies, bool boss)
         {
             var enemy = Clone() as Enemy;
 
             int x = random.Next(-100, Game1.windowWidth + 100);
             int y = random.Next(-100, Game1.windowHeight + 100);
+
             if (x < 0 | x > Game1.windowWidth)
             {
                 if (x < 0)
@@ -84,9 +99,41 @@ namespace Tank_Defence_Game.Objects
                     y = Game1.windowHeight + 100;
             }
 
+
+            var min = 3;
+            var max = 5;
+
+            if (boss)
+            {
+                min = 5;
+                max = 7;
+                enemy.Boss = true;
+            }
+            else
+            {
+                enemy.Boss = false;
+            }
+
+            int t = random.Next(min, max);
+            enemy._turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 0] + "/turret");
+            enemy._chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 0] + "/chassis");
+            
             enemy._currentPosition = new Vector2(x, y);
-            enemy._velocity = _velocity;
+
             enemy._enemy = true;
+
+            enemy._initialHealth = (int)Game1.Tanks[t, 4];
+            enemy._firepower = (int)Game1.Tanks[t, 5];
+            enemy._velocity = (float)Game1.Tanks[t, 6];
+            enemy._reloadTime = (double)Game1.Tanks[t, 9];
+            enemy._muzzleVelocity = (double)Game1.Tanks[t, 11];
+
+            enemy._origin = new Vector2(enemy._chassis.Width / 2, enemy._chassis.Height - (int)Game1.Tanks[t, 7]);
+            enemy._turretOrigin = new Vector2(enemy._turret.Width / 2, enemy._turret.Height - (int)Game1.Tanks[t, 8]);
+
+            enemy._health = enemy._initialHealth;
+
+            enemy.name = (string)Game1.Tanks[t, 0];
 
             enemies.Add(enemy);
         }

@@ -20,7 +20,7 @@ namespace Tank_Defence_Game.Objects
         private int score; public int Score { get { return score; } set { score = value; } }
 
         public Player(int tankIndex)
-            : base(tankIndex)
+            : base()
         {
             _currentPosition = new Vector2(Game1.windowWidth / 2, Game1.windowHeight / 2);
 
@@ -28,12 +28,30 @@ namespace Tank_Defence_Game.Objects
 
             armourBoostEquipped = false;
             CamouflageNetEquipped = false;
+
+            _chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 0] + "/chassis");
+            _turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 0] + "/turret");
+
+            _initialHealth = (int)Game1.Tanks[tankIndex, 4];
+            _firepower = (int)Game1.Tanks[tankIndex, 5];
+            _velocity = (float)Game1.Tanks[tankIndex, 6];
+            _reloadTime = (double)Game1.Tanks[tankIndex, 9];
+            _muzzleVelocity = (double)Game1.Tanks[tankIndex, 11];
+
+            _origin = new Vector2(_chassis.Width / 2, _chassis.Height - (int)Game1.Tanks[tankIndex, 7]);
+            _turretOrigin = new Vector2(_turret.Width / 2, _turret.Height - (int)Game1.Tanks[tankIndex, 8]);
+
+            _health = _initialHealth;
+
+            name = (string)Game1.Tanks[tankIndex, 0];
         }
 
         public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
         {
             previousMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
+
+            _rotationVelocity = _velocity / 100;
 
             if (!_reloaded)
             {
@@ -49,7 +67,7 @@ namespace Tank_Defence_Game.Objects
 
             if (currentMouseState.LeftButton == ButtonState.Pressed && previousMouseState.LeftButton == ButtonState.Released && _reloaded)
             {
-                missile.AddMissile(missiles, _turretDirection, _gunpoint, _currentTurretAngle, false, _firepower);
+                missile.AddMissile(missiles, _turretDirection, _gunpoint, _currentTurretAngle, false, _firepower, _muzzleVelocity);
                 Sound.PlayerShot.Play(volume: 0.4f, pitch: 0, pan: 0);
 
                 _reloaded = false;
@@ -112,7 +130,7 @@ namespace Tank_Defence_Game.Objects
             if (_currentTurretAngle < -MathF.PI / 2)
                 _currentTurretAngle = MathHelper.ToRadians(270);
 
-            _gunpoint = _currentPosition + _turretDirection * 100;
+            _gunpoint = _currentPosition + _turretDirection * _turret.Height / 2;
 
             if (Keyboard.GetState().IsKeyDown(Keys.W) && WithinWindow(1, _currentPosition, _currentChassisDirection * _velocity) && !Collision(1, player, enemies))
             {

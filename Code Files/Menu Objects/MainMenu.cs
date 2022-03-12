@@ -111,9 +111,24 @@ namespace Tank_Defence_Game
             previousKeyboardState = currentKeyboardState;
             currentKeyboardState = Keyboard.GetState();
 
-            if (currentKeyboardState.IsKeyDown(Keys.E) && previousKeyboardState.IsKeyUp(Keys.E))
+            if (currentKeyboardState.IsKeyDown(Keys.NumPad3) && previousKeyboardState.IsKeyUp(Keys.NumPad3))
             {
                 VehicleSelection = 3;
+                playButton.Available = true;
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.NumPad4) && previousKeyboardState.IsKeyUp(Keys.NumPad4))
+            {
+                VehicleSelection = 4;
+                playButton.Available = true;
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.NumPad5) && previousKeyboardState.IsKeyUp(Keys.NumPad5))
+            {
+                VehicleSelection = 5;
+                playButton.Available = true;
+            }
+            if (currentKeyboardState.IsKeyDown(Keys.NumPad6) && previousKeyboardState.IsKeyUp(Keys.NumPad6))
+            {
+                VehicleSelection = 6;
                 playButton.Available = true;
             }
 
@@ -195,7 +210,7 @@ namespace Tank_Defence_Game
                 var speed = Convert.ToString((int)((float)Game1.Tanks[box.TankIndex, 6] * 10)) + " km/h";
                 var firepower = Convert.ToString(Game1.Tanks[box.TankIndex, 5]);
                 var health = Convert.ToString(Game1.Tanks[box.TankIndex, 4]);
-                var type = Convert.ToString(Game1.Tanks[box.TankIndex, 11]);
+                var type = Convert.ToString(Game1.Tanks[box.TankIndex, 1]);
 
                 var textStart = (float)(box.Rectangle.Y + (box.Rectangle.Height * 0.02) + box.Image.Height);
 

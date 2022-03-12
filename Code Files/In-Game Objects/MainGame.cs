@@ -24,6 +24,7 @@ namespace Tank_Defence_Game
         private Player player;
         private Enemy enemy;
         private Missile missile;
+        private Enemy boss;
 
         private List<Missile> missiles;
         private List<Enemy> enemies;
@@ -32,6 +33,9 @@ namespace Tank_Defence_Game
         public bool Restart; // Indicates whether the player has chosen to restart the game.
         public bool PlayerDefeated;
         public bool Paused;
+
+        private bool bossSpawned;
+        private bool bossAlive;
 
         private PowerUpStack powerUpsInStore; // Creates a stack to store power ups available to the player (max 2).
         private PowerUpMessage powerUp; // Creates an instance of a power up message.
@@ -85,7 +89,7 @@ namespace Tank_Defence_Game
             missiles = new List<Missile>();
 
             enemies = new List<Enemy>();
-            enemy = new Enemy(3);
+            enemy = new Enemy(false);
 
             playerTank = playerTankSelection;
 
@@ -99,6 +103,9 @@ namespace Tank_Defence_Game
             Restart = false;
             PlayerDefeated = false;
             Paused = false;
+
+            bossSpawned = false;
+            bossAlive = false;
 
             currentSpawnRate = initialSpawnRate;
 
@@ -166,10 +173,16 @@ namespace Tank_Defence_Game
 
             timer += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (timer > currentSpawnRate || timer > 5 && enemies.Count == 0) 
+            if (killCount % 20 == 0 && killCount > 0 && !bossAlive)
+            {
+                enemy.Spawn(enemies, true);
+                bossAlive = true;
+            }
+
+            if (timer > currentSpawnRate && !bossAlive || timer > 5 && enemies.Count == 0 || timer > 30 && bossAlive) 
             {
                 currentSpawnRate = (float)Math.Pow(currentSpawnRate, 0.99);
-                enemy.Spawn(enemies);
+                enemy.Spawn(enemies, false);
                 timer = 0;
             }
 
@@ -209,9 +222,16 @@ namespace Tank_Defence_Game
                 {
                     var position = enemies[i].Position;
 
+                    if (enemies[i].Boss)
+                    {
+                        bossAlive = false;
+                        player.Score += 1000;
+                    }
+                    else
+                        player.Score += 200;
+
                     enemies.RemoveAt(i);
                     Sound.Destruction.Play(volume: 0.4f, pitch: 0, pan: 0);
-                    player.Score += 200;
                     killCount++;
                     i++;
 
@@ -259,6 +279,8 @@ namespace Tank_Defence_Game
             else if (nextPowerUp == "Firepower Boost")
             {
                 player.Firepower *= 4;
+                if (playerTank == 4)
+                    player.ReloadTime /= 4;
             }
             else if (nextPowerUp == "Health Boost")
             {
@@ -286,6 +308,7 @@ namespace Tank_Defence_Game
             player.Firepower = (int)Game1.Tanks[playerTank, 5];
             player.ArmourBoostEquipped = false;
             player.CamouflageNetEquipped = false;
+            player.ReloadTime = (double)Game1.Tanks[playerTank, 9];
 
             powerUpCurrentlyInUse = "None";
         }
@@ -363,7 +386,7 @@ namespace Tank_Defence_Game
                 spriteBatch.DrawString(font14, "KILL COUNT: " + killCount, new Vector2(10, 10), Color.Black);
             }
 
-            spriteBatch.DrawString(font12, "v1.1", new Vector2(Game1.windowWidth * 0.97f, Game1.windowHeight * 0.97f), Color.Black);
+            spriteBatch.DrawString(font12, "v1.2 beta", new Vector2(Game1.windowWidth * 0.97f, Game1.windowHeight * 0.97f), Color.Black);
             spriteBatch.DrawString(font12, "Your tank: " + Game1.Tanks[playerTank, 0], new Vector2(10, Game1.windowHeight * 0.97f), Color.Black);
         }
     }

@@ -22,11 +22,14 @@ namespace Tank_Defence_Game
         public static int windowHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height; // Gets the height of the screen.
 
         public static object[,] Tanks = new object[,] // 2D array containing the vehicles available in the game.
-        {   // Model/Name | Type | Country | Year | HP | FP | Speed | Origin Spacing | Turret Origin Spacing | Reload Time | Profile Image | Type
-            { "Cruiser IV"   ,"Light" ,"Britain","1941",400  ,100 ,4.5f  ,90      ,105            ,2.5          , null , "Light"},
-            { "M4A3E8 'Fury'","Medium","USA"    ,"1940",600  ,150 ,4.0f  ,70      ,40             ,3.0          , null , "Medium"},
-            { "Churchill VII","Heavy" ,"Britain","1942",1000 ,200 ,2.4f  ,79      ,90             ,3.5          , null , "Heavy"},
-            { "Pz. IV H"     ,"Medium","Germany","1939",400  ,120 ,3.5f  ,80      ,60             ,3.5          , null , "Medium"}
+        {   // Model/Name     | Type | Country  | Year | HP  | FP | Speed | Origin Spacing | Turret Origin Spacing | Reload Time | Profile Image | Muzzle Velocity
+            { "Cruiser IV"   ,"Light" ,"Britain","1941",400  ,100 ,4.5f   ,90               ,105                   ,2.5          , null          , 8.5},
+            { "M4A3E8 'Fury'","Medium","USA"    ,"1940",600  ,150 ,4.0f   ,70               ,40                    ,3.0          , null          , 8.0},
+            { "Churchill VII","Heavy" ,"Britain","1942",1000 ,200 ,2.4f   ,79               ,90                    ,3.5          , null          , 6.5},
+            { "Pz. IV H"     ,"Medium","Germany","1939",400  ,120 ,3.5f   ,80               ,60                    ,3.5          , null          , 6.0},
+            { "T-34"         ,"Medium","USSR"   ,"1940",300  ,150 ,5.0f   ,100              ,100                   ,3.0          , null          , 8.0},
+            { "KV-2"         ,"Heavy" ,"USSR"   ,"1940",900  ,500 ,2.0f   ,87               ,87                    ,9.0          , null          , 6.0},
+            { "Tiger 1"      ,"Heavy" ,"Germany","1942",1500 ,400 ,4.5f   ,90               ,90                    ,6.0          , null          , 9.0}
         };
 
         private bool gameIsRunning;
@@ -43,7 +46,7 @@ namespace Tank_Defence_Game
             MediaPlayer.Volume = 0.07f; // Sets the engine sound volume (MotionSound).
             graphics.PreferredBackBufferWidth = windowWidth;
             graphics.PreferredBackBufferHeight = windowHeight;
-            graphics.IsFullScreen = true;
+            graphics.IsFullScreen = false;
             graphics.ApplyChanges();
 
             base.Initialize();
