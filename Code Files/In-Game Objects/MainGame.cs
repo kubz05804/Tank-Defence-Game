@@ -37,6 +37,8 @@ namespace Tank_Defence_Game
         private bool bossSpawned;
         private bool bossAlive;
 
+        private char lastSpawnDirection;
+
         private PowerUpStack powerUpsInStore; // Creates a stack to store power ups available to the player (max 2).
         private PowerUpMessage powerUp; // Creates an instance of a power up message.
 
@@ -175,14 +177,14 @@ namespace Tank_Defence_Game
 
             if (killCount % 20 == 0 && killCount > 0 && !bossAlive)
             {
-                enemy.Spawn(enemies, true);
+                enemy.Spawn(enemies, true, lastSpawnDirection);
                 bossAlive = true;
             }
 
             if (timer > currentSpawnRate && !bossAlive || timer > 5 && enemies.Count == 0 || timer > 30 && bossAlive) 
             {
                 currentSpawnRate = (float)Math.Pow(currentSpawnRate, 0.99);
-                enemy.Spawn(enemies, false);
+                enemy.Spawn(enemies, false, lastSpawnDirection);
                 timer = 0;
             }
 
@@ -243,7 +245,7 @@ namespace Tank_Defence_Game
 
         public void PowerUpGeneration()
         {
-            var r = Random.Next(5);
+            var r = Random.Next(6);
             var powerup = "";
 
             switch (r)
@@ -262,6 +264,9 @@ namespace Tank_Defence_Game
                     break;
                 case 4: // Camouflage Net
                     powerup = "Camouflage Net";
+                    break;
+                case 5: // Reloading Boost
+                    powerup = "Reloading Boost";
                     break;
             }
 
@@ -293,6 +298,10 @@ namespace Tank_Defence_Game
             else if (nextPowerUp == "Camouflage Net")
             {
                 player.CamouflageNetEquipped = true;
+            }
+            else if (nextPowerUp == "Reloading Boost")
+            {
+                player.ReloadTime /= 2;
             }
             else
             {

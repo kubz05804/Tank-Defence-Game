@@ -99,6 +99,20 @@ namespace Tank_Defence_Game.Objects
             return false;
         }
 
+        public bool WithinWindow(int one, Vector2 origin, Vector2 path)
+        {
+            Vector2 destination;
+            if (one != 0)
+                destination = origin + path * one;
+            else
+                destination = path;
+
+            if (destination.X >= 0 && destination.X <= Game1.windowWidth && destination.Y >= 0 && destination.Y <= Game1.windowHeight)
+                return true;
+            else
+                return false;
+        }
+
         public virtual void Draw(SpriteBatch spriteBatch, GraphicsDevice graphicsDevice)
         {
             spriteBatch.Draw(_chassis, _currentPosition, null, Color.White, _chassisRotation, _origin, 1, SpriteEffects.None, 0f);
@@ -126,6 +140,42 @@ namespace Tank_Defence_Game.Objects
 
                     spriteBatch.DrawString(_font12, "Reloading!", _pointerPosition + new Vector2(5, -30), Color.Red);
                     spriteBatch.DrawString(_font12, zero + reloadTimeLeft.ToString("#.#") + "s left", _pointerPosition + new Vector2(20, -10), Color.Red);
+                }
+            }
+            else
+            {
+                if (!WithinWindow(0, _currentPosition, _currentPosition))
+                {
+                    int x;
+                    int y;
+
+                    int width;
+                    int height;
+
+                    if (_currentPosition.X < 0 || _currentPosition.X > Game1.windowWidth)
+                    {
+                        y = (int)_currentPosition.Y;
+                        width = 50;
+                        height = 10;
+
+                        if (_currentPosition.X > Game1.windowWidth)
+                            x = Game1.windowWidth - width;
+                        else
+                            x = 0;
+                    }
+                    else
+                    {
+                        width = 10;
+                        height = 50;
+
+                        x = (int)_currentPosition.X;
+                        if (_currentPosition.Y < 0)
+                            y = 0;
+                        else
+                            y = Game1.windowHeight - height;
+                    }
+
+                    spriteBatch.Draw(texture, new Rectangle(x, y, width, height), Color.Red);
                 }
             }
 

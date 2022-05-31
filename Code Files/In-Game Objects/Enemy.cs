@@ -16,6 +16,8 @@ namespace Tank_Defence_Game.Objects
 
         private float followDistance = 450f;
 
+        private char spawnDirection;
+
         private bool currentlyFacingPlayer = true;
         private bool playerInSight;
 
@@ -56,7 +58,7 @@ namespace Tank_Defence_Game.Objects
             if (distanceToPlayer > followDistance && !player.CamouflageNetEquipped)
             {
                 Rotate(playerPosition);
-                if (currentlyFacingPlayer && !Collision(1, player, enemies))
+                if (currentlyFacingPlayer && !Collision(1, player, enemies) || !WithinWindow(0, _currentPosition, _currentPosition))
                     Motion(playerPosition);
             }
 
@@ -77,28 +79,51 @@ namespace Tank_Defence_Game.Objects
             }
         }
 
-        public void Spawn(List<Enemy> enemies, bool boss)
+        public void Spawn(List<Enemy> enemies, bool boss, char lastSpawnDirection)
         {
             var enemy = Clone() as Enemy;
+            bool spawnPositionGenerated = false;
 
-            int x = random.Next(-100, Game1.windowWidth + 100);
-            int y = random.Next(-100, Game1.windowHeight + 100);
+            int x = 0;
+            int y = 0;
 
-            if (x < 0 | x > Game1.windowWidth)
+            while (!spawnPositionGenerated)
             {
-                if (x < 0)
-                    x = -100;
+                x = random.Next(-100, Game1.windowWidth + 200);
+                y = random.Next(-100, Game1.windowHeight + 200);
+
+                if (x < 0 | x > Game1.windowWidth)
+                {
+                    if (x < 0)
+                    {
+                        x = -200;
+                        enemy.spawnDirection = 'w';
+                    }
+                    else
+                    {
+                        x = Game1.windowWidth + 200;
+                        enemy.spawnDirection = 'e';
+                    }
+                }
                 else
-                    x = Game1.windowWidth + 100;
-            }
-            else
-            {
-                if (y < 0)
-                    y = -100;
-                else
-                    y = Game1.windowHeight + 100;
+                {
+                    if (y < Game1.windowHeight / 2)
+                    {
+                        y = -200;
+                        enemy.spawnDirection = 'n';
+                    }
+                    else
+                    {
+                        y = Game1.windowHeight + 200;
+                        enemy.spawnDirection = 's';
+                    }
+                }
+
+                if (enemy.spawnDirection != lastSpawnDirection)
+                    spawnPositionGenerated = true;
             }
 
+            lastSpawnDirection = enemy.spawnDirection;
 
             var min = 3;
             var max = 5;

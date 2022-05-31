@@ -154,14 +154,6 @@ namespace Tank_Defence_Game.Objects
                 Sound.MotionStop();
         }
 
-        private bool WithinWindow(int one, Vector2 origin, Vector2 path)
-        {
-            Vector2 destination = origin + path * one;
-
-            if (destination.X >= 0 && destination.X <= Game1.windowWidth && destination.Y >= 0 && destination.Y <= Game1.windowHeight)
-                return true;
-            else
-                return false;
-        }
+        
     }
 }

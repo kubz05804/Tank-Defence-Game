@@ -46,7 +46,7 @@ namespace Tank_Defence_Game
             MediaPlayer.Volume = 0.07f; // Sets the engine sound volume (MotionSound).
             graphics.PreferredBackBufferWidth = windowWidth;
             graphics.PreferredBackBufferHeight = windowHeight;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
             graphics.ApplyChanges();
 
             base.Initialize();
