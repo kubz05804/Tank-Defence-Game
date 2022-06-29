@@ -32,9 +32,9 @@ namespace Tank_Defence_Game.Objects
             if (Boss)
             {
                 int t = random.Next(5, 7);
-                _turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 0] + "/turret");
-                _chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 0] + "/chassis");
-                name = (string)Game1.Tanks[t, 0];
+                _turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 1] + "/turret");
+                _chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 1] + "/chassis");
+                name = (string)Game1.Tanks[t, 1];
             }
 
         }
@@ -125,40 +125,38 @@ namespace Tank_Defence_Game.Objects
 
             lastSpawnDirection = enemy.spawnDirection;
 
-            var min = 3;
-            var max = 5;
+            int t = 0;
 
             if (boss)
             {
-                min = 5;
-                max = 7;
                 enemy.Boss = true;
+                t = Game1.PossibleBosses[random.Next(0, Game1.PossibleBosses.Count)];
             }
             else
             {
                 enemy.Boss = false;
+                t = Game1.PossibleEnemies[random.Next(0, Game1.PossibleEnemies.Count)];
             }
 
-            int t = random.Next(min, max);
-            enemy._turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 0] + "/turret");
-            enemy._chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 0] + "/chassis");
+            enemy._turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 1] + "/turret");
+            enemy._chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[t, 1] + "/chassis");
             
             enemy._currentPosition = new Vector2(x, y);
 
             enemy._enemy = true;
 
-            enemy._initialHealth = (int)Game1.Tanks[t, 4];
-            enemy._firepower = (int)Game1.Tanks[t, 5];
-            enemy._velocity = (float)Game1.Tanks[t, 6];
-            enemy._reloadTime = (double)Game1.Tanks[t, 9];
-            enemy._muzzleVelocity = (double)Game1.Tanks[t, 11];
+            enemy._initialHealth = (int)Game1.Tanks[t, 5];
+            enemy._firepower = (int)Game1.Tanks[t, 6];
+            enemy._velocity = (float)Game1.Tanks[t, 7];
+            enemy._reloadTime = (double)Game1.Tanks[t, 10];
+            enemy._muzzleVelocity = (double)Game1.Tanks[t, 12];
 
-            enemy._origin = new Vector2(enemy._chassis.Width / 2, enemy._chassis.Height - (int)Game1.Tanks[t, 7]);
-            enemy._turretOrigin = new Vector2(enemy._turret.Width / 2, enemy._turret.Height - (int)Game1.Tanks[t, 8]);
+            enemy._origin = new Vector2(enemy._chassis.Width / 2, enemy._chassis.Height - (int)Game1.Tanks[t, 8]);
+            enemy._turretOrigin = new Vector2(enemy._turret.Width / 2, enemy._turret.Height - (int)Game1.Tanks[t, 9]);
 
             enemy._health = enemy._initialHealth;
 
-            enemy.name = (string)Game1.Tanks[t, 0];
+            enemy.name = (string)Game1.Tanks[t, 1];
 
             enemies.Add(enemy);
         }

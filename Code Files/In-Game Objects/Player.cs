@@ -29,21 +29,21 @@ namespace Tank_Defence_Game.Objects
             armourBoostEquipped = false;
             CamouflageNetEquipped = false;
 
-            _chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 0] + "/chassis");
-            _turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 0] + "/turret");
+            _chassis = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 1] + "/chassis");
+            _turret = MainGame.Content.Load<Texture2D>("Textures/" + Game1.Tanks[tankIndex, 1] + "/turret");
 
-            _initialHealth = (int)Game1.Tanks[tankIndex, 4];
-            _firepower = (int)Game1.Tanks[tankIndex, 5];
-            _velocity = (float)Game1.Tanks[tankIndex, 6];
-            _reloadTime = (double)Game1.Tanks[tankIndex, 9];
-            _muzzleVelocity = (double)Game1.Tanks[tankIndex, 11];
+            _initialHealth = (int)Game1.Tanks[tankIndex, 5];
+            _firepower = (int)Game1.Tanks[tankIndex, 6];
+            _velocity = (float)Game1.Tanks[tankIndex, 7];
+            _reloadTime = (double)Game1.Tanks[tankIndex, 10];
+            _muzzleVelocity = (double)Game1.Tanks[tankIndex, 12];
 
-            _origin = new Vector2(_chassis.Width / 2, _chassis.Height - (int)Game1.Tanks[tankIndex, 7]);
-            _turretOrigin = new Vector2(_turret.Width / 2, _turret.Height - (int)Game1.Tanks[tankIndex, 8]);
+            _origin = new Vector2(_chassis.Width / 2, _chassis.Height - (int)Game1.Tanks[tankIndex, 8]);
+            _turretOrigin = new Vector2(_turret.Width / 2, _turret.Height - (int)Game1.Tanks[tankIndex, 9]);
 
             _health = _initialHealth;
 
-            name = (string)Game1.Tanks[tankIndex, 0];
+            name = (string)Game1.Tanks[tankIndex, 1];
         }
 
         public override void Update(GameTime gameTime, Missile missile, List<Missile> missiles, Player player, List<Enemy> enemies)
@@ -51,7 +51,10 @@ namespace Tank_Defence_Game.Objects
             previousMouseState = currentMouseState;
             currentMouseState = Mouse.GetState();
 
-            _rotationVelocity = _velocity / 100;
+            if (_velocity > 4.5)
+                _rotationVelocity = 0.045f;
+            else
+                _rotationVelocity = _velocity / 100;
 
             if (!_reloaded)
             {

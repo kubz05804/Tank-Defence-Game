@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Tank_Defence_Game.Objects;
+using Tank_Defence_Game.Code_Files;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -36,6 +37,7 @@ namespace Tank_Defence_Game
 
         private bool bossSpawned;
         private bool bossAlive;
+        private bool commandMenuOpen;
 
         private char lastSpawnDirection;
 
@@ -66,9 +68,12 @@ namespace Tank_Defence_Game
 
         private int killCount;
 
+        private int windowH;
+
         private KeyboardState previousKeyboardState;
         private KeyboardState currentKeyboardState;
 
+        private CommandMenu commandMenu = new CommandMenu();
 
         public MainGame(
             Game1 game,
@@ -108,8 +113,11 @@ namespace Tank_Defence_Game
 
             bossSpawned = false;
             bossAlive = false;
+            commandMenuOpen = false;
 
             currentSpawnRate = initialSpawnRate;
+
+            windowH = windowHeight;
 
             killCount = 0;
 
@@ -132,6 +140,22 @@ namespace Tank_Defence_Game
             Restart = true;
         }
 
+        private void Pause(bool commandMenuOpened)
+        {
+            if (Paused)
+            {
+                Paused = false;
+                commandMenu.SetState(false);
+            }
+            else
+            {
+                Paused = true;
+
+                if (commandMenuOpened)
+                    commandMenu.SetState(true);
+            }
+        }
+
         public void Update(GameTime gameTime)
         {
             previousKeyboardState = currentKeyboardState;
@@ -141,11 +165,16 @@ namespace Tank_Defence_Game
                 PowerUpEquip();
 
             if (currentKeyboardState.IsKeyDown(Keys.Escape) && previousKeyboardState.IsKeyUp(Keys.Escape) && !PlayerDefeated)
+                Pause(false);
+
+            if (currentKeyboardState.IsKeyDown(Keys.OemQuestion) && previousKeyboardState.IsKeyUp(Keys.OemQuestion) && !PlayerDefeated)
+                Pause(true);
+
+            if (commandMenu.GetState())
             {
-                if (Paused)
-                    Paused = false;
-                else
-                    Paused = true;
+                commandMenu.Update(gameTime);
+                if (commandMenu.GetPauseTriggerState())
+                    Pause(false);
             }
 
             if (Paused)
@@ -313,14 +342,15 @@ namespace Tank_Defence_Game
 
         public void PowerUpClear()
         {
-            player.Velocity = (float)Game1.Tanks[playerTank, 6];
-            player.Firepower = (int)Game1.Tanks[playerTank, 5];
+            player.Velocity = (float)Game1.Tanks[playerTank, 7];
+            player.Firepower = (int)Game1.Tanks[playerTank, 6];
             player.ArmourBoostEquipped = false;
             player.CamouflageNetEquipped = false;
-            player.ReloadTime = (double)Game1.Tanks[playerTank, 9];
+            player.ReloadTime = (double)Game1.Tanks[playerTank, 10];
 
             powerUpCurrentlyInUse = "None";
         }
+
 
         public void Draw(GameTime gameTime)
         {
@@ -395,8 +425,17 @@ namespace Tank_Defence_Game
                 spriteBatch.DrawString(font14, "KILL COUNT: " + killCount, new Vector2(10, 10), Color.Black);
             }
 
-            spriteBatch.DrawString(font12, "v1.2 beta", new Vector2(Game1.windowWidth * 0.97f, Game1.windowHeight * 0.97f), Color.Black);
-            spriteBatch.DrawString(font12, "Your tank: " + Game1.Tanks[playerTank, 0], new Vector2(10, Game1.windowHeight * 0.97f), Color.Black);
+            if (commandMenu.GetState() || commandMenu.GetCommandDisplayState())
+            {
+                commandMenu.Draw(spriteBatch, font12, windowH, true);
+            }
+            else
+            {
+                spriteBatch.DrawString(font12, "v1.3.7", new Vector2(Game1.windowWidth * 0.97f, Game1.windowHeight * 0.97f), Color.Black);
+                spriteBatch.DrawString(font12, "Your tank: " + Game1.Tanks[playerTank, 1], new Vector2(10, Game1.windowHeight * 0.97f), Color.Black);
+            }
+
+            
         }
     }
 }

@@ -14,6 +14,9 @@ namespace Tank_Defence_Game
 
         public int VehicleSelection;
         public int TabIndex;
+        public int Page;
+        public int PagesMax;
+        public int TanksAvailable;
 
         private Texture2D backgroundTexture;
 
@@ -46,6 +49,17 @@ namespace Tank_Defence_Game
         {
             Activated = false;
             selected = false;
+
+            TanksAvailable = 0;
+
+            for (int i = 0; i < Game1.NumOfTanks; i++)
+            {
+                if ((bool)Game1.Tanks[i, 13])
+                    TanksAvailable++;
+            }
+
+            PagesMax = (int)Math.Ceiling((float)TanksAvailable / 3);
+            Page = 1;
 
             backgroundTexture = new Texture2D(graphicsDevice, 1, 1); backgroundTexture.SetData(new Color[] { Color.Gray });
 
@@ -90,20 +104,29 @@ namespace Tank_Defence_Game
 
         private void Box3_Click(object sender, EventArgs e)
         {
-            Selection(box3);
-            TabIndex = 2;
+            if (box3.Active)
+            {
+                Selection(box3);
+                TabIndex = 2;
+            }
         }
 
         private void Box2_Click(object sender, EventArgs e)
         {
-            Selection(box2);
-            TabIndex = 1;
+            if (box2.Active)
+            {
+                Selection(box2);
+                TabIndex = 1;
+            }
         }
 
         private void Box1_Click(object sender, EventArgs e)
         {
-            Selection(box1);
-            TabIndex = 0;
+            if (box1.Active)
+            {
+                Selection(box1);
+                TabIndex = 0;
+            }
         }
 
         public void Update(GameTime gameTime)
@@ -133,10 +156,27 @@ namespace Tank_Defence_Game
             }
 
             if (currentKeyboardState.IsKeyDown(Keys.Tab) && previousKeyboardState.IsKeyUp(Keys.Tab))
-                TabIndex++;
+            {
+                do
+                {
+                    TabIndex++;
+                    if (TabIndex > 2)
+                        TabIndex = 0;
+                } while (boxes[TabIndex].Active == false);
+            }
 
-            if (TabIndex > 2)
-                TabIndex = 0;
+            if (currentKeyboardState.IsKeyDown(Keys.Down) && previousKeyboardState.IsKeyUp(Keys.Down) && Page != PagesMax ||
+                currentKeyboardState.IsKeyDown(Keys.Right) && previousKeyboardState.IsKeyUp(Keys.Right) && Page != PagesMax ||
+                currentKeyboardState.IsKeyDown(Keys.Up) && previousKeyboardState.IsKeyUp(Keys.Up) && Page > 1 ||
+                currentKeyboardState.IsKeyDown(Keys.Left) && previousKeyboardState.IsKeyUp(Keys.Left) && Page > 1)
+            {
+                if (currentKeyboardState.IsKeyDown(Keys.Down) || currentKeyboardState.IsKeyDown(Keys.Right))
+                    Page++;
+                else
+                    Page--;
+
+                PageChange(Page);
+            }
 
             foreach (var box in boxes) 
             {
@@ -182,6 +222,19 @@ namespace Tank_Defence_Game
             }
         }
 
+        public void PageChange(int page)
+        {
+            for (int i = 0; i < boxes.Count; i++)
+            {
+                int newIndex = i + ((page - 1) * 3);
+
+                if (newIndex < Game1.NumOfTanks)
+                    boxes[i].TankIndex = newIndex;
+                else
+                    boxes[i].TankIndex = -1;
+            }
+        }
+
         public void Activate()
         {
             if (playButton.Available)
@@ -192,40 +245,47 @@ namespace Tank_Defence_Game
         {
             spriteBatch.Draw(backgroundTexture, backgroundRectangle, Color.White);
             spriteBatch.DrawString(font20, intro, new Vector2(backgroundRectangle.X + (backgroundRectangle.Width / 2) - (font20.MeasureString(intro).X / 2), backgroundRectangle.Y + 40), Color.White);
+            spriteBatch.DrawString(font10, "Page " + Page + " of " + PagesMax, new Vector2(backgroundRectangle.X + 20, backgroundRectangle.Height), Color.White);
+            spriteBatch.DrawString(font10, "Use arrow keys to switch pages", new Vector2(backgroundRectangle.X + 20, backgroundRectangle.Height + 20), Color.White);
 
             foreach (var box in boxes)
             {
-                spriteBatch.Draw(box.Texture, box.Rectangle, box.Colour);
+                if (box.TankIndex < Game1.NumOfTanks && box.TankIndex >= 0)
+                {
+                    spriteBatch.Draw(box.Texture, box.Rectangle, box.Colour);
 
-                spriteBatch.Draw((Texture2D)Game1.Tanks[box.TankIndex, 10], box.Image, Color.White);
+                    spriteBatch.Draw((Texture2D)Game1.Tanks[box.TankIndex, 11], box.Image, Color.White);
 
-                var labelCountry = "Origin Country";
-                var labelSpeed = "Speed";
-                var labelFirepower = "Firepower/Damage";
-                var labelHealth = "Health";
-                var labelType = "Type";
+                    var labelCountry = "Origin Country";
+                    var labelSpeed = "Speed";
+                    var labelFirepower = "Firepower/Damage";
+                    var labelHealth = "Health";
+                    var labelType = "Type";
 
-                var tank = Convert.ToString(Game1.Tanks[box.TankIndex, 0]);
-                var country = Convert.ToString(Game1.Tanks[box.TankIndex, 2]);
-                var speed = Convert.ToString((int)((float)Game1.Tanks[box.TankIndex, 6] * 10)) + " km/h";
-                var firepower = Convert.ToString(Game1.Tanks[box.TankIndex, 5]);
-                var health = Convert.ToString(Game1.Tanks[box.TankIndex, 4]);
-                var type = Convert.ToString(Game1.Tanks[box.TankIndex, 1]);
+                    var tank = Convert.ToString(Game1.Tanks[box.TankIndex, 1]);
+                    var country = Convert.ToString(Game1.Tanks[box.TankIndex, 3]);
+                    var speed = Convert.ToString((int)((float)Game1.Tanks[box.TankIndex, 7] * 10)) + " km/h";
+                    var firepower = Convert.ToString(Game1.Tanks[box.TankIndex, 6]);
+                    var health = Convert.ToString(Game1.Tanks[box.TankIndex, 5]);
+                    var type = Convert.ToString(Game1.Tanks[box.TankIndex, 2]);
 
-                var textStart = (float)(box.Rectangle.Y + (box.Rectangle.Height * 0.02) + box.Image.Height);
+                    var textStart = (float)(box.Rectangle.Y + (box.Rectangle.Height * 0.02) + box.Image.Height);
 
-                spriteBatch.DrawString(font20, tank, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font20.MeasureString(tank).X / 2), textStart), Color.White);
+                    spriteBatch.DrawString(font20, tank, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font20.MeasureString(tank).X / 2), textStart), Color.White);
 
-                spriteBatch.DrawString(font10, labelCountry, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font10.MeasureString(labelCountry).X / 2), textStart + 60), Color.White);
-                spriteBatch.DrawString(font14, country, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font14.MeasureString(country).X / 2), textStart + 80), Color.White);
-                spriteBatch.DrawString(font10, labelSpeed, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font10.MeasureString(labelSpeed).X / 2), textStart + 120), Color.White);
-                spriteBatch.DrawString(font14, speed, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font14.MeasureString(speed).X / 2), textStart + 140), Color.White);
-                spriteBatch.DrawString(font10, labelFirepower, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font10.MeasureString(labelFirepower).X / 2), textStart + 180), Color.White);
-                spriteBatch.DrawString(font14, firepower, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font14.MeasureString(firepower).X / 2), textStart + 200), Color.White);
-                spriteBatch.DrawString(font10, labelHealth, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font10.MeasureString(labelHealth).X / 2), textStart + 240), Color.White);
-                spriteBatch.DrawString(font14, health, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font14.MeasureString(health).X / 2), textStart + 260), Color.White);
-                spriteBatch.DrawString(font10, labelType, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font10.MeasureString(labelType).X / 2), textStart + 300), Color.White);
-                spriteBatch.DrawString(font14, type, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font14.MeasureString(type).X / 2), textStart + 320), Color.White);
+                    spriteBatch.DrawString(font10, labelCountry, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font10.MeasureString(labelCountry).X / 2), textStart + 60), Color.White);
+                    spriteBatch.DrawString(font14, country, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font14.MeasureString(country).X / 2), textStart + 80), Color.White);
+                    spriteBatch.DrawString(font10, labelSpeed, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font10.MeasureString(labelSpeed).X / 2), textStart + 120), Color.White);
+                    spriteBatch.DrawString(font14, speed, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font14.MeasureString(speed).X / 2), textStart + 140), Color.White);
+                    spriteBatch.DrawString(font10, labelFirepower, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font10.MeasureString(labelFirepower).X / 2), textStart + 180), Color.White);
+                    spriteBatch.DrawString(font14, firepower, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font14.MeasureString(firepower).X / 2), textStart + 200), Color.White);
+                    spriteBatch.DrawString(font10, labelHealth, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font10.MeasureString(labelHealth).X / 2), textStart + 240), Color.White);
+                    spriteBatch.DrawString(font14, health, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font14.MeasureString(health).X / 2), textStart + 260), Color.White);
+                    spriteBatch.DrawString(font10, labelType, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font10.MeasureString(labelType).X / 2), textStart + 300), Color.White);
+                    spriteBatch.DrawString(font14, type, new Vector2(box.Rectangle.X + (box.Rectangle.Width / 2) - (font14.MeasureString(type).X / 2), textStart + 320), Color.White);
+                }
+                
+
             }
 
             playButton.Draw(gameTime, spriteBatch);

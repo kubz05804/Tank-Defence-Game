@@ -17,6 +17,8 @@ namespace Tank_Defence_Game
 
         public Color Colour;
 
+        public bool Active;
+
         public static Color ColourSelection = Color.DarkKhaki;
         public static Color ColourDefault = Color.Gray;
         public static Color ColourHovering = Color.DimGray;
@@ -34,27 +36,39 @@ namespace Tank_Defence_Game
             Image = new Rectangle(Rectangle.X + 10, Rectangle.Y + 10, Rectangle.Width - 20, (int)(Rectangle.Height * 0.3f)); // Establishes the dimensions of the profile image of the tank.
 
             TankIndex = tankIndex;
+
+            Active = true;
         }
 
         public void Update(GameTime gameTime)
         {
-            previousMouseState = currentMouseState;
-            currentMouseState = Mouse.GetState();
-
-            var mouseRectangle = new Rectangle(currentMouseState.X, currentMouseState.Y, 1, 1);
-
-            if (mouseRectangle.Intersects(Rectangle)) // Checks if mouse cursor is hovering over the box.
-            {
-                if (Colour != ColourSelection) // If a box is already selected, it will not change colour, even if the user hovers over it.
-                    Colour = ColourHovering;
-
-                if (currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed) // Checks if the user clicks the box.
-                    Click?.Invoke(this, new EventArgs());
-            }
+            if (TankIndex == -1)
+                Active = false;
             else
+                Active = true;
+
+            if (Active)
             {
-                Colour = ColourDefault;
+                previousMouseState = currentMouseState;
+                currentMouseState = Mouse.GetState();
+
+                var mouseRectangle = new Rectangle(currentMouseState.X, currentMouseState.Y, 1, 1);
+
+                if (mouseRectangle.Intersects(Rectangle)) // Checks if mouse cursor is hovering over the box.
+                {
+                    if (Colour != ColourSelection) // If a box is already selected, it will not change colour, even if the user hovers over it.
+                        Colour = ColourHovering;
+
+                    if (currentMouseState.LeftButton == ButtonState.Released && previousMouseState.LeftButton == ButtonState.Pressed) // Checks if the user clicks the box.
+                        Click?.Invoke(this, new EventArgs());
+                }
+                else
+                {
+                    Colour = ColourDefault;
+                }
             }
+
+            
         }
     }
 }
