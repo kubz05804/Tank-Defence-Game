@@ -4,57 +4,57 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/click.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/destroy.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/hit.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/motion.mp3</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/reload.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/shot2.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Audio/shotSound.wav</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/font10.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/font12.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/font14.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/font20.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Fonts/font50.spritefont</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/button.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Churchill VII/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Churchill VII/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Churchill VII/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Cruiser IV/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Cruiser IV/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Cruiser IV/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/KV-2/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/KV-2/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/KV-2/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/M1A2 Abrams/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/M1A2 Abrams/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/M1A2 Abrams/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/M4A3E8 'Fury'/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/M4A3E8 'Fury'/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/M4A3E8 'Fury'/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/missile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Pz. IV H/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Pz. IV H/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Pz. IV H/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-14 Armata/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-14 Armata/profile.jpg</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-14 Armata/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-34/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-34/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-34/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-34-85/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-34-85/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-34-85/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-72/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-72/profile.jpg</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-72/t72.psd</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-72/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-84/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-84/profile.jpg</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/T-84/turret.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Tiger 1/chassis.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Tiger 1/profile.png</File>
-    <File>C:/Users/kuba0/OneDrive/Documents/Codes/Tank Defence Game/Content/Textures/Tiger 1/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Audio/click.wav</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Audio/destroy.wav</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Audio/hit.wav</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Audio/motion.mp3</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Audio/reload.wav</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Audio/shot2.wav</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Audio/shotSound.wav</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Fonts/font10.spritefont</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Fonts/font12.spritefont</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Fonts/font14.spritefont</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Fonts/font20.spritefont</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Fonts/font50.spritefont</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/button.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Churchill VII/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Churchill VII/profile.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Churchill VII/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Cruiser IV/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Cruiser IV/profile.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Cruiser IV/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/KV-2/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/KV-2/profile.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/KV-2/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/M1A2 Abrams/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/M1A2 Abrams/profile.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/M1A2 Abrams/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/M4A3E8 'Fury'/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/M4A3E8 'Fury'/profile.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/M4A3E8 'Fury'/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/missile.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Pz. IV H/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Pz. IV H/profile.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Pz. IV H/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-14 Armata/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-14 Armata/profile.jpg</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-14 Armata/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-34/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-34/profile.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-34/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-34-85/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-34-85/profile.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-34-85/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-72/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-72/profile.jpg</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-72/t72.psd</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-72/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-84/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-84/profile.jpg</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/T-84/turret.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Tiger 1/chassis.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Tiger 1/profile.png</File>
+    <File>C:/Users/kuba0/Source/Repos/Tank-Defence-Game/Content/Textures/Tiger 1/turret.png</File>
   </SourceFiles>
   <DestFiles>
     <File xsi:nil="true" />

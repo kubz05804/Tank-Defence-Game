@@ -39,7 +39,7 @@ namespace Tank_Defence_Game
 
         };
 
-        /*
+        /* Comment
          * 0 = Tier
          * 1 = Model
          * 2 = Type
